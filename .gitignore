@@ -35,3 +35,4 @@
 bin/*
 
 CMakeLists.txt
+cmake-build-debug/*
