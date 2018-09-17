@@ -1,0 +1,3 @@
+/Users/noureldinhendy/CLionProjects/ECE30862/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/noureldinhendy/CLionProjects/ECE30862/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/noureldinhendy/CLionProjects/ECE30862/cmake-build-debug/CMakeFiles/ECE30862.dir

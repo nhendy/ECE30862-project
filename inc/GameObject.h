@@ -1,5 +1,5 @@
 //
-// Created by Noureldin Hendy on 9/17/18.
+// Created on 9/17/18.
 //
 
 #ifndef _GAMEOBJECT_H_
