@@ -31,10 +31,23 @@
 *.out
 *.app
 
+# IntelliJ project files
+*.iml
+*.iws
+*.ipr
 .idea
+
+
 bin/*
 
 CMakeLists.txt
 cmake-build-debug/*
 
+*/.DS_Store
 .DS_Store
+
+
+# eclipse project file
+.settings/
+.classpath
+.project
