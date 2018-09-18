@@ -5,4 +5,10 @@
 #ifndef _HASCONDITION_H_
 #define _HASCONDITION_H_
 
+
+class HasCondition {
+
+};
+
+
 #endif //_HASCONDITION_H_

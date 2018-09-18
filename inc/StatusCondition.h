@@ -5,4 +5,10 @@
 #ifndef _STATUSCONDITION_H_
 #define _STATUSCONDITION_H_
 
+
+class StatusCondition {
+
+};
+
+
 #endif //_STATUSCONDITION_H_

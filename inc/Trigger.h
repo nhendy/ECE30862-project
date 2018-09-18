@@ -6,6 +6,9 @@
 #define _TRIGGER_H_
 
 
+class Trigger {
+
+};
 
 
 #endif //_TRIGGER_H_
