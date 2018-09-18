@@ -6,8 +6,11 @@
 #define _ITEM_H_
 
 #include "GameObjectModel.h"
+class Item {
 
-class Item : public GameObjectModel {
+    Item();
+
+    virtual ~Item();
 
 };
 

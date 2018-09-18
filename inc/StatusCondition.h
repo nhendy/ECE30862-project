@@ -8,6 +8,10 @@
 
 class StatusCondition {
 
+    StatusCondition();
+
+    virtual ~StatusCondition();
+
 };
 
 

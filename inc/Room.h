@@ -6,8 +6,11 @@
 #define _ROOM_H_
 
 #include "GameObjectModel.h"
+class Room {
 
-class Room : public GameObjectModel{
+    Room();
+
+    virtual ~Room();
 
 };
 

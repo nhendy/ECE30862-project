@@ -8,6 +8,10 @@
 
 class Trigger {
 
+    Trigger();
+
+    virtual ~Trigger();
+
 };
 
 

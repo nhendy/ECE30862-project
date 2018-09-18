@@ -8,6 +8,10 @@
 
 class HasCondition {
 
+    HasCondition();
+
+    virtual ~HasCondition();
+
 };
 
 

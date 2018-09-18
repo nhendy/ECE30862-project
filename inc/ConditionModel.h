@@ -2,13 +2,17 @@
 // Created on 9/17/18.
 //
 
-#ifndef _CONDITIONMODEL_H_
-#define _CONDITIONMODEL_H_
+#ifndef _CONTIONMODEL_H_
+#define _CONTIONMODEL_H_
 
 
 class ConditionModel {
 
+    ConditionModel();
+
+    virtual ~ConditionModel();
+
 };
 
 
-#endif //_CONDITIONMODEL_H_
+#endif //_CONTIONMODEL_H_
