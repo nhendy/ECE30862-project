@@ -5,8 +5,9 @@
 #ifndef _CONTAINER_H_
 #define _CONTAINER_H_
 
+#include "GameObjectModel.h"
 
-class Container {
+class Container : public GameObjectModel {
 
 };
 
