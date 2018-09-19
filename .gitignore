@@ -46,8 +46,13 @@ cmake-build-release/*
 */.DS_Store
 .DS_Store
 
-
+.cmake
 # eclipse project file
 .settings/
 .classpath
 .project
+
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+cmake_install.cmake
