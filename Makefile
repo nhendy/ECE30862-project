@@ -14,7 +14,7 @@ TARGET := bin/runner
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g  -Wall -std=c++17 -stdlib=libc++
+CFLAGS := -g  -Wall -std=c++11 -stdlib=libc++
 LIB :=
 INC := -I include -I lib/rapidxml-1.13
 
