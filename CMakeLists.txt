@@ -42,7 +42,7 @@ add_executable(ECE30862_project
         lib/rapidxml-1.13/rapidxml_utils.hpp
         src/GameWorld.cpp
         src/main.cpp
-        src/sample.txt.xml
+        bin/sample.txt.xml
         CMakeLists.txt)
 
 

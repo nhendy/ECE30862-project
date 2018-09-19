@@ -3,20 +3,12 @@
 //
 
 #include "../inc/GameWorld.h"
-//#include "../lib/rapidxml-1.13/rapidxml.hpp"
-//#include "../lib/rapidxml-1.13/rapidxml_iterators.hpp"
-//#include "../lib/rapidxml-1.13/rapidxml_print.hpp"
-//#include "../lib/rapidxml-1.13/rapidxml_utils.hpp"
 #include <fstream>
 #include <dirent.h>
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include <string>
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
-//#include "../lib/rapidxml-1.13/rapidxml_iterators.hpp"
-//#include "../lib/rapidxml-1.13/rapidxml_print.hpp"
-//#include "../lib/rapidxml-1.13/rapidxml_utils.hpp"
-#include "../lib/pugixml-1.9/src/pugixml.hpp"
 
 GameWorld::GameWorld() {}
 GameWorld::~GameWorld() {}
