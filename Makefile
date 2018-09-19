@@ -12,11 +12,11 @@ TARGET := bin/runner
 
 
 SRCEXT := cpp
-SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT)) lib/pugixml-1.9/src/pugixml.cpp
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -g  -Wall -std=c++11 -stdlib=libc++
-LIB :=
-INC := -I include -I lib/rapidxml-1.13
+LIB := -lboost_system -lboost_filesystem
+INC := -I include -I lib/rapidxml-1.13 -I lib/pugixml-1.9/src/pugixml.hpp -I lib/pugixml-1.9/src/pugiconfig.hpp
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
@@ -37,5 +37,9 @@ clean:
 # Spikes
 #ticket:
 #	$(CC) $(CFLAGS) spikes/ticket.cpp $(INC) $(LIB) -o bin/ticket
+
+
+run:
+	./$(TARGET)
 
 .PHONY: clean
