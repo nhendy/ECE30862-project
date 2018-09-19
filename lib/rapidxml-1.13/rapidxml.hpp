@@ -51,6 +51,9 @@ namespace rapidxml
 #else
     
 #include <exception>    // For std::exception
+#include <assert.h>
+//#include <cassert>
+
 
 #define RAPIDXML_PARSE_ERROR(what, where) throw parse_error(what, where)
 
