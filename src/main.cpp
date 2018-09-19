@@ -1,12 +1,14 @@
 #include <iostream>
+#include <dirent.h>
+#include "../inc/GameWorld.h"
 
+using namespace std;
 
-/**
- *
- * @return
- */
 int main() {
-    int x = 0;
-    std::cout << "Hello, World!" << std::endl;
-    return 0;
+
+
+    GameWorld::InitGameWorld();
+
+
+
 }

@@ -6,11 +6,24 @@
 #define _ROOM_H_
 
 #include "GameObjectModel.h"
-class Room {
+#include "Item.h"
+#include "Creature.h"
+
+
+class Room : public GameObjectModel {
 
     Room();
-
     virtual ~Room();
+
+
+    std::string type_;
+    std::vector<Room *> borders_;  //assuming borders will be rooms
+    std::vector<Container *> containers_;
+    std::vector<Item *> items_;
+    std::vector<Creature *> creatures_;
+
+
+
 
 };
 

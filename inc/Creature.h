@@ -6,10 +6,10 @@
 #define _CREATURE_H_
 
 #include "GameObjectModel.h"
-class Creature {
+
+class Creature : public GameObjectModel {
 
     Creature();
-
     virtual ~Creature();
 
 };

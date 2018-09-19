@@ -16,15 +16,17 @@ class GameWorld {
 
 public:
 
-    GameWorld();
     virtual ~GameWorld();
 
-    vector<Room*> rooms_;
-    vector<Item*> items_;
-    vector<Creature*> creatures_;
-    vector<Containter*> containers_
+    std::vector<Room*> rooms_;
+    std::vector<Item*> items_;
+    std::vector<Creature*> creatures_;
+    std::vector<Container*> containers_;
 
+    void static InitGameWorld();
 
+private:
+    GameWorld();
 
 
 };

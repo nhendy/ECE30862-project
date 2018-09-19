@@ -9,6 +9,10 @@
 #include <string>
 #include <vector>
 #include "Trigger.h"
+//#include "Container.h"
+//#include "Room.h"
+//#include "Item.h"
+//#include "Creature.h"
 
 /**
  *
@@ -16,11 +20,11 @@
 class GameObjectModel {
 public:
 
-    string name_ = "";
-    string status_ = "";
-    string description_ = "";
+    std::string name_ = "";
+    std::string status_ = "";
+    std::string description_ = "";
 
-    vector<Trigger* > triggers_;
+    std::vector<Trigger* > triggers_;
 
     GameObjectModel();
     virtual  ~GameObjectModel();
