@@ -36,6 +36,15 @@ Room Object:
     - items should be a list of item names
     - creatures should be a list of creature names
 
+Item Object:
+
+Command Object:
+
+Trigger Object
+
+Condition Object
+
+
 
 
 
