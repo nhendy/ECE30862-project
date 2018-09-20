@@ -8,24 +8,30 @@
 #include "GameObjectModel.h"
 #include "Item.h"
 #include "Creature.h"
+#include "Container.h"
+#include "../lib/rapidxml-1.13/rapidxml.hpp"
 
+using namespace std;
 
 class Room : public GameObjectModel {
 
-    Room();
+public:
+
+//    static Room * buildRoomFromNode(rapidxml::xml_node<> *);
+
+    Room(rapidxml::xml_node <> * room_node);
     virtual ~Room();
 
+    string type_ = "regular";
+    map<string, string> direction_to_room_;
+    vector<string> containers_names_;
+    vector<string> items_names_;
+    vector<string> creatures_names_;
 
-    std::string type_;
-    std::vector<Room *> borders_;  //assuming borders will be rooms
-    std::vector<Container *> containers_;
-    std::vector<Item *> items_;
-    std::vector<Creature *> creatures_;
-
+private:
 
 
 
 };
-
 
 #endif //_ROOM_H_
