@@ -5,7 +5,7 @@
 #ifndef _CREATURE_H_
 #define _CREATURE_H_
 
-#include "GameObjectModel.h"
+#include "GameObjectModel.hpp"
 
 class Creature : public GameObjectModel {
 

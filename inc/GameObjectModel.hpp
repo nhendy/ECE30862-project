@@ -4,23 +4,17 @@
 
 
 
-
-
-
 #ifndef _GAMEOBJECT_H_
 #define _GAMEOBJECT_H_
 
 
-#include "Trigger.h"
-#include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include <string>
 #include <vector>
 #include <map>
+#include "../lib/rapidxml-1.13/rapidxml.hpp"
+#include "Trigger.hpp"
 
 
-/**
- *
- */
 class GameObjectModel {
 public:
 

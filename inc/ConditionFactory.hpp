@@ -5,7 +5,7 @@
 #ifndef _CONTIONFACTORY_H_
 #define _CONTIONFACTORY_H_
 
-#include "Condition.h"
+#include "Condition.hpp"
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 
 using namespace std;

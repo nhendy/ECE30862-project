@@ -3,8 +3,7 @@
 //
 
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
-#include "Room.h"
-#include "Trigger.h"
+#include "../inc/Room.hpp"
 #include <string>
 
 
@@ -16,6 +15,7 @@ Room::Room(rapidxml::xml_node<> *  room_node) {
 
         if(node_name == "name") { this -> name_ = node -> value() ;}
         else if (node_name == "type") {this -> type_ = node -> value() ;}
+        else if (node_name == "status") {this -> status_ = node -> value() ;}
         else if (node_name == "description") {this -> description_ = node -> value();}
         else if (node_name == "border"){
             std::string direction_name = node -> first_node("direction") -> value();

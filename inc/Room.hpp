@@ -5,11 +5,7 @@
 #ifndef _ROOM_H_
 #define _ROOM_H_
 
-#include "GameObjectModel.h"
-#include "Item.h"
-#include "Creature.h"
-#include "Container.h"
-#include "Trigger.h"
+#include "GameObjectModel.hpp"
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 
 using namespace std;

@@ -2,7 +2,7 @@
 // Created on 9/18/18.
 //
 
-#include "../inc/GameWorld.h"
+#include "../inc/GameWorld.hpp"
 #include <fstream>
 #include <iostream>
 #include <boost/filesystem.hpp>

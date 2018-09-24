@@ -1,6 +1,6 @@
 #include <iostream>
 #include <dirent.h>
-#include "../inc/GameWorld.h"
+#include "../inc/GameWorld.hpp"
 
 using namespace std;
 

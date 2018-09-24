@@ -5,7 +5,8 @@
 #ifndef CONDITION_H
 #define CONDITION_H
 
-#include "GameWorld.h"
+class GameWorld;
+
 
 class Condition {
 

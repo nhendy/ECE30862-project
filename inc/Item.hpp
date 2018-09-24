@@ -5,7 +5,7 @@
 #ifndef _ITEM_H_
 #define _ITEM_H_
 
-#include "GameObjectModel.h"
+#include "GameObjectModel.hpp"
 class Item : public GameObjectModel{
 
 public:

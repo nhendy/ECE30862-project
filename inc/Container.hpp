@@ -2,11 +2,12 @@
 // Created on 9/17/18.
 //
 
-#ifndef _CONTAINER_H_
+#ifndef CONTAINER_H_
+#define CONTAINER_H_
 
-#define _CONTAINER_H_
 
-#include "GameObjectModel.h"
+#include "GameObjectModel.hpp"
+
 class Container : public GameObjectModel {
 
 public:

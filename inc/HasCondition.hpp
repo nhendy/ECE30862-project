@@ -5,7 +5,7 @@
 #ifndef _HASCONDITION_H_
 #define _HASCONDITION_H_
 
-#include "Condition.h"
+#include "Condition.hpp"
 
 
 class HasCondition: public Condition{

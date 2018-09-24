@@ -2,8 +2,8 @@
 // Created by Noureldin Hendy on 9/20/18.
 //
 
-#include "Trigger.h"
-#include "ConditionFactory.h"
+#include "../inc/Trigger.hpp"
+#include "../inc/ConditionFactory.hpp"
 
 Trigger::Trigger(rapidxml::xml_node<> * trigger_node) {
 
@@ -20,7 +20,6 @@ Trigger::Trigger(rapidxml::xml_node<> * trigger_node) {
         }
         else if (node_name == "print") {this -> messages_.push_back(node -> value());}
         else if (node_name == "action") {this -> actions_.push_back(node -> value());}
-
 
     }
 

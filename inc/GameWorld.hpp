@@ -6,10 +6,10 @@
 #define _GAMEWORLD_H_
 
 #include <vector>
-#include "Creature.h"
-#include "Container.h"
-#include "Item.h"
-#include "Room.h"
+#include "Creature.hpp"
+#include "Container.hpp"
+#include "Item.hpp"
+#include "Room.hpp"
 
 
 class GameWorld {
@@ -25,9 +25,6 @@ public:
     std::vector<Container*> containers_;
 
     void static InitGameWorld();
-
-private:
-
 
 
 };

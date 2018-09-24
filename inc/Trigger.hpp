@@ -7,7 +7,7 @@
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include <string>
 #include <vector>
-#include "Condition.h"
+#include "Condition.hpp"
 
 
 using namespace std;
@@ -21,7 +21,7 @@ public:
 
     string type_ = "single";
     string command_;
-    vector<Condition *> conditions_;
+    vector<Condition* > conditions_;
     vector<string> actions_;
     vector<string> messages_;
 

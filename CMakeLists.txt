@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
 #set(CMAKE_BINARY_DIR "./bin")
-set(EXECUTABLE_OUTPUT_PATH  ${PROJECT_SOURCE_DIR}/src/)
+set(EXECUTABLE_OUTPUT_PATH  ${PROJECT_SOURCE_DIR}/bin/)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/cmake-build-release")
 
 
@@ -22,16 +22,16 @@ include_directories(lib/rapidxml-1.13)
 include_directories(src)
 
 add_executable(ECE30862_project
-        inc/ConditionModel.h
-        inc/Container.h
-        inc/Creature.h
-        inc/GameObjectModel.h
-        inc/GameWorld.h
-        inc/HasCondition.h
-        inc/Item.h
-        inc/Room.h
-        inc/StatusCondition.h
-        inc/Trigger.h
+        inc/ConditionFactory.hpp
+        inc/Container.hpp
+#        inc/Creature.h
+        inc/GameObjectModel.hpp
+        inc/GameWorld.hpp
+#        inc/HasCondition.h
+        inc/Item.hpp
+        inc/Room.hpp
+#        inc/StatusCondition.h
+        inc/Trigger.hpp
         lib/pugixml-1.9/contrib/foreach.hpp
         lib/pugixml-1.9/src/pugiconfig.hpp
         lib/pugixml-1.9/src/pugixml.cpp
@@ -43,7 +43,7 @@ add_executable(ECE30862_project
         src/GameWorld.cpp
         src/main.cpp
         bin/sample.txt.xml
-        CMakeLists.txt)
+        CMakeLists.txt src/Room.cpp src/Trigger.cpp src/GameObjectModel.cpp inc/Condition.hpp src/Item.cpp src/ConditionFactory.cpp src/Condition.cpp)
 
 
 
