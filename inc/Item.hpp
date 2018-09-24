@@ -5,12 +5,25 @@
 #ifndef _ITEM_H_
 #define _ITEM_H_
 
+
+#include <string>
+#include <vector>
 #include "GameObjectModel.hpp"
+#include "../lib/rapidxml-1.13"
+
+
 class Item : public GameObjectModel{
 
 public:
     Item(rapidxml::xml_node<> *);
     virtual ~Item();
+
+    std::string writing_;
+    std::vector<string> messages_;
+    std::vector<string> actions_;
+
+private:
+    void buildTrunOn(rapidxml::xml_node<> *);
 
 };
 

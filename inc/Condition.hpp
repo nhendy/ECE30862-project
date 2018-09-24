@@ -1,5 +1,5 @@
 //
-// Created by Noureldin Hendy on 9/23/18.
+// Created 9/23/18.
 //
 
 #ifndef CONDITION_H
