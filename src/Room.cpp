@@ -4,11 +4,11 @@
 
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include "Room.h"
-#include "string"
 #include "Trigger.h"
+#include <string>
+
 
 Room::Room(rapidxml::xml_node<> *  room_node) {
-
 
     for(rapidxml::xml_node <> * node = room_node; node; node = node -> next_sibling())
     {

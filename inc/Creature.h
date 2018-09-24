@@ -9,7 +9,9 @@
 
 class Creature : public GameObjectModel {
 
-    Creature();
+public:
+
+    Creature(rapidxml::xml_node<> *);
     virtual ~Creature();
 
 };

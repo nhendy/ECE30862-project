@@ -3,13 +3,15 @@
 //
 
 #ifndef _CONTAINER_H_
+
 #define _CONTAINER_H_
 
 #include "GameObjectModel.h"
 class Container : public GameObjectModel {
 
-    Container();
+public:
 
+    Container(rapidxml::xml_node<> *);
     virtual ~Container();
 
 };

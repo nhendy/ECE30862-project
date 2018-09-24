@@ -8,7 +8,8 @@
 #include "GameObjectModel.h"
 class Item : public GameObjectModel{
 
-    Item();
+public:
+    Item(rapidxml::xml_node<> *);
     virtual ~Item();
 
 };

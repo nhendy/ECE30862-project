@@ -9,6 +9,7 @@
 #include "Item.h"
 #include "Creature.h"
 #include "Container.h"
+#include "Trigger.h"
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 
 using namespace std;
@@ -17,7 +18,6 @@ class Room : public GameObjectModel {
 
 public:
 
-//    static Room * buildRoomFromNode(rapidxml::xml_node<> *);
 
     Room(rapidxml::xml_node <> * room_node);
     virtual ~Room();
@@ -27,9 +27,6 @@ public:
     vector<string> containers_names_;
     vector<string> items_names_;
     vector<string> creatures_names_;
-
-private:
-
 
 
 };

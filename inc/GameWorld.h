@@ -16,6 +16,7 @@ class GameWorld {
 
 public:
 
+    GameWorld();
     virtual ~GameWorld();
 
     std::vector<Room*> rooms_;
@@ -26,7 +27,7 @@ public:
     void static InitGameWorld();
 
 private:
-    GameWorld();
+
 
 
 };

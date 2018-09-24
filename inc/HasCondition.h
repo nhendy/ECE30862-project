@@ -5,12 +5,15 @@
 #ifndef _HASCONDITION_H_
 #define _HASCONDITION_H_
 
+#include "Condition.h"
 
-class HasCondition {
+
+class HasCondition: public Condition{
 
     HasCondition();
-
     virtual ~HasCondition();
+
+
 
 };
 
