@@ -5,6 +5,11 @@
 #ifndef CONDITION_H
 #define CONDITION_H
 
+
+
+/**
+ *  Used forward declaration since file inclusion failed for some unknown reason TODO
+ */
 class GameWorld;
 
 
