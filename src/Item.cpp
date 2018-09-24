@@ -16,6 +16,7 @@ Item::Item(rapidxml::xml_node<> * item_node) {
         else if (node_name == "description") { this->description_ = node->value(); }
         else if (node_name == "trigger") { this->triggers_.push_back(new Trigger(node)); }
         else if (node_name == "turnon") { this-> buildTrunOn(node);}
+        else if (node_name == "writing") { this-> writing_ = node -> value();}
 
     }
 
