@@ -15,9 +15,6 @@ find_package(Boost 1.67.0 COMPONENTS system filesystem REQUIRED)
 
 include_directories(inc)
 include_directories(lib)
-include_directories(lib/pugixml-1.9)
-include_directories(lib/pugixml-1.9/contrib)
-include_directories(lib/pugixml-1.9/src)
 include_directories(lib/rapidxml-1.13)
 include_directories(src)
 
