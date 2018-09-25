@@ -43,7 +43,7 @@ add_executable(ECE30862_project
         src/GameWorld.cpp
         src/main.cpp
         bin/sample.txt.xml
-        CMakeLists.txt src/Room.cpp src/Trigger.cpp src/GameObjectModel.cpp inc/Condition.hpp src/Item.cpp src/ConditionFactory.cpp src/Condition.cpp)
+        CMakeLists.txt src/Room.cpp src/Trigger.cpp src/GameObjectModel.cpp inc/Condition.hpp src/Item.cpp src/ConditionFactory.cpp src/HasCondition.cpp src/StatusCondition.cpp)
 
 
 

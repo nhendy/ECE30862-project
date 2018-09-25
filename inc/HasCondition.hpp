@@ -5,15 +5,17 @@
 #ifndef _HASCONDITION_H_
 #define _HASCONDITION_H_
 
+#include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include "Condition.hpp"
+
 
 
 class HasCondition: public Condition{
 
-    HasCondition();
+public:
+    HasCondition(rapidxml::xml_node <> *);
     virtual ~HasCondition();
-
-
+    virtual  bool isConditionSatisfied(GameWorld *);
 
 };
 

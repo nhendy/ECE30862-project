@@ -5,12 +5,15 @@
 #ifndef _STATUSCONDITION_H_
 #define _STATUSCONDITION_H_
 
+#include "../lib/rapidxml-1.13/rapidxml.hpp"
+#include "Condition.hpp"
 
-class StatusCondition {
+class StatusCondition : public Condition{
 
-    StatusCondition();
-
+public:
+    StatusCondition(rapidxml::xml_node <> *);
     virtual ~StatusCondition();
+    virtual bool isConditionSatisfied(GameWorld *);
 
 };
 

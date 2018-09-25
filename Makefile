@@ -14,7 +14,7 @@ TARGET := bin/runner
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT)) lib/pugixml-1.9/src/pugixml.cpp
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g  -Wall -std=c++11 -stdlib=libc++
+CFLAGS := -g -Wall -std=c++11 -stdlib=libc++
 LIB := -lboost_system -lboost_filesystem
 INC := -I include -I lib/rapidxml-1.13 -I lib/pugixml-1.9/src/pugixml.hpp -I lib/pugixml-1.9/src/pugiconfig.hpp
 

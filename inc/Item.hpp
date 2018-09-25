@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 #include "GameObjectModel.hpp"
-#include "../lib/rapidxml-1.13"
+#include "../lib/rapidxml-1.13/rapidxml.hpp"
 
 
 class Item : public GameObjectModel{

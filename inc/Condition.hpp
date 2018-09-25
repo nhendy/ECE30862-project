@@ -14,10 +14,7 @@ class GameWorld;
 
 
 class Condition {
-
 public:
-    Condition();
-    virtual ~Condition();
     virtual  bool isConditionSatisfied(GameWorld *) = 0;
 };
 
