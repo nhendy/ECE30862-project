@@ -1,5 +1,5 @@
 //
-// Created by Noureldin Hendy on 9/24/18.
+// Created on 9/24/18.
 //
 
 #include "../inc/StatusCondition.hpp"
