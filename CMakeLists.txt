@@ -24,18 +24,14 @@ include_directories(src)
 add_executable(ECE30862_project
         inc/ConditionFactory.hpp
         inc/Container.hpp
-#        inc/Creature.h
+        inc/Creature.hpp
         inc/GameObjectModel.hpp
         inc/GameWorld.hpp
-#        inc/HasCondition.h
+        inc/HasCondition.hpp
         inc/Item.hpp
         inc/Room.hpp
-#        inc/StatusCondition.h
+        inc/StatusCondition.hpp
         inc/Trigger.hpp
-        lib/pugixml-1.9/contrib/foreach.hpp
-        lib/pugixml-1.9/src/pugiconfig.hpp
-        lib/pugixml-1.9/src/pugixml.cpp
-        lib/pugixml-1.9/src/pugixml.hpp
         lib/rapidxml-1.13/rapidxml.hpp
         lib/rapidxml-1.13/rapidxml_iterators.hpp
         lib/rapidxml-1.13/rapidxml_print.hpp
