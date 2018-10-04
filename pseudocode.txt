@@ -9,8 +9,6 @@
 
 
 
-
-
 Initialization:
     - Create a GameWorld object
     - GameWorld object will have all GameObjects in the game
@@ -43,6 +41,13 @@ Command Object:
 Trigger Object
 
 Condition Object
+
+Container:
+    - Vector of item names storing the items in the container
+    - Vector of accept names storing items that can be accepted by the container
+
+
+
 
 
 
