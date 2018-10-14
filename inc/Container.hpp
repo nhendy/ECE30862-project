@@ -15,6 +15,7 @@ public:
     Container(rapidxml::xml_node<> *);
     virtual ~Container();
 
+
 };
 
 
