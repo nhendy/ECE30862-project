@@ -3,7 +3,7 @@
 //
 
 #include "../inc/HasCondition.hpp"
-#include "../inc/Condition.hpp"
+#include "../inc/GameWorld.hpp"
 
 HasCondition::~HasCondition() {}
 HasCondition::HasCondition(rapidxml::xml_node<> * condition_node)
@@ -22,5 +22,5 @@ HasCondition::HasCondition(rapidxml::xml_node<> * condition_node)
 
 
 
-// TODO check if condition is satisfied
-bool HasCondition::isConditionSatisfied(GameWorld *) {}
+//TODO check if condition is satisfied
+bool HasCondition::isConditionSatisfied(const GameWorld&) {}

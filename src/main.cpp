@@ -6,9 +6,7 @@ using namespace std;
 
 int main() {
 
-
-    GameWorld::InitGameWorld();
-
-
+    GameWorld gw;
+    gw.GameLoop();
 
 }

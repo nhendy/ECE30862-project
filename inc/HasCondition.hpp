@@ -16,7 +16,7 @@ class HasCondition: public Condition{
 public:
     HasCondition(rapidxml::xml_node <> *);
     virtual ~HasCondition();
-    virtual  bool isConditionSatisfied(GameWorld *);
+    virtual  bool isConditionSatisfied(const GameWorld&);   ////POINTER!!!!!
 
 private:
     string object_name_;

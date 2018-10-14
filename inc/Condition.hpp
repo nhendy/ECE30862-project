@@ -15,7 +15,7 @@ class GameWorld;
 
 class Condition {
 public:
-    virtual  bool isConditionSatisfied(GameWorld *) = 0;
+    virtual  bool isConditionSatisfied(const GameWorld&) = 0;
 };
 
 

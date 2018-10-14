@@ -3,7 +3,7 @@
 //
 
 #include "../inc/StatusCondition.hpp"
-#include "../inc/Condition.hpp"
+#include "../inc/GameWorld.hpp"
 
 StatusCondition::~StatusCondition() {}
 StatusCondition::StatusCondition(rapidxml::xml_node<> * condition_node)
@@ -18,5 +18,5 @@ StatusCondition::StatusCondition(rapidxml::xml_node<> * condition_node)
 
 
 //TODO check if condition is satisfied
-bool StatusCondition::isConditionSatisfied(GameWorld *) {}
+bool StatusCondition::isConditionSatisfied(const GameWorld &) {}
 

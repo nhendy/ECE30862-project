@@ -10,6 +10,7 @@
 #include "Container.hpp"
 #include "Item.hpp"
 #include "Room.hpp"
+#include "InputHandler.hpp"
 
 
 class GameWorld {
@@ -19,12 +20,21 @@ public:
     GameWorld();
     virtual ~GameWorld();
 
-    std::vector<Room*> rooms_;
-    std::vector<Item*> items_;
-    std::vector<Creature*> creatures_;
+    std::map<string, Room*> rooms_;
+    std::map<string, Item*> items_;
+    std::map<string, Creature*> creatures_;
     std::vector<Container*> containers_;
 
-    void static InitGameWorld();
+
+//    void InitGameWorld();
+//    void InitGameWorld();
+    void GameLoop();
+
+private:
+    bool execute(string);
+    bool is_overridden(string);
+    InputHandler handler_;
+
 
 
 };

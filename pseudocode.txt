@@ -38,15 +38,24 @@ Item Object:
 
 Command Object:
 
-Trigger Object
+Trigger Object:
+    -
 
-Condition Object
+Condition Object:
+
+
+Creature:
+    - Has a vector of vulnerabilities
+    - Has an Attack similar to a trigger
 
 Container:
     - Vector of item names storing the items in the container
     - Vector of accept names storing items that can be accepted by the container
 
 
+Player:
+   - Player will have a room
+   - Player will have inventory
 
 
 

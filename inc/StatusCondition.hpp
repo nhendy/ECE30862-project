@@ -16,7 +16,7 @@ class StatusCondition : public Condition{
 public:
     StatusCondition(rapidxml::xml_node <> *);
     virtual ~StatusCondition();
-    virtual bool isConditionSatisfied(GameWorld *);
+    virtual bool isConditionSatisfied(const GameWorld&);
 
 private:
     string object_name_;
