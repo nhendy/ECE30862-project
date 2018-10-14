@@ -18,21 +18,21 @@ Initialization:
 
 
 GameWorld Object:
-- [ ] rooms should map room names to room objects
-- [ ] items should map items names to items objects
-- [ ] containers should map container names to container objects
-- [ ] creatures  should map creature names to creature objects
-- [ ] current room pointer should point to current Room object
-- [ ] Inventory should be a list of Item objects
+- [x] rooms should map room names to room objects
+- [x] items should map items names to items objects
+- [x] containers should map container names to container objects
+- [x] creatures  should map creature names to creature objects
+- [x] current room pointer should point to current Room object
+- [x] Inventory should be a map from name to item objects
 
 
 Room Object:
-- [ ] name variable
-- [ ] type variable can be exit, entrance or regular. regular by default.
-- [ ] borders will have a direction and name should map direction to room name
-- [ ] containers should be a list of container names
-- [ ] items should be a list of item names
-- [ ] creatures should be a list of creature names
+- [x] name variable
+- [x] type variable can be exit, entrance or regular. regular by default.
+- [x] borders will have a direction and name should map direction to room name
+- [x] containers should be a list of container names
+- [x] items should be a list of item names
+- [x] creatures should be a list of creature names
 
 Item Object:
 
@@ -45,8 +45,8 @@ Condition Object:
 
 
 Creature:
-- [ ] Has a vector of vulnerabilities
-- [ ] Has an Attack similar to a trigger
+- [x] Has a vector of vulnerabilities
+- [x] Has an Attack **similar to a trigger**
 
 Container:
 - [ ] Vector of item names storing the items in the container
