@@ -19,7 +19,7 @@ public:
     virtual ~Room();
 
     string type_ = "regular";
-    map<string, string> direction_to_room_;
+    map<string, string> direction_to_room_; //borders
     vector<string> containers_names_;
     vector<string> items_names_;
     vector<string> creatures_names_;

@@ -58,7 +58,8 @@ Player:
 - [ ] Player will have inventory
 
 
-
+InputHandler:
+- [ ] Handle all commands described in hpp
 
 
 

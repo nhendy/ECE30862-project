@@ -23,7 +23,10 @@ public:
     std::map<string, Room*> rooms_;
     std::map<string, Item*> items_;
     std::map<string, Creature*> creatures_;
-    std::vector<Container*> containers_;
+    std::map<string, Container*> containers_;
+    std::map<string, Item*> inventor_;
+
+
 
 
 //    void InitGameWorld();
@@ -34,6 +37,7 @@ private:
     bool execute(string);
     bool is_overridden(string);
     InputHandler handler_;
+    string current_room_;
 
 
 
