@@ -15,7 +15,7 @@ Condition* ConditionFactory::createCondition(rapidxml::xml_node<> * condition_no
 
     if(child_has_node)
     {
-        return new HasCondition(condition_node);   //TODO HEAP ALLOCATED MEMORY LEAK!!!!!!
+        return new HasCondition(condition_node);
     }
 
     else if(child_status_node)
