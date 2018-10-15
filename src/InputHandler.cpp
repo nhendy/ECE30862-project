@@ -2,11 +2,11 @@
 
 
 
-InputHandler::InputHandler(GameWorld &) {}
+InputHandler::InputHandler(GameWorld & gameWorld): gameworld_(gameWorld) {}
 InputHandler::~InputHandler() {}
 
 bool InputHandler::change_room(string) {}
-bool InputHandler::show_inventory(string) {}
+bool InputHandler::show_inventory() {}
 bool InputHandler::take(string) {}
 bool InputHandler::open(string) {}
 bool InputHandler::read(string) {}

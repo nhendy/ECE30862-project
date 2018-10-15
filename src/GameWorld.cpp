@@ -29,6 +29,8 @@ GameWorld::GameWorld(): handler_(*this){
     {
         string node_name = node -> name();
 
+        cout << node_name << endl;
+
         if(node_name == "room") {
             Room* room = new Room(node);
             string name = room -> name_;
@@ -127,6 +129,8 @@ bool GameWorld::execute(string input_command)
 
         return handler_.attack(input_command.substr(string("attack").length() + 1));
     }
+
+    return false;
 }
 
 

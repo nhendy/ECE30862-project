@@ -23,4 +23,6 @@ HasCondition::HasCondition(rapidxml::xml_node<> * condition_node)
 
 
 //TODO check if condition is satisfied
-bool HasCondition::isConditionSatisfied(const GameWorld&) {}
+bool HasCondition::isConditionSatisfied(const GameWorld&) {
+    return false;
+}
