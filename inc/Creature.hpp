@@ -15,7 +15,7 @@ public:
 
     Creature(rapidxml::xml_node<> *);
     virtual ~Creature();
-    Trigger attack_;
+    Trigger* attack_;
     vector<string> vulnerabilities_;
 
 };
