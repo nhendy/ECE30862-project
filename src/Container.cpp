@@ -6,6 +6,7 @@
 #include "../inc/Item.hpp"
 
 Container::Container(rapidxml::xml_node<> * container_node) {
+
     for(rapidxml::xml_node<> * node = container_node; node; node = node -> next_sibling())
     {
         std::string node_name = node -> name();
@@ -17,5 +18,6 @@ Container::Container(rapidxml::xml_node<> * container_node) {
         else if (node_name == "item") { this-> stored_items_.push_back(node -> value());}
         else if (node_name == "accept") { this-> accepted_.push_back(node -> value());}
     }
+
 }
 Container::~Container() {}

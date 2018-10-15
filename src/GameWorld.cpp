@@ -14,9 +14,6 @@ using namespace std;
 
 GameWorld::GameWorld(): handler_(*this){
 
-    using namespace std;
-
-
     rapidxml::xml_document <> doc;
     ifstream file ("sample.txt.xml");
 
@@ -33,7 +30,7 @@ GameWorld::GameWorld(): handler_(*this){
         string node_name = node -> name();
 
         if(node_name == "room") {
-            Room * room = new Room(node);
+            Room* room = new Room(node);
             string name = room -> name_;
 
             rooms_.insert(pair<string, Room*>(name, room));
@@ -85,6 +82,7 @@ void GameWorld::GameLoop()
 bool GameWorld::is_overridden(string input_command)
 {
     //TODO
+
     return true;
 }
 
