@@ -10,7 +10,6 @@
 #include "Container.hpp"
 #include "Item.hpp"
 #include "Room.hpp"
-#include "InputHandler.hpp"
 
 
 class GameWorld {
@@ -24,7 +23,7 @@ public:
     std::map<string, Item*> items_;
     std::map<string, Creature*> creatures_;
     std::map<string, Container*> containers_;
-    std::map<string, Item*> inventor_;
+    std::map<string, Item*> inventory_;
 
 
 
@@ -34,10 +33,18 @@ public:
     void GameLoop();
 
 private:
+    string current_room_;
     bool execute(string);
     bool is_overridden(string);
-    InputHandler handler_;
-    string current_room_;
+    bool change_room(string);
+    bool show_inventory();
+    bool take(string);
+    bool open(string);
+    bool read(string);
+    bool drop(string);
+    bool turnon(string);
+    bool attack(string);
+    bool put(string);
 
 
 

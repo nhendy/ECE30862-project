@@ -12,7 +12,10 @@
 
 using namespace std;
 
-GameWorld::GameWorld(): handler_(*this){
+
+/**************************** Constructors & destructors ****************************/
+
+GameWorld::GameWorld(){
 
     rapidxml::xml_document <> doc;
     ifstream file ("sample.txt.xml");
@@ -62,6 +65,11 @@ GameWorld::GameWorld(): handler_(*this){
 }
 
 
+GameWorld::~GameWorld() {}
+
+
+
+/*************************************** Game loop ***************************************/
 void GameWorld::GameLoop()
 {
     string input_command;
@@ -80,7 +88,7 @@ void GameWorld::GameLoop()
 
 }
 
-
+/************************************** Trigger checking **********************************/
 bool GameWorld::is_overridden(string input_command)
 {
     //TODO
@@ -88,53 +96,68 @@ bool GameWorld::is_overridden(string input_command)
     return true;
 }
 
+
+
+
+/************************************** Executing input commands **********************************/
 bool GameWorld::execute(string input_command)
 {
     if(input_command == "n" || input_command == "s" || input_command == "e" || input_command == "w")
     {
-        return handler_.change_room(input_command);;
+        return this -> change_room(input_command);;
     }
     if(input_command == "i")
     {
-        return handler_.show_inventory();
+        return this -> show_inventory();
     }
     if(input_command.find("take") != string::npos)
     {
-        return handler_.take(input_command.substr(string("take").length() + 1));
+        return this -> take(input_command.substr(string("take").length() + 1));
     }
     if(input_command.find("open") != string::npos)
     {
-        return handler_.open(input_command.substr(string("open").length() + 1));
+        return this -> open(input_command.substr(string("open").length() + 1));
     }
     if(input_command.find("read") != string::npos)
     {
-        return handler_.read(input_command.substr(string("read").length() + 1));
+        return this -> read(input_command.substr(string("read").length() + 1));
     }
     if(input_command.find("drop") != string::npos)
     {
-        return handler_.drop(input_command.substr(string("drop").length() + 1));
+        return this -> drop(input_command.substr(string("drop").length() + 1));
     }
     if(input_command.find("put") != string::npos)
     {
 
-        return handler_.put(input_command.substr(string("put").length() + 1));
+        return this -> put(input_command.substr(string("put").length() + 1));
     }
     if(input_command.find("turn on") != string::npos)
     {
 
-        return handler_.turnon(input_command.substr(string("turn on").length() + 1));
+        return this -> turnon(input_command.substr(string("turn on").length() + 1));
     }
     if(input_command.find("attack") != string::npos)
     {
 
-        return handler_.attack(input_command.substr(string("attack").length() + 1));
+        return this -> attack(input_command.substr(string("attack").length() + 1));
     }
 
     return false;
 }
 
 
-GameWorld::~GameWorld() {}
 
 
 
+
+
+/************************************** Commands **********************************/
+bool GameWorld::change_room(string) {}
+bool GameWorld::show_inventory() {}
+bool GameWorld::take(string) {}
+bool GameWorld::open(string) {}
+bool GameWorld::read(string) {}
+bool GameWorld::drop(string) {}
+bool GameWorld::turnon(string) {}
+bool GameWorld::attack(string) {}
+bool GameWorld::put(string) {}
