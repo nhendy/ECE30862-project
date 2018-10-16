@@ -24,6 +24,7 @@ bool GameWorld::InitGame() {
     stringstream buffer;
     buffer << file.rdbuf();
     string content(buffer.str());
+    cout << content << endl;
 
     doc.parse<0>(&content[0]);
     rapidxml::xml_node<> *root_node = doc.first_node("map");
@@ -38,7 +39,6 @@ bool GameWorld::InitGame() {
         for (rapidxml::xml_node<> *node = root_node->first_node(); node; node = node->next_sibling())
         {
             string node_name = node->name();
-            cout << "here" << endl;
 
             cout << node_name << endl;
 
