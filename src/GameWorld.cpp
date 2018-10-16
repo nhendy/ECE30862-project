@@ -15,9 +15,9 @@ using namespace std;
 
 /**************************** Constructors & destructors ****************************/
 
-GameWorld::GameWorld()
-{
-    
+GameWorld::GameWorld() {}
+GameWorld::~GameWorld() {}
+bool GameWorld::InitGame() {
     rapidxml::xml_document<> doc;
     ifstream file("sample.txt.xml");
 
@@ -27,54 +27,56 @@ GameWorld::GameWorld()
 
     doc.parse<0>(&content[0]);
     rapidxml::xml_node<> *root_node = doc.first_node("map");
-    if(root_node == nullptr)
+    if (root_node == nullptr)
     {
         cout << "can't open the file" << endl;
-        return ;
     }
-    cout << root_node -> name() << endl;
-
-    for (rapidxml::xml_node<> *node = root_node->first_node(); node; node = node->next_sibling())
+    else
     {
-        string node_name = node->name();
-        cout << "here" << endl;
+        cout << root_node->name() << endl;
 
-        cout << node_name << endl;
-
-        if (node_name == "room")
+        for (rapidxml::xml_node<> *node = root_node->first_node(); node; node = node->next_sibling())
         {
-            Room *room = new Room(node);
-            string name = room->name_;
+            string node_name = node->name();
+            cout << "here" << endl;
 
-            rooms_.insert(pair<string, Room *>(name, room));
-        }
-        else if (node_name == "creature")
-        {
-            Creature *creature = new Creature(node);
-            string name = creature->name_;
+            cout << node_name << endl;
 
-            creatures_.insert(pair<string, Creature *>(name, creature));
-        }
-        else if (node_name == "container")
-        {
-            Container *container = new Container(node);
-            string name = container->name_;
+            if (node_name == "room")
+            {
+                Room *room = new Room(node);
+                string name = room->name_;
 
-            containers_.insert(pair<string, Container *>(name, container));
-        }
-        else if (node_name == "item")
-        {
-            Item *item = new Item(node);
-            string name = item->name_;
+                rooms_.insert(pair<string, Room *>(name, room));
+            }
+            else if (node_name == "creature")
+            {
+                Creature *creature = new Creature(node);
+                string name = creature->name_;
 
-            items_.insert(pair<string, Item *>(name, item));
+                creatures_.insert(pair<string, Creature *>(name, creature));
+            }
+            else if (node_name == "container")
+            {
+                Container *container = new Container(node);
+                string name = container->name_;
+
+                containers_.insert(pair<string, Container *>(name, container));
+            }
+            else if (node_name == "item")
+            {
+                Item *item = new Item(node);
+                string name = item->name_;
+
+                items_.insert(pair<string, Item *>(name, item));
+            }
         }
+
+        file.close();
+        return true;
     }
-
-    file.close();
+    return false;
 }
-
-GameWorld::~GameWorld() {}
 
 /*************************************** Game loop ***************************************/
 void GameWorld::GameLoop()

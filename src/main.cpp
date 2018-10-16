@@ -40,6 +40,9 @@ int main() {
 
 
     GameWorld gw;
-    gw.GameLoop();
-
+    if(gw.InitGame())
+    {
+        gw.GameLoop();
+    }
+    
 }

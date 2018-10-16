@@ -27,6 +27,7 @@ public:
 
 
     void GameLoop();
+    bool InitGame();
 
 private:
     string current_room_;
