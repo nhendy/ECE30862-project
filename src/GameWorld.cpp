@@ -9,83 +9,89 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <dirent.h>
 
 using namespace std;
 
-
 /**************************** Constructors & destructors ****************************/
 
-GameWorld::GameWorld(){
+GameWorld::GameWorld()
+{
+    
+    rapidxml::xml_document<> doc;
+    ifstream file("sample.txt.xml");
 
-    rapidxml::xml_document <> doc;
-    ifstream file ("sample.txt.xml");
-
-    stringstream buffer ;
+    stringstream buffer;
     buffer << file.rdbuf();
     string content(buffer.str());
 
     doc.parse<0>(&content[0]);
     rapidxml::xml_node<> *root_node = doc.first_node("map");
-
-
-    for (rapidxml::xml_node<> * node = root_node -> first_node(); node; node =  node -> next_sibling())
+    if(root_node == nullptr)
     {
-        string node_name = node -> name();
+        cout << "can't open the file" << endl;
+        return ;
+    }
+    cout << root_node -> name() << endl;
+
+    for (rapidxml::xml_node<> *node = root_node->first_node(); node; node = node->next_sibling())
+    {
+        string node_name = node->name();
+        cout << "here" << endl;
 
         cout << node_name << endl;
 
-        if(node_name == "room") {
-            Room* room = new Room(node);
-            string name = room -> name_;
+        if (node_name == "room")
+        {
+            Room *room = new Room(node);
+            string name = room->name_;
 
-            rooms_.insert(pair<string, Room*>(name, room));
+            rooms_.insert(pair<string, Room *>(name, room));
         }
-        else if (node_name == "creature") {
-            Creature* creature = new Creature(node);
-            string name = creature -> name_;
+        else if (node_name == "creature")
+        {
+            Creature *creature = new Creature(node);
+            string name = creature->name_;
 
-            creatures_.insert(pair<string, Creature*> (name, creature));
+            creatures_.insert(pair<string, Creature *>(name, creature));
         }
-        else if (node_name == "container") {
-            Container* container = new Container(node);
-            string name = container -> name_;
+        else if (node_name == "container")
+        {
+            Container *container = new Container(node);
+            string name = container->name_;
 
-            containers_.insert(pair<string, Container*> (name, container));
+            containers_.insert(pair<string, Container *>(name, container));
         }
-        else if (node_name == "item") {
-            Item* item = new Item(node);
-            string name = item -> name_;
+        else if (node_name == "item")
+        {
+            Item *item = new Item(node);
+            string name = item->name_;
 
-            items_.insert(pair<string, Item*> (name, item));
+            items_.insert(pair<string, Item *>(name, item));
         }
-
     }
 
     file.close();
 }
 
-
 GameWorld::~GameWorld() {}
-
-
 
 /*************************************** Game loop ***************************************/
 void GameWorld::GameLoop()
 {
     string input_command;
 
-    while(true)
+    while (true)
     {
         getline(cin, input_command);
 
-        if(is_overridden(input_command))
+        if (is_overridden(input_command))
         {
             continue;
         }
 
         execute(input_command);
     }
-
 }
 
 /************************************** Trigger checking **********************************/
@@ -96,60 +102,52 @@ bool GameWorld::is_overridden(string input_command)
     return true;
 }
 
-
-
-
 /************************************** Executing input commands **********************************/
 bool GameWorld::execute(string input_command)
 {
-    if(input_command == "n" || input_command == "s" || input_command == "e" || input_command == "w")
+    if (input_command == "n" || input_command == "s" || input_command == "e" || input_command == "w")
     {
-        return this -> change_room(input_command);;
+        return this->change_room(input_command);
+        ;
     }
-    if(input_command == "i")
+    if (input_command == "i")
     {
-        return this -> show_inventory();
+        return this->show_inventory();
     }
-    if(input_command.find("take") != string::npos)
+    if (input_command.find("take") != string::npos)
     {
-        return this -> take(input_command.substr(string("take").length() + 1));
+        return this->take(input_command.substr(string("take").length() + 1));
     }
-    if(input_command.find("open") != string::npos)
+    if (input_command.find("open") != string::npos)
     {
-        return this -> open(input_command.substr(string("open").length() + 1));
+        return this->open(input_command.substr(string("open").length() + 1));
     }
-    if(input_command.find("read") != string::npos)
+    if (input_command.find("read") != string::npos)
     {
-        return this -> read(input_command.substr(string("read").length() + 1));
+        return this->read(input_command.substr(string("read").length() + 1));
     }
-    if(input_command.find("drop") != string::npos)
+    if (input_command.find("drop") != string::npos)
     {
-        return this -> drop(input_command.substr(string("drop").length() + 1));
+        return this->drop(input_command.substr(string("drop").length() + 1));
     }
-    if(input_command.find("put") != string::npos)
+    if (input_command.find("put") != string::npos)
     {
 
-        return this -> put(input_command.substr(string("put").length() + 1));
+        return this->put(input_command.substr(string("put").length() + 1));
     }
-    if(input_command.find("turn on") != string::npos)
+    if (input_command.find("turn on") != string::npos)
     {
 
-        return this -> turnon(input_command.substr(string("turn on").length() + 1));
+        return this->turnon(input_command.substr(string("turn on").length() + 1));
     }
-    if(input_command.find("attack") != string::npos)
+    if (input_command.find("attack") != string::npos)
     {
 
-        return this -> attack(input_command.substr(string("attack").length() + 1));
+        return this->attack(input_command.substr(string("attack").length() + 1));
     }
 
     return false;
 }
-
-
-
-
-
-
 
 /************************************** Commands **********************************/
 bool GameWorld::change_room(string) {}

@@ -27,6 +27,7 @@ add_executable(ECE30862_project
         inc/HasCondition.hpp
         inc/Item.hpp
         inc/Room.hpp
+        inc/InputHandler.hpp
         inc/StatusCondition.hpp
         inc/Trigger.hpp
         lib/rapidxml-1.13/rapidxml.hpp
@@ -36,7 +37,7 @@ add_executable(ECE30862_project
         src/GameWorld.cpp
         src/main.cpp
         bin/sample.txt.xml
-        CMakeLists.txt src/Room.cpp src/Trigger.cpp src/GameObjectModel.cpp inc/Condition.hpp src/Item.cpp src/ConditionFactory.cpp src/HasCondition.cpp src/StatusCondition.cpp inc/InputHandler.hpp src/Creature.cpp)
+        CMakeLists.txt src/Room.cpp src/Trigger.cpp src/GameObjectModel.cpp inc/Condition.hpp src/Item.cpp src/ConditionFactory.cpp src/HasCondition.cpp src/StatusCondition.cpp  src/InputHandler.cpp src/Creature.cpp src/Container.cpp)
 
 
 

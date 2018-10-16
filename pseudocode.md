@@ -49,7 +49,7 @@ Creature:
 - [x] Has an Attack **similar to a trigger**
 
 Container:
-- [ ] Vector of item names storing the items in the container
+- [ ] Vector of item names stored in the container
 - [ ] Vector of accept names storing items that can be accepted by the container
 
 

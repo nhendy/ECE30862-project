@@ -47,7 +47,6 @@ clean:
 	@$(RM) $(BIN_NAME)
 	@echo "Deleting directories"
 	@$(RM) -r $(BUILD_PATH)
-	@$(RM) -r $(BIN_PATH)
 
 # checks the executable and symlinks to the output
 .PHONY: all

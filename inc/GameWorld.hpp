@@ -26,10 +26,6 @@ public:
     std::map<string, Item*> inventory_;
 
 
-
-
-//    void InitGameWorld();
-//    void InitGameWorld();
     void GameLoop();
 
 private:
