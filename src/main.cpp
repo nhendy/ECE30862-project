@@ -18,7 +18,7 @@ int main()
         bool FLAG = false;
         while (ent)
         {
-            cout << ent->d_name << endl;
+            // cout << ent->d_name << endl;
             if (strcmp(ent->d_name, "sample.txt.xml") == 0)
             {
                 FLAG = true;
