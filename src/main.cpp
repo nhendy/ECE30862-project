@@ -5,28 +5,29 @@
 
 using namespace std;
 
-int main() {
+int main()
+{
 
     DIR *dir;
     struct dirent *ent;
     if ((dir = opendir("./")) != NULL)
     {
         /* print all the files and directories within directory */
-        
+
         ent = readdir(dir);
         bool FLAG = false;
         while (ent)
         {
-            cout <<  ent->d_name << endl;
-            if(strcmp(ent -> d_name,"sample.txt.xml"))
+            cout << ent->d_name << endl;
+            if (strcmp(ent->d_name, "sample.txt.xml") == 0)
             {
                 FLAG = true;
                 break;
             }
-            
+
             ent = readdir(dir);
         }
-        if(FLAG == false)
+        if (FLAG == false)
         {
             cout << "XML file not in the current directory" << endl;
             return EXIT_FAILURE;
@@ -36,13 +37,11 @@ int main() {
             cout << "XML file is found" << endl;
         }
     }
-    
 
 
     GameWorld gw;
-    if(gw.InitGame())
+    if (gw.InitGame())
     {
         gw.GameLoop();
     }
-    
 }
