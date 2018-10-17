@@ -89,6 +89,7 @@ void GameWorld::GameLoop()
 
         if (is_overridden(input_command))
         {
+
             continue;
         }
 
@@ -110,7 +111,6 @@ bool GameWorld::execute(string input_command)
     if (input_command == "n" || input_command == "s" || input_command == "e" || input_command == "w")
     {
         return this->change_room(input_command);
-        ;
     }
     if (input_command == "i")
     {
@@ -152,8 +152,18 @@ bool GameWorld::execute(string input_command)
 }
 
 /************************************** Commands **********************************/
+
+/**
+ * @Author: Damini
+ **/
 bool GameWorld::change_room(string) {}
+
+/**
+ * 
+ * */
 bool GameWorld::show_inventory() {}
+
+
 bool GameWorld::take(string) {}
 bool GameWorld::open(string) {}
 bool GameWorld::read(string) {}

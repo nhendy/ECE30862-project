@@ -38,4 +38,5 @@ Room::Room(rapidxml::xml_node<> *  room_node) {
 }
 
 
-Room::~Room() {}
+Room::~Room() {
+}
