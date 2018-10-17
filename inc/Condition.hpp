@@ -11,6 +11,7 @@
  *  Used forward declaration since file inclusion failed for some unknown reason TODO
  */
 class GameWorld;
+// #include "GameWorld.hpp"
 
 
 class Condition {

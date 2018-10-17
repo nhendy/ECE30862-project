@@ -6,44 +6,45 @@
 #define _GAMEWORLD_H_
 
 #include <vector>
+#include <map>
+#include <string>
 #include "Creature.hpp"
-#include "Container.hpp"
 #include "Item.hpp"
 #include "Room.hpp"
+#include "Container.hpp"
 
 
-class GameWorld {
+class GameWorld
+{
 
-public:
-
+  public:
     GameWorld();
     virtual ~GameWorld();
 
-    std::map<string, Room*> rooms_;
-    std::map<string, Item*> items_;
-    std::map<string, Creature*> creatures_;
-    std::map<string, Container*> containers_;
-    std::map<string, Item*> inventory_;
-
+    std::map<std::string, Room *> rooms_;
+    std::map<std::string, Item *> items_;
+    std::map<std::string, Creature *> creatures_;
+    std::map<std::string, Container *> containers_;
+    std::map<std::string, Item *> inventory_;
 
     void GameLoop();
     bool InitGame();
 
-private:
-    string current_room_;
-    bool execute(string);
-    bool is_overridden(string);
-    bool change_room(string);
+  private:
+    std::string current_room_;
+    std::vector<Trigger *> pending_triggers_;
+
+    std::string parse_input();
+    bool execute(std::string);
+    Trigger *update_trigger_queue(std::string);
+    bool change_room(std::string);
     bool show_inventory();
-    bool take(string);
-    bool open(string);
-    bool read(string);
-    bool drop(string);
-    bool turnon(string);
-    bool attack(string);
-    bool put(string);
-
-
-
+    bool take(std::string);
+    bool open(std::string);
+    bool read(std::string);
+    bool drop(std::string);
+    bool turnon(std::string);
+    bool attack(std::string);
+    bool put(std::string);
 };
 #endif //_GAMEWORLD_H_

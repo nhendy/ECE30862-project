@@ -4,10 +4,8 @@
 
 #include "../inc/GameWorld.hpp"
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
-#include "boost/algorithm/string.hpp"
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <sstream>
 #include <dirent.h>
 
@@ -85,27 +83,47 @@ void GameWorld::GameLoop()
 
     while (true)
     {
-        getline(cin, input_command);
+        input_command = parse_input();
 
-        if (is_overridden(input_command))
+        if (pending_triggers_.empty())
         {
-
-            continue;
+            execute(input_command);
         }
 
-        execute(input_command);
+        for(auto it = pending_triggers_.begin(); it != pending_triggers_.end(); it ++)
+        {
+            (*it) -> fire(*this) ;
+        }
+        
     }
 }
 
+
 /************************************** Trigger checking **********************************/
-bool GameWorld::is_overridden(string input_command)
+Trigger * GameWorld::update_trigger_queue(string input_command)
 {
     //TODO
+    //Loop over triggers check commands AND conditions !! LOOP OVER MEANINGFUL TRIGGERS !!
 
-    return true;
+
+    return nullptr;
 }
 
+/************************************** Parse Input **********************************/
+string GameWorld::parse_input()
+{
+    string input = "";
+
+    getline(cin, input);
+    this -> update_trigger_queue(input);
+
+    return input;
+}
+
+
 /************************************** Executing input commands **********************************/
+
+//TODO check if input_command is valid
 bool GameWorld::execute(string input_command)
 {
     if (input_command == "n" || input_command == "s" || input_command == "e" || input_command == "w")
@@ -134,17 +152,14 @@ bool GameWorld::execute(string input_command)
     }
     if (input_command.find("put") != string::npos)
     {
-
         return this->put(input_command.substr(string("put").length() + 1));
     }
     if (input_command.find("turn on") != string::npos)
     {
-
         return this->turnon(input_command.substr(string("turn on").length() + 1));
     }
     if (input_command.find("attack") != string::npos)
     {
-
         return this->attack(input_command.substr(string("attack").length() + 1));
     }
 
@@ -156,18 +171,41 @@ bool GameWorld::execute(string input_command)
 /**
  * @Author: Damini
  **/
-bool GameWorld::change_room(string) {}
+bool GameWorld::change_room(string) {
+    //TODO
 
-/**
- * 
- * */
-bool GameWorld::show_inventory() {}
+    this -> update_trigger_queue(""); // Update not using commands
+}
+bool GameWorld::show_inventory() {
 
+    this -> update_trigger_queue(""); // Update not using commands
+}
 
-bool GameWorld::take(string) {}
-bool GameWorld::open(string) {}
-bool GameWorld::read(string) {}
-bool GameWorld::drop(string) {}
-bool GameWorld::turnon(string) {}
-bool GameWorld::attack(string) {}
-bool GameWorld::put(string) {}
+bool GameWorld::take(string) {
+
+    this -> update_trigger_queue(""); // Update not using commands
+}
+bool GameWorld::open(string) {
+
+    this -> update_trigger_queue(""); // Update not using commands
+}
+bool GameWorld::read(string) {
+
+    this -> update_trigger_queue(""); // Update not using commands
+}
+bool GameWorld::drop(string) {
+
+    this -> update_trigger_queue(""); // Update not using commands
+}
+bool GameWorld::turnon(string) {
+
+    this -> update_trigger_queue(""); // Update not using commands
+}
+bool GameWorld::attack(string) {
+
+    this -> update_trigger_queue(""); // Update not using commands
+}
+bool GameWorld::put(string) {
+
+    this -> update_trigger_queue(""); // Update not using commands
+}
