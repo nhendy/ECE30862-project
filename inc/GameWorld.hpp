@@ -20,18 +20,21 @@ class GameWorld
   public:
     GameWorld();
     virtual ~GameWorld();
+    bool game_over_ = false;
+    std::string current_room_;
 
-    std::map<std::string, Room *> rooms_;
-    std::map<std::string, Item *> items_;
-    std::map<std::string, Creature *> creatures_;
-    std::map<std::string, Container *> containers_;
-    std::map<std::string, Item *> inventory_;
+    std::map<std::string, Room *> rooms_map_;
+    std::map<std::string, Item *> items_map_;
+    std::map<std::string, Creature *> creatures_map_;
+    std::map<std::string, Container *> containers_map_;
+    std::map<std::string, Item *> inventory_map_;
+    std::map<std::string, std::string> name_to_type_; //Map names to types
 
     void GameLoop();
     bool InitGame();
 
   private:
-    std::string current_room_;
+    
     std::vector<Trigger *> pending_triggers_;
 
     std::string parse_input();

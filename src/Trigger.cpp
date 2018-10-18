@@ -7,6 +7,7 @@
 #include "../inc/GameWorld.hpp"
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 Trigger::Trigger(rapidxml::xml_node<> *trigger_node)
 {
@@ -54,15 +55,56 @@ void Trigger::fire(GameWorld& gameworld)
         vector<string> command_tokens((istream_iterator<string>(iss)),  // KEEP EXTRA PARANTHESES! 
                                          istream_iterator<string>());   // to disambiguate function call
 
+        //TODO check validity of the action
+        //TODO check if objects exist
 
         //Execute Delete
-        //TODO wait on piazza post to be answered "Delete" Command 
         if(command_tokens[0] == "Delete")
         {
             string obj_to_delete = command_tokens[1];
-            if (gameworld.inventory_map_.find(obj_to_delete) != gameworld.inventory_map_.end())
-            {
+            string obj_to_delete_type = gameworld.name_to_type_[obj_to_delete];
 
+            //curr room object
+            Room * curr_room = gameworld.rooms_map_[gameworld.current_room_];
+
+            if(obj_to_delete_type == "room")
+            {
+                //Loop over directions_to_room till the room is the target room to delete
+                for(map<string, string>::iterator it = curr_room -> direction_to_room_.find(obj_to_delete); it != curr_room -> direction_to_room_.end(); it++ )
+                {
+                    if(it -> second == obj_to_delete)
+                    {
+                        curr_room -> direction_to_room_.erase(it);
+                        break;
+                    }
+                }
+            }
+            else if (obj_to_delete_type == "item")
+            {
+                //find in vecotr and delete
+                vector<string>::iterator it = find(curr_room -> items_names_.begin(), curr_room -> items_names_.end(), obj_to_delete);
+                if(it != curr_room -> items_names_.end())
+                {
+                    curr_room -> items_names_.erase(it);   
+                }
+            }
+            else if (obj_to_delete_type == "creatue")
+            {
+                //find in vecotr and delete
+                vector<string>::iterator it = find(curr_room -> creatures_names_.begin(), curr_room -> creatures_names_.end(), obj_to_delete);
+                if(it != curr_room -> creatures_names_.end())
+                {
+                    curr_room -> creatures_names_.erase(it);   
+                }
+            }
+            else if (obj_to_delete_type == "container")
+            {
+                //find in vecotr and delete
+                vector<string>::iterator it = find(curr_room -> containers_names_.begin(), curr_room -> containers_names_.end(), obj_to_delete);
+                if(it != curr_room -> containers_names_.end())
+                {
+                    curr_room -> containers_names_.erase(it);   
+                }
             }
 
         } // if(command_tokens[0] == "Delete")
@@ -72,28 +114,28 @@ void Trigger::fire(GameWorld& gameworld)
         {
             string obj_to_add = command_tokens[1];
             string dest_obj   = command_tokens[3];
-            string dest_map   = gameworld.name_to_map_[dest_obj];
-            string obj_to_add_map = gameworld.name_to_map_[obj_to_add];
+            string dest_type   = gameworld.name_to_type_[dest_obj];
+            string obj_to_add_type = gameworld.name_to_type_[obj_to_add];
             
-            if(dest_map == "rooms_map_")
+            if(dest_type == "room")
             {
-                if(obj_to_add_map == "containers_map_")
+                if(obj_to_add_type == "container")
                 {
                     //TODO
                 }
-                else if (obj_to_add_map == "items_map_")
+                else if (obj_to_add_type == "item")
                 {
                     //TODO
                 }
-                else if (obj_to_add_map == "creatures_map_")
+                else if (obj_to_add_type == "creature")
                 {
                     //TODO
                 }
 
             }
-            else if (dest_map == "containers_map_")
+            else if (dest_type == "container")
             {
-                if (obj_to_add_map == "items_map_")
+                if (obj_to_add_type == "item")
                 {
                     //TODO
                 }

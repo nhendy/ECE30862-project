@@ -33,15 +33,15 @@ bool HasCondition::isConditionSatisfied(const GameWorld &gameworld)
 
     if (owner_ == "inventory")
     {
-        if (gameworld.inventory_.find(object_name_) != gameworld.inventory_.end())
+        if (gameworld.inventory_map_.find(object_name_) != gameworld.inventory_map_.end())
         {
             return has_;
         }
     }
     //find in room
-    else if (gameworld.rooms_.find(owner_) != gameworld.rooms_.end())
+    else if (gameworld.rooms_map_.find(owner_) != gameworld.rooms_map_.end())
     {
-        Room * room = gameworld.rooms_.at(owner_);
+        Room * room = gameworld.rooms_map_.at(owner_);
 
         //find in items_
         if (find(room -> items_names_.begin(), room -> items_names_.end(), object_name_) != room -> items_names_.end())
@@ -64,9 +64,9 @@ bool HasCondition::isConditionSatisfied(const GameWorld &gameworld)
 
 
     //find in containers
-    else if (gameworld.containers_.find(owner_) != gameworld.containers_.end())
+    else if (gameworld.containers_map_.find(owner_) != gameworld.containers_map_.end())
     {
-        Container * container = gameworld.containers_.at(owner_);
+        Container * container = gameworld.containers_map_.at(owner_);
 
         //find in stored_items_
         if (find(container -> stored_items_.begin(), container -> stored_items_.end(), object_name_) != container -> stored_items_.end())

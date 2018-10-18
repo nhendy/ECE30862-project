@@ -46,7 +46,7 @@ bool GameWorld::InitGame() {
                 string name = room->name_;
 
                 rooms_map_.insert(pair<string, Room *>(name, room));
-                name_to_map_[name] = "rooms_map_";
+                name_to_type_[name] = "room";
             }
             else if (node_name == "creature")
             {
@@ -54,7 +54,7 @@ bool GameWorld::InitGame() {
                 string name = creature->name_;
 
                 creatures_map_.insert(pair<string, Creature *>(name, creature));
-                name_to_map_[name] = "creatures_map_";
+                name_to_type_[name] = "creature";
             }
             else if (node_name == "container")
             {
@@ -62,7 +62,7 @@ bool GameWorld::InitGame() {
                 string name = container->name_;
 
                 containers_map_.insert(pair<string, Container *>(name, container));
-                name_to_map_[name] = "containers_map_";
+                name_to_type_[name] = "container";
             }
             else if (node_name == "item")
             {
@@ -70,7 +70,7 @@ bool GameWorld::InitGame() {
                 string name = item->name_;
 
                 items_map_.insert(pair<string, Item *>(name, item));
-                name_to_map_[name] = "items_map_";
+                name_to_type_[name] = "item";
             }
         }
 
