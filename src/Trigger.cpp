@@ -89,10 +89,7 @@ void Trigger::fire(GameWorld& gameworld)
                 {
                     //TODO
                 }
-                // else 
-                // {
-                //     std::cout << "Error" << std::endl;
-                // }
+
             }
             else if (dest_map == "containers_map_")
             {
@@ -100,19 +97,9 @@ void Trigger::fire(GameWorld& gameworld)
                 {
                     //TODO
                 }
-                // else
-                // {
-                //     std::cout << "Error" << std::endl;
-                // }
-            }
-            // else
-            // {
-            //     std::cout << "Error" << std::endl;
-            // }
-
-
             
-
+            }
+            
         } // else if(command_tokens[0] == "Add")
 
         //TODO Update
