@@ -56,6 +56,7 @@ void Trigger::fire(GameWorld& gameworld)
 
 
         //Execute Delete
+        //TODO wait on piazza post to be answered "Delete" Command 
         if(command_tokens[0] == "Delete")
         {
             string obj_to_delete = command_tokens[1];
@@ -64,10 +65,10 @@ void Trigger::fire(GameWorld& gameworld)
 
             }
 
-        }
+        } // if(command_tokens[0] == "Delete")
 
         //Execute Add
-         if(command_tokens[0] == "Add")
+        else if(command_tokens[0] == "Add")
         {
             string obj_to_add = command_tokens[1];
             string dest_obj   = command_tokens[3];
@@ -88,10 +89,10 @@ void Trigger::fire(GameWorld& gameworld)
                 {
                     //TODO
                 }
-                else 
-                {
-                    std::cout << "Error" << std::endl;
-                }
+                // else 
+                // {
+                //     std::cout << "Error" << std::endl;
+                // }
             }
             else if (dest_map == "containers_map_")
             {
@@ -99,24 +100,38 @@ void Trigger::fire(GameWorld& gameworld)
                 {
                     //TODO
                 }
-                else
-                {
-                    std::cout << "Error" << std::endl;
-                }
+                // else
+                // {
+                //     std::cout << "Error" << std::endl;
+                // }
             }
-            else
-            {
-                std::cout << "Error" << std::endl;
-            }
+            // else
+            // {
+            //     std::cout << "Error" << std::endl;
+            // }
 
 
             
 
-        }
+        } // else if(command_tokens[0] == "Add")
 
-        //TODO Other commands
+        //TODO Update
+        //Execute Update
+        else if(command_tokens[0] == "Update")
+        {
 
-    }
+
+        }// else if(command_tokens[0] == "Update")
+
+        //TODO Game Over
+        //Execute Game Over
+        else if(action == "Game Over")
+        {
+            gameworld.game_over_ = true;
+
+        }// else if(action == "Game Over")
+
+    }//  for (std::string action : actions_)
 
     //TODO loop over prints
 
