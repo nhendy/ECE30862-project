@@ -85,7 +85,7 @@ void GameWorld::GameLoop()
 {
     string input_command;
 
-    while (true)
+    while (!game_over_)
     {
         input_command = parse_input();
 
@@ -100,6 +100,8 @@ void GameWorld::GameLoop()
         }
         
     }
+
+    cout << "Game Over" << endl;
 }
 
 
