@@ -6,6 +6,7 @@
 #include "../inc/ConditionFactory.hpp"
 #include "../inc/GameWorld.hpp"
 #include <sstream>
+#include <iostream>
 
 Trigger::Trigger(rapidxml::xml_node<> *trigger_node)
 {
@@ -50,16 +51,74 @@ void Trigger::fire(GameWorld& gameworld)
     {
     
         istringstream iss(action);
-        vector<string> command_tokens((istream_iterator<string>(iss)),
-                                         istream_iterator<string>());
+        vector<string> command_tokens((istream_iterator<string>(iss)),  // KEEP EXTRA PARANTHESES! 
+                                         istream_iterator<string>());   // to disambiguate function call
+
+
+        //Execute Delete
         if(command_tokens[0] == "Delete")
         {
             string obj_to_delete = command_tokens[1];
-            gameworld.rooms_.find(obj_to_delete);
+            if (gameworld.inventory_map_.find(obj_to_delete) != gameworld.inventory_map_.end())
+            {
+
+            }
 
         }
 
+        //Execute Add
+         if(command_tokens[0] == "Add")
+        {
+            string obj_to_add = command_tokens[1];
+            string dest_obj   = command_tokens[3];
+            string dest_map   = gameworld.name_to_map_[dest_obj];
+            string obj_to_add_map = gameworld.name_to_map_[obj_to_add];
+            
+            if(dest_map == "rooms_map_")
+            {
+                if(obj_to_add_map == "containers_map_")
+                {
+                    //TODO
+                }
+                else if (obj_to_add_map == "items_map_")
+                {
+                    //TODO
+                }
+                else if (obj_to_add_map == "creatures_map_")
+                {
+                    //TODO
+                }
+                else 
+                {
+                    std::cout << "Error" << std::endl;
+                }
+            }
+            else if (dest_map == "containers_map_")
+            {
+                if (obj_to_add_map == "items_map_")
+                {
+                    //TODO
+                }
+                else
+                {
+                    std::cout << "Error" << std::endl;
+                }
+            }
+            else
+            {
+                std::cout << "Error" << std::endl;
+            }
+
+
+            
+
+        }
+
+        //TODO Other commands
+
     }
+
+    //TODO loop over prints
 
 
 }

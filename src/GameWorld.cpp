@@ -45,28 +45,32 @@ bool GameWorld::InitGame() {
                 Room *room = new Room(node);
                 string name = room->name_;
 
-                rooms_.insert(pair<string, Room *>(name, room));
+                rooms_map_.insert(pair<string, Room *>(name, room));
+                name_to_map_[name] = "rooms_map_";
             }
             else if (node_name == "creature")
             {
                 Creature *creature = new Creature(node);
                 string name = creature->name_;
 
-                creatures_.insert(pair<string, Creature *>(name, creature));
+                creatures_map_.insert(pair<string, Creature *>(name, creature));
+                name_to_map_[name] = "creatures_map_";
             }
             else if (node_name == "container")
             {
                 Container *container = new Container(node);
                 string name = container->name_;
 
-                containers_.insert(pair<string, Container *>(name, container));
+                containers_map_.insert(pair<string, Container *>(name, container));
+                name_to_map_[name] = "containers_map_";
             }
             else if (node_name == "item")
             {
                 Item *item = new Item(node);
                 string name = item->name_;
 
-                items_.insert(pair<string, Item *>(name, item));
+                items_map_.insert(pair<string, Item *>(name, item));
+                name_to_map_[name] = "items_map_";
             }
         }
 
