@@ -39,7 +39,7 @@ class GameWorld
 
     std::string parse_input();
     bool execute(std::string);
-    Trigger *update_trigger_queue(std::string);
+    void update_trigger_queue(std::string);
     bool change_room(std::string);
     bool show_inventory();
     bool take(std::string);

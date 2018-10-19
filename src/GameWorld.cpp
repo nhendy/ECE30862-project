@@ -97,7 +97,9 @@ void GameWorld::GameLoop()
 
         for (auto it = pending_triggers_.begin(); it != pending_triggers_.end(); it++)
         {
+            //TODO if fired delete if single
             (*it)->fire(*this);
+
         }
     }
 
