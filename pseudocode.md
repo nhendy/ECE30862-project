@@ -1,4 +1,4 @@
-# URGENT!:
+# URGENT!
 - [ ] Model turn on as if it's a trigger in item.hpp
 - [ ] Model attack as if it's a trigger in Creature.hpp
 - [ ] Error check all input commands and all actions
@@ -7,7 +7,7 @@
   
   
   
-# General program flow: 
+# General program flow 
   
     1- Initialize game objects from xml document
     2- Get user input
