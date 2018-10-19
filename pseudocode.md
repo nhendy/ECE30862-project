@@ -11,7 +11,7 @@
   
     1- Initialize game objects from xml document
     2- Get user input
-    3- Map input to a Command object
+    3- ~~Map input to a Command object~~
     4- Check if triggers override a command
     5- If not execute the command
     6- else execute the trigger
