@@ -81,7 +81,7 @@ void Trigger::fire(GameWorld& gameworld)
             }
             else if (obj_to_delete_type == "item")
             {
-                //find in vecotr and delete
+                //find in items vector and delete
                 vector<string>::iterator it = find(curr_room -> items_names_.begin(), curr_room -> items_names_.end(), obj_to_delete);
                 if(it != curr_room -> items_names_.end())
                 {
@@ -90,7 +90,7 @@ void Trigger::fire(GameWorld& gameworld)
             }
             else if (obj_to_delete_type == "creatue")
             {
-                //find in vecotr and delete
+                //find in creatrues vector and delete
                 vector<string>::iterator it = find(curr_room -> creatures_names_.begin(), curr_room -> creatures_names_.end(), obj_to_delete);
                 if(it != curr_room -> creatures_names_.end())
                 {
@@ -99,7 +99,7 @@ void Trigger::fire(GameWorld& gameworld)
             }
             else if (obj_to_delete_type == "container")
             {
-                //find in vecotr and delete
+                //find in containers vector and delete
                 vector<string>::iterator it = find(curr_room -> containers_names_.begin(), curr_room -> containers_names_.end(), obj_to_delete);
                 if(it != curr_room -> containers_names_.end())
                 {

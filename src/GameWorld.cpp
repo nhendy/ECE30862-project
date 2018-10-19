@@ -15,7 +15,8 @@ using namespace std;
 
 GameWorld::GameWorld() {}
 GameWorld::~GameWorld() {}
-bool GameWorld::InitGame() {
+bool GameWorld::InitGame()
+{
     rapidxml::xml_document<> doc;
     ifstream file("sample.txt.xml");
 
@@ -94,23 +95,100 @@ void GameWorld::GameLoop()
             execute(input_command);
         }
 
-        for(auto it = pending_triggers_.begin(); it != pending_triggers_.end(); it ++)
+        for (auto it = pending_triggers_.begin(); it != pending_triggers_.end(); it++)
         {
-            (*it) -> fire(*this) ;
+            (*it)->fire(*this);
         }
-        
     }
 
     cout << "Game Over" << endl;
 }
 
-
 /************************************** Trigger checking **********************************/
-Trigger * GameWorld::update_trigger_queue(string input_command)
+Trigger *GameWorld::update_trigger_queue(string input_command)
 {
     //TODO
     //Loop over triggers check commands AND conditions !! LOOP OVER MEANINGFUL TRIGGERS !!
+    //You can only trigger triggers of objects in the current room
 
+    Room *curr_room = this->rooms_map_[current_room_];
+
+    //loop over room triggers
+    for (Trigger *trigger : curr_room->triggers_)
+    {
+        //check if trigger is activated
+        if (trigger->is_activated(input_command, *this))
+        {
+            //enqueue to pending triggers
+            this->pending_triggers_.push_back(trigger);
+        }
+    }
+
+    //loop over inventory triggers
+    for (auto &item_pair : inventory_map_)
+    {
+        for (Trigger *trigger : item_pair.second -> triggers_)
+        {
+            //check if trigger is activated
+            if (trigger->is_activated(input_command, *this))
+            {
+                //enqueue to pending triggers
+                this->pending_triggers_.push_back(trigger);
+            }
+        }
+    }
+
+    //loop over items in room
+    for (string item : curr_room->items_names_)
+    {
+        Item *item_ptr = this->items_map_[item];
+
+        //loop over triggers of items
+        for (Trigger *trigger : item_ptr->triggers_)
+        {
+            //check if trigger is activated
+            if (trigger->is_activated(input_command, *this))
+            {
+                //enqueue to pending triggers
+                this->pending_triggers_.push_back(trigger);
+            }
+        }
+    }
+
+    //loop over containers in room
+    for (string container : curr_room->containers_names_)
+    {
+        Container *container_ptr = this->containers_map_[container];
+
+        //loop over triggers of containers
+        for (Trigger *trigger : container_ptr->triggers_)
+        {
+            //check if trigger is activated
+            if (trigger->is_activated(input_command, *this))
+            {
+                //enqueue to pending triggers
+                this->pending_triggers_.push_back(trigger);
+            }
+        }
+    }
+
+
+     //loop over creatures in room
+    for (string creature : curr_room->creatures_names_)
+    {
+        Creature *creature_ptr = this->creatures_map_[creature];
+
+        //loop over triggers of creatures
+        for (Trigger *trigger : creature_ptr->triggers_)
+        {
+            //check if trigger is activated
+            if (trigger->is_activated(input_command, *this))
+            {
+                //enqueue to pending triggers
+                this->pending_triggers_.push_back(trigger);
+            }
+        }
+    }
 
     return nullptr;
 }
@@ -121,11 +199,10 @@ string GameWorld::parse_input()
     string input = "";
 
     getline(cin, input);
-    this -> update_trigger_queue(input);
+    this->update_trigger_queue(input);
 
     return input;
 }
-
 
 /************************************** Executing input commands **********************************/
 
@@ -177,41 +254,50 @@ bool GameWorld::execute(string input_command)
 /**
  * @Author: Damini
  **/
-bool GameWorld::change_room(string) {
+bool GameWorld::change_room(string)
+{
     //TODO
 
-    this -> update_trigger_queue(""); // Update not using commands
+    this->update_trigger_queue(""); // Update not using commands
 }
-bool GameWorld::show_inventory() {
+bool GameWorld::show_inventory()
+{
 
-    this -> update_trigger_queue(""); // Update not using commands
+    this->update_trigger_queue(""); // Update not using commands
 }
 
-bool GameWorld::take(string) {
+bool GameWorld::take(string)
+{
 
-    this -> update_trigger_queue(""); // Update not using commands
+    this->update_trigger_queue(""); // Update not using commands
 }
-bool GameWorld::open(string) {
+bool GameWorld::open(string)
+{
 
-    this -> update_trigger_queue(""); // Update not using commands
+    this->update_trigger_queue(""); // Update not using commands
 }
-bool GameWorld::read(string) {
+bool GameWorld::read(string)
+{
 
-    this -> update_trigger_queue(""); // Update not using commands
+    this->update_trigger_queue(""); // Update not using commands
 }
-bool GameWorld::drop(string) {
+bool GameWorld::drop(string)
+{
 
-    this -> update_trigger_queue(""); // Update not using commands
+    this->update_trigger_queue(""); // Update not using commands
 }
-bool GameWorld::turnon(string) {
+bool GameWorld::turnon(string)
+{
 
-    this -> update_trigger_queue(""); // Update not using commands
+    this->update_trigger_queue(""); // Update not using commands
 }
-bool GameWorld::attack(string) {
+bool GameWorld::attack(string)
+{
 
-    this -> update_trigger_queue(""); // Update not using commands
+    this->update_trigger_queue(""); // Update not using commands
 }
-bool GameWorld::put(string) {
+bool GameWorld::put(string)
+{
 
-    this -> update_trigger_queue(""); // Update not using commands
+    this->update_trigger_queue(""); // Update not using commands
 }
