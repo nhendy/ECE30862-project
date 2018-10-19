@@ -10,11 +10,26 @@
 
 
 Initialization:
-- [ ] Create a GameWorld object
-- [ ] GameWorld object will have all GameObjects in the game
-- [ ] Rooms should be a map from room name to Room object to facilitate lookup
-- [ ] Creatures should be a map from item name to Item Object to facilitate lookup
-- [ ] Containers should be a map from item name to Item Object to facilitate lookup
+- [x] Create a GameWorld object
+- [x] GameWorld object will have all GameObjects in the game
+- [x] Rooms should be a map from room name to Room object to facilitate lookup
+- [x] Creatures should be a map from item name to Item Object to facilitate lookup
+- [x] Containers should be a map from item name to Item Object to facilitate lookup
+
+
+
+
+
+## URGENT!:
+- [ ] Model turn on as if it's a trigger in item.hpp
+- [ ] Model attack as if it's a trigger in Creature.hpp
+- [ ] Error check all input commands and all actions
+
+
+
+
+
+# Objects Description
 
 
 GameWorld Object:
@@ -39,7 +54,7 @@ Item Object:
 Command Object:
 
 Trigger Object:
-    -
+
 
 Condition Object:
 
@@ -47,19 +62,3 @@ Condition Object:
 Creature:
 - [x] Has a vector of vulnerabilities
 - [x] Has an Attack **similar to a trigger**
-
-Container:
-- [ ] Vector of item names stored in the container
-- [ ] Vector of accept names storing items that can be accepted by the container
-
-
-Player:
-- [ ] Player will have a room
-- [ ] Player will have inventory
-
-
-InputHandler:
-- [ ] Handle all commands described in hpp
-
-
-
