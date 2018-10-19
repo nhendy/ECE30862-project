@@ -17,9 +17,10 @@ class Trigger
 
   public:
     Trigger(rapidxml::xml_node<> *);
+    Trigger(rapidxml::xml_node<> *, string); //Overloaded constructor
     virtual ~Trigger();
-    bool is_activated(string, GameWorld &);
-    void fire(GameWorld &);
+    bool IsActivated(string, GameWorld &);
+    void Fire(GameWorld &);
 
     string type_ = "single";
     string command_ = "";

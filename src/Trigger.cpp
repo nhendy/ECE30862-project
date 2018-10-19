@@ -26,7 +26,7 @@ Trigger::Trigger(rapidxml::xml_node<> *trigger_node)
         }
         else if (node_name == "condition")
         {
-            Condition *curr_condition = ConditionFactory::createCondition(node);
+            Condition *curr_condition = ConditionFactory::CreateCondition(node);
             this->conditions_.push_back(curr_condition);
         }
         else if (node_name == "print")
@@ -40,13 +40,19 @@ Trigger::Trigger(rapidxml::xml_node<> *trigger_node)
     }
 }
 
+
+Trigger::Trigger(rapidxml::xml_node<> *trigger_node, string input_command):Trigger(trigger_node)
+{
+    this -> command_ = input_command;
+}
+
 /**
  * ref: https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
  */
-void Trigger::fire(GameWorld& gameworld)
+void Trigger::Fire(GameWorld& gameworld)
 {
-    //execute actions
-    //execute prints
+    //Execute actions
+    //Execute prints
 
     for (std::string action : actions_)
     {
@@ -167,7 +173,7 @@ void Trigger::fire(GameWorld& gameworld)
 
 }
 
-bool Trigger::is_activated(string input_command, GameWorld &gameworld)
+bool Trigger::IsActivated(string input_command, GameWorld &gameworld)
 {
     //Check if command exists;
     if (!command_.empty())
@@ -182,7 +188,7 @@ bool Trigger::is_activated(string input_command, GameWorld &gameworld)
     //Check if conditions are all satisfied
     for (Condition *cond : conditions_)
     {
-        if (!cond->isConditionSatisfied(gameworld))
+        if (!cond->IsConditionSatisfied(gameworld))
         {
             //If any fails return False;
             return false;

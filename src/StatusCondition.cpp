@@ -23,7 +23,7 @@ StatusCondition::StatusCondition(rapidxml::xml_node<> *condition_node)
 }
 
 //TODO check if condition is satisfied
-bool StatusCondition::isConditionSatisfied(const GameWorld &gameworld)
+bool StatusCondition::IsConditionSatisfied(const GameWorld &gameworld)
 {
 
     string stat = "";

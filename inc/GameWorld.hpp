@@ -37,17 +37,17 @@ class GameWorld
     
     std::vector<Trigger *> pending_triggers_;
 
-    std::string parse_input();
-    bool execute(std::string);
-    void update_trigger_queue(std::string);
-    bool change_room(std::string);
-    bool show_inventory();
-    bool take(std::string);
-    bool open(std::string);
-    bool read(std::string);
-    bool drop(std::string);
-    bool turnon(std::string);
-    bool attack(std::string);
-    bool put(std::string);
+    std::string ParseInput();
+    bool Execute(std::string);
+    void UpdateTriggerQueue(std::string);
+    bool ChangeRoom(std::string);
+    bool ShowInventory();
+    bool Take(std::string);
+    bool Open(std::string);
+    bool Read(std::string);
+    bool Drop(std::string);
+    bool Turnon(std::string);
+    bool Attack(std::string);
+    bool Put(std::string);
 };
 #endif //_GAMEWORLD_H_

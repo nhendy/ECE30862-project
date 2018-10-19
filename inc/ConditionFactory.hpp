@@ -13,7 +13,7 @@ using namespace std;
 
 struct ConditionFactory {
 
-    static Condition * createCondition(rapidxml::xml_node<> *);
+    static Condition * CreateCondition(rapidxml::xml_node<> *);
 
 };
 
