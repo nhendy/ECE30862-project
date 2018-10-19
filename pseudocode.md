@@ -58,6 +58,8 @@ Room Object:
 
 Item Object:
 
+[Item.hpp](/inc/Item.hpp)
+
 Command Object:
 
 Trigger Object:
