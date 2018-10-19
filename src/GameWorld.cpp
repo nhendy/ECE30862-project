@@ -105,9 +105,10 @@ void GameWorld::GameLoop()
 }
 
 /************************************** Trigger checking **********************************/
-Trigger *GameWorld::update_trigger_queue(string input_command)
+void GameWorld::update_trigger_queue(string input_command)
 {
     //TODO
+    //TODO Refactor
     //Loop over triggers check commands AND conditions !! LOOP OVER MEANINGFUL TRIGGERS !!
     //You can only trigger triggers of objects in the current room
 
@@ -190,7 +191,6 @@ Trigger *GameWorld::update_trigger_queue(string input_command)
         }
     }
 
-    return nullptr;
 }
 
 /************************************** Parse Input **********************************/
