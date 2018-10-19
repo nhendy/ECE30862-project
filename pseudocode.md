@@ -39,7 +39,7 @@ Initialization:
 # Objects Description
 
 
-GameWorld Object:
+GameWorld Object:   [GameWorld.hpp](/inc/GameWorld.hpp)
 - [x] rooms should map room names to room objects
 - [x] items should map items names to items objects
 - [x] containers should map container names to container objects
@@ -48,7 +48,7 @@ GameWorld Object:
 - [x] Inventory should be a map from name to item objects
 
 
-Room Object:
+Room Object:        [Room.hpp](/inc/Room.hpp)
 - [x] name variable
 - [x] type variable can be exit, entrance or regular. regular by default.
 - [x] borders will have a direction and name should map direction to room name
@@ -56,18 +56,19 @@ Room Object:
 - [x] items should be a list of item names
 - [x] creatures should be a list of creature names
 
-Item Object:
-
-[Item.hpp](/inc/Item.hpp)
-
-Command Object:
-
-Trigger Object:
+Item Object:        [Item.hpp](/inc/Item.hpp)
 
 
-Condition Object:
+
+~~Command Object:~~
+
+Trigger Object:     [Trigger.hpp](/inc/Trigger.hpp)
 
 
-Creature:
+
+Condition Object:   [Condition.hpp](/inc/Condition.hpp)
+
+
+Creature:           [Creature.hpp](/inc/Creature.hpp)
 - [x] Has a vector of vulnerabilities
 - [x] Has an Attack **similar to a trigger**
