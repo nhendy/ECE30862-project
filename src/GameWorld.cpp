@@ -256,7 +256,7 @@ bool GameWorld::Execute(string input_command)
 /**
  * @Author: Damini
  **/
-bool GameWorld::ChangeRoom(string)
+bool GameWorld::ChangeRoom(string input)
 {
     //TODO
 
@@ -264,41 +264,97 @@ bool GameWorld::ChangeRoom(string)
 }
 bool GameWorld::ShowInventory()
 {
-
+	cout << "Inventory: ";
+	int ct = 0; // Used to determine if the first item in inventory is being printed
+	for (auto &item_pair : inventory_map_) {
+		if (ct == 0) {
+			cout << item_pair.first;
+			ct++;
+		}
+		else {
+			cout << ", " << item_pair.first;
+		}
+	}
+	if (ct == 0) { // Count will not be updated if an item is not found in the inventory
+		cout << "empty" << endl;
+		return false;
+	}
+	cout << endl;
     this->UpdateTriggerQueue(""); // Update not using commands
+    return true;
 }
 
-bool GameWorld::Take(string)
+bool GameWorld::Take(string input)
 {
 
     this->UpdateTriggerQueue(""); // Update not using commands
 }
-bool GameWorld::Open(string)
+bool GameWorld::Open(string input)
+{
+    map<std::string, Container *>::iterator iter;
+	if (input == "exit") { // End game if you try to open "exit"
+		game_over_ = true;
+		return true;
+	}
+	iter = containers_map_.find(input); // Iterator
+	if (iter != containers_map_.end()) { // Check if container exists
+		if ((iter -> second -> status_).compare("locked") == 0) { // Check if container is locked
+			cout << iter -> first << " is locked." << endl;
+			return false;
+		}
+		else { // If container is not locked, loop through all items in the container and print them
+			int ct = 0; // Counts number of items in container that have been seen
+			for (auto itr = (iter -> second) -> stored_items_.begin(); itr != (iter -> second) -> stored_items_.end(); itr++) {
+				ct++;
+				cout << *itr << endl;
+			}
+			if (ct == 0) { // If no items found, print empty
+				cout << iter -> first << " is empty." << endl;
+			}
+		}
+	}
+	else { // This is if the container does not exist
+		cout << "Error" << endl;
+		return false;
+	}
+    this->UpdateTriggerQueue(""); // Update not using commands
+	return true;
+}
+bool GameWorld::Read(string input)
+{
+	map<std::string, Item *>::iterator iter;
+	iter = inventory_map_.find(input); // Iterator
+	if (iter == inventory_map_.end()) { // Item does not exist in user's current inventory
+		cout << "Error" << endl;
+		return false;
+	}
+	else {
+		if (((iter -> second) -> writing_).compare("") == 0) {
+			cout << "Nothing written." << endl;
+		}
+		else {
+			cout << (iter -> second) -> writing_ << endl;
+		}
+	}
+    this->UpdateTriggerQueue(""); // Update not using commands
+    return true;
+}
+bool GameWorld::Drop(string input)
 {
 
     this->UpdateTriggerQueue(""); // Update not using commands
 }
-bool GameWorld::Read(string)
+bool GameWorld::Turnon(string input)
 {
 
     this->UpdateTriggerQueue(""); // Update not using commands
 }
-bool GameWorld::Drop(string)
+bool GameWorld::Attack(string input)
 {
 
     this->UpdateTriggerQueue(""); // Update not using commands
 }
-bool GameWorld::Turnon(string)
-{
-
-    this->UpdateTriggerQueue(""); // Update not using commands
-}
-bool GameWorld::Attack(string)
-{
-
-    this->UpdateTriggerQueue(""); // Update not using commands
-}
-bool GameWorld::Put(string)
+bool GameWorld::Put(string input)
 {
 
     this->UpdateTriggerQueue(""); // Update not using commands
