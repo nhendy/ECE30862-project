@@ -168,8 +168,9 @@ void Trigger::Fire(GameWorld& gameworld)
 
     }//  for (std::string action : actions_)
 
-    //TODO loop over prints
-
+    for (auto i = messages_.begin(); i != messages_.end(); i++) {
+    	cout << *i << endl;
+    }
 
 
     if(type_ == "single")
@@ -204,9 +205,11 @@ bool Trigger::IsActivated(string input_command, GameWorld &gameworld)
     return true;
 }
 
+
 bool Trigger::is_stale()
 {
     return is_stale_;
 }
 
 Trigger::~Trigger() {}
+
