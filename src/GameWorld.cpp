@@ -95,10 +95,13 @@ void GameWorld::GameLoop()
             Execute(input_command);
         }
 
-        for (auto it = pending_triggers_.begin(); it != pending_triggers_.end(); it++)
+
+        while(!pending_triggers_.empty())
         {
-            //TODO if fired delete if single
-            (*it)->Fire(*this);
+            Trigger  *trigger = pending_triggers_.front();
+            pending_triggers_.pop();
+
+            trigger -> Fire(*this);
 
         }
     }
@@ -120,10 +123,10 @@ void GameWorld::UpdateTriggerQueue(string input_command)
     for (Trigger *trigger : curr_room->triggers_)
     {
         //check if trigger is activated
-        if (trigger->IsActivated(input_command, *this))
+        if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
         {
             //enqueue to pending triggers
-            this->pending_triggers_.push_back(trigger);
+            this->pending_triggers_.push(trigger);
         }
     }
 
@@ -133,10 +136,10 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : item_pair.second -> triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this))
+            if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
             {
                 //enqueue to pending triggers
-                this->pending_triggers_.push_back(trigger);
+                this->pending_triggers_.push(trigger);
             }
         }
     }
@@ -150,10 +153,10 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : item_ptr->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this))
+            if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
             {
                 //enqueue to pending triggers
-                this->pending_triggers_.push_back(trigger);
+                this->pending_triggers_.push(trigger);
             }
         }
     }
@@ -167,10 +170,10 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : container_ptr->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this))
+            if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
             {
                 //enqueue to pending triggers
-                this->pending_triggers_.push_back(trigger);
+                this->pending_triggers_.push(trigger);
             }
         }
     }
@@ -185,10 +188,10 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : creature_ptr->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this))
+            if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
             {
                 //enqueue to pending triggers
-                this->pending_triggers_.push_back(trigger);
+                this->pending_triggers_.push(trigger);
             }
         }
     }

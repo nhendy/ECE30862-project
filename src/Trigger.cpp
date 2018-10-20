@@ -171,6 +171,11 @@ void Trigger::Fire(GameWorld& gameworld)
     //TODO loop over prints
 
 
+
+    if(type_ == "single")
+    {
+        is_stale_ = true;
+    }
 }
 
 bool Trigger::IsActivated(string input_command, GameWorld &gameworld)
@@ -197,6 +202,11 @@ bool Trigger::IsActivated(string input_command, GameWorld &gameworld)
 
     //If all pass return True;
     return true;
+}
+
+bool Trigger::is_stale()
+{
+    return is_stale_;
 }
 
 Trigger::~Trigger() {}
