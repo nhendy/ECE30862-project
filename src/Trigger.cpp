@@ -168,8 +168,9 @@ void Trigger::Fire(GameWorld& gameworld)
 
     }//  for (std::string action : actions_)
 
-    //TODO loop over prints
-
+    for (auto i = messages_.begin(); i != messages_.end(); i++) {
+    	cout << *i << endl;
+    }
 
 }
 

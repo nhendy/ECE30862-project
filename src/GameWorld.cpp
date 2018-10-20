@@ -176,7 +176,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
     }
 
 
-     //loop over creatures in room
+    //loop over creatures in room
     for (string creature : curr_room->creatures_names_)
     {
         Creature *creature_ptr = this->creatures_map_[creature];
