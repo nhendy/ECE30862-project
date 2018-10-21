@@ -124,18 +124,23 @@ void Trigger::Fire(GameWorld& gameworld)
             string obj_to_add_type = gameworld.name_to_type_[obj_to_add];
             
             if(dest_type == "room")
-            {
+            {   
+                Room * room = gameworld.rooms_map_[obj_to_add];
                 if(obj_to_add_type == "container")
                 {
-                    //TODO
+                    //Add container to room containers
+                    room -> containers_names_.push_back(obj_to_add);
                 }
                 else if (obj_to_add_type == "item")
                 {
-                    //TODO
+                    //Add item to the room
+                    room -> items_names_.push_back(obj_to_add);
                 }
+                }   
                 else if (obj_to_add_type == "creature")
                 {
-                    //TODO
+                    // //Add creature to the room
+                    // room -> creatures_names_.push_back(obj_to_add);
                 }
 
             }
@@ -144,6 +149,7 @@ void Trigger::Fire(GameWorld& gameworld)
                 if (obj_to_add_type == "item")
                 {
                     //TODO
+                    
                 }
             
             }
@@ -168,6 +174,8 @@ void Trigger::Fire(GameWorld& gameworld)
 
     }//  for (std::string action : actions_)
 
+
+    //Loop over prints
     for (auto i = messages_.begin(); i != messages_.end(); i++) {
     	cout << *i << endl;
     }
