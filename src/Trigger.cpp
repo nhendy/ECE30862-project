@@ -250,5 +250,11 @@ bool Trigger::is_disabled()
     return is_disabled_;
 }
 
-Trigger::~Trigger() {}
+Trigger::~Trigger() 
+{
+    for(Condition * cond: conditions_)
+    {
+        delete cond;
+    }
+}
 

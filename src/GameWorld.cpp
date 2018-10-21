@@ -14,7 +14,32 @@ using namespace std;
 /**************************** Constructors & destructors ****************************/
 
 GameWorld::GameWorld() {}
-GameWorld::~GameWorld() {}
+GameWorld::~GameWorld() 
+{
+
+    //Don't deallocate inventory since it's just another copy
+    //of items
+    for(auto room_pair: rooms_map_)
+    {
+        delete room_pair.second;
+    }
+
+    for(auto item_pair: items_map_)
+    {
+        delete item_pair.second;
+    }
+
+    for(auto creature_pair: creatures_map_)
+    {
+        delete creature_pair.second;
+    }
+
+    for(auto container_pair: containers_map_)
+    {
+        delete container_pair.second;
+    }
+
+}
 bool GameWorld::InitGame()
 {
     rapidxml::xml_document<> doc;
@@ -76,8 +101,13 @@ bool GameWorld::InitGame()
         }
 
         file.close();
+        //Go to entrance
+        ChangeRoom("Entrance");
+
         return true;
     }
+
+
     return false;
 }
 
@@ -264,6 +294,7 @@ bool GameWorld::ChangeRoom(string input)
 bool GameWorld::ShowInventory()
 {
     cout << "Inventory: ";
+
     int ct = 0; // Used to determine if the first item in inventory is being printed
     for (auto &item_pair : inventory_map_)
     {
@@ -278,7 +309,8 @@ bool GameWorld::ShowInventory()
         }
     }
     if (ct == 0)
-    { // Count will not be updated if an item is not found in the inventory
+    { 
+        // Count will not be updated if an item is not found in the inventory
         cout << "empty" << endl;
         return false;
     }
