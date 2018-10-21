@@ -291,7 +291,9 @@ bool GameWorld::ChangeRoom(string direction) {
         Room *ptr = rooms_map_.at(current_room_); 
         if(ptr->direction_to_room_.find("north") != ptr->direction_to_room_.end())
         {
-            current_room_ = ptr->direction_to_room_["north"]; 
+            current_room_ = ptr->direction_to_room_["north"];
+            
+            std::cout<<" "<<ptr->description_<<std::endl; 
         }
         else{
             std::cout<<"Can’t go that way."<<std::endl;
@@ -303,6 +305,7 @@ bool GameWorld::ChangeRoom(string direction) {
         if(ptr->direction_to_room_.find("south") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["south"]; 
+            std::cout<<" "<<ptr->description_<<std::endl; 
         }
         else{
             std::cout<<"Can’t go that way."<<std::endl;
@@ -314,6 +317,7 @@ bool GameWorld::ChangeRoom(string direction) {
         if(ptr->direction_to_room_.find("east") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["east"]; 
+            std::cout<<" "<<ptr->description_<<std::endl; 
         }
         else{
             std::cout<<"Can’t go that way."<<std::endl;
@@ -325,11 +329,13 @@ bool GameWorld::ChangeRoom(string direction) {
         if(ptr->direction_to_room_.find("west") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["west"]; 
+            std::cout<<" "<<ptr->description_<<std::endl; 
         }
         else{
             std::cout<<"Can’t go that way."<<std::endl;
         }
     }
+
       this->UpdateTriggerQueue(""); // Update not using commands
 }
 bool GameWorld::ShowInventory()
