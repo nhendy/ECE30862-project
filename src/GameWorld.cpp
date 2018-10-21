@@ -458,6 +458,9 @@ bool GameWorld::Drop(string input)
         inventory_map_.erase (input);
         //print dropped
         cout<< input <<" dropped."<<std::endl;
+
+
+        
         
     }
 
@@ -465,7 +468,7 @@ bool GameWorld::Drop(string input)
 }
 bool GameWorld::Turnon(string input)
 {
-    
+
     this->UpdateTriggerQueue(""); // Update not using commands
 }
 bool GameWorld::Attack(string input)
