@@ -95,14 +95,12 @@ void GameWorld::GameLoop()
             Execute(input_command);
         }
 
-
-        while(!pending_triggers_.empty())
+        while (!pending_triggers_.empty())
         {
-            Trigger  *trigger = pending_triggers_.front();
+            Trigger *trigger = pending_triggers_.front();
             pending_triggers_.pop();
 
-            trigger -> Fire(*this);
-
+            trigger->Fire(*this);
         }
     }
 
@@ -123,7 +121,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
     for (Trigger *trigger : curr_room->triggers_)
     {
         //check if trigger is activated
-        if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
+        if (trigger->IsActivated(input_command, *this) && !trigger->is_stale())
         {
             //enqueue to pending triggers
             this->pending_triggers_.push(trigger);
@@ -133,10 +131,10 @@ void GameWorld::UpdateTriggerQueue(string input_command)
     //loop over inventory triggers
     for (auto &item_pair : inventory_map_)
     {
-        for (Trigger *trigger : item_pair.second -> triggers_)
+        for (Trigger *trigger : item_pair.second->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
+            if (trigger->IsActivated(input_command, *this) && !trigger->is_stale())
             {
                 //enqueue to pending triggers
                 this->pending_triggers_.push(trigger);
@@ -153,7 +151,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : item_ptr->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
+            if (trigger->IsActivated(input_command, *this) && !trigger->is_stale())
             {
                 //enqueue to pending triggers
                 this->pending_triggers_.push(trigger);
@@ -170,14 +168,13 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : container_ptr->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
+            if (trigger->IsActivated(input_command, *this) && !trigger->is_stale())
             {
                 //enqueue to pending triggers
                 this->pending_triggers_.push(trigger);
             }
         }
     }
-
 
     //loop over creatures in room
     for (string creature : curr_room->creatures_names_)
@@ -188,14 +185,13 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : creature_ptr->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this) && !trigger -> is_stale())
+            if (trigger->IsActivated(input_command, *this) && !trigger->is_stale())
             {
                 //enqueue to pending triggers
                 this->pending_triggers_.push(trigger);
             }
         }
     }
-
 }
 
 /************************************** Parse Input **********************************/
@@ -267,22 +263,26 @@ bool GameWorld::ChangeRoom(string input)
 }
 bool GameWorld::ShowInventory()
 {
-	cout << "Inventory: ";
-	int ct = 0; // Used to determine if the first item in inventory is being printed
-	for (auto &item_pair : inventory_map_) {
-		if (ct == 0) {
-			cout << item_pair.first;
-			ct++;
-		}
-		else {
-			cout << ", " << item_pair.first;
-		}
-	}
-	if (ct == 0) { // Count will not be updated if an item is not found in the inventory
-		cout << "empty" << endl;
-		return false;
-	}
-	cout << endl;
+    cout << "Inventory: ";
+    int ct = 0; // Used to determine if the first item in inventory is being printed
+    for (auto &item_pair : inventory_map_)
+    {
+        if (ct == 0)
+        {
+            cout << item_pair.first;
+            ct++;
+        }
+        else
+        {
+            cout << ", " << item_pair.first;
+        }
+    }
+    if (ct == 0)
+    { // Count will not be updated if an item is not found in the inventory
+        cout << "empty" << endl;
+        return false;
+    }
+    cout << endl;
     this->UpdateTriggerQueue(""); // Update not using commands
     return true;
 }
@@ -294,51 +294,68 @@ bool GameWorld::Take(string input)
 }
 bool GameWorld::Open(string input)
 {
-    map<std::string, Container *>::iterator iter;
-	if (input == "exit") { // End game if you try to open "exit"
-		game_over_ = true;
-		return true;
-	}
-	iter = containers_map_.find(input); // Iterator
-	if (iter != containers_map_.end()) { // Check if container exists
-		if ((iter -> second -> status_).compare("locked") == 0) { // Check if container is locked
-			cout << iter -> first << " is locked." << endl;
-			return false;
-		}
-		else { // If container is not locked, loop through all items in the container and print them
-			int ct = 0; // Counts number of items in container that have been seen
-			for (auto itr = (iter -> second) -> stored_items_.begin(); itr != (iter -> second) -> stored_items_.end(); itr++) {
-				ct++;
-				cout << *itr << endl;
-			}
-			if (ct == 0) { // If no items found, print empty
-				cout << iter -> first << " is empty." << endl;
-			}
-		}
-	}
-	else { // This is if the container does not exist
-		cout << "Error" << endl;
-		return false;
-	}
+    map<std::string, Container *>::iterator it;
+    if (input == "exit")
+    { // End game if you try to open "exit"
+        game_over_ = true;
+        return true;
+    }
+    it = containers_map_.find(input); // Iterator
+    if (it != containers_map_.end())
+    { 
+        // Check if container exists
+        if (it->second->status_ == "locked")
+        { 
+            // Check if container is locked
+            cout << it->first << " is locked." << endl;
+            return false;
+        }
+        else
+        {    
+            //TODO Review this            
+            // If container is not locked, loop through all items in the container and print them
+            int ct = 0; // Counts number of items in container that have been seen
+            for (auto itr = (it->second)->stored_items_.begin(); itr != (it->second)->stored_items_.end(); itr++)
+            {
+                ct++;
+                cout << *itr << endl;
+            }
+            if (ct == 0)
+            { 
+                // If no items found, print empty
+                cout << it->first << " is empty." << endl;
+            }
+        }
+    }
+    else
+    { 
+        // This is if the container does not exist
+        cout << "Error" << endl;
+        return false;
+    }
     this->UpdateTriggerQueue(""); // Update not using commands
-	return true;
+    return true;
 }
 bool GameWorld::Read(string input)
 {
-	map<std::string, Item *>::iterator iter;
-	iter = inventory_map_.find(input); // Iterator
-	if (iter == inventory_map_.end()) { // Item does not exist in user's current inventory
-		cout << "Error" << endl;
-		return false;
-	}
-	else {
-		if (((iter -> second) -> writing_).compare("") == 0) {
-			cout << "Nothing written." << endl;
-		}
-		else {
-			cout << (iter -> second) -> writing_ << endl;
-		}
-	}
+    map<std::string, Item *>::iterator it;
+    it = inventory_map_.find(input); // Iterator
+    if (it == inventory_map_.end())
+    { // Item does not exist in user's current inventory
+        cout << "Error" << endl;
+        return false;
+    }
+    else
+    {
+        if ((it->second)->writing_.empty())
+        {
+            cout << "Nothing written." << endl;
+        }
+        else
+        {
+            cout << (it->second)->writing_ << endl;
+        }
+    }
     this->UpdateTriggerQueue(""); // Update not using commands
     return true;
 }
