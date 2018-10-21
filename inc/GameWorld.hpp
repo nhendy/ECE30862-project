@@ -6,6 +6,8 @@
 #define _GAMEWORLD_H_
 
 #include <vector>
+#include <list>
+#include <queue>
 #include <map>
 #include <string>
 #include "Creature.hpp"
@@ -35,7 +37,7 @@ class GameWorld
 
   private:
     
-    std::vector<Trigger *> pending_triggers_;
+    std::queue<Trigger *> pending_triggers_;
 
     std::string ParseInput();
     bool Execute(std::string);
