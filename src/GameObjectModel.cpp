@@ -5,4 +5,10 @@
 #include "../inc/GameObjectModel.hpp"
 
 GameObjectModel::GameObjectModel() {}
-GameObjectModel::~GameObjectModel() {}
+GameObjectModel::~GameObjectModel() 
+{
+    for(Trigger * trigger: triggers_)
+    {
+        delete trigger;
+    }
+}
