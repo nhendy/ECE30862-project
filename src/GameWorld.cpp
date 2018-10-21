@@ -288,17 +288,23 @@ bool GameWorld::Execute(string input_command)
 bool GameWorld::ChangeRoom(string direction) {
     if(direction == "n")
     {
+        // pointer to curretn room
         Room *ptr = rooms_map_.at(current_room_); 
+        //check if the direction exists
         if(ptr->direction_to_room_.find("north") != ptr->direction_to_room_.end())
         {
+
+            //change current room if it exists
             current_room_ = ptr->direction_to_room_["north"];
-            
+            // print the description of the room
             std::cout<<" "<<ptr->description_<<std::endl; 
         }
         else{
+            //if not then print error 
             std::cout<<"Can’t go that way."<<std::endl;
         }
     }
+    //repeat for all directions
     if(direction == "s")
     {
         Room *ptr = rooms_map_.at(current_room_); 
