@@ -152,7 +152,53 @@ bool GameWorld::execute(string input_command)
 }
 
 /************************************** Commands **********************************/
-bool GameWorld::change_room(string) {}
+bool GameWorld::change_room(string direction) {
+    if(direction == "n")
+    {
+        Room *ptr = rooms_.at(current_room_); 
+        if(ptr->direction_to_room_.find("north") != ptr->direction_to_room_.end())
+        {
+            current_room_ = ptr->direction_to_room_["north"]; 
+        }
+        else{
+            std::cout<<"Can’t go that way."<<std::endl;
+        }
+    }
+    if(direction == "s")
+    {
+        Room *ptr = rooms_.at(current_room_); 
+        if(ptr->direction_to_room_.find("south") != ptr->direction_to_room_.end())
+        {
+            current_room_ = ptr->direction_to_room_["south"]; 
+        }
+        else{
+            std::cout<<"Can’t go that way."<<std::endl;
+        }
+    }
+    if(direction == "e")
+    {
+        Room *ptr = rooms_.at(current_room_); 
+        if(ptr->direction_to_room_.find("east") != ptr->direction_to_room_.end())
+        {
+            current_room_ = ptr->direction_to_room_["east"]; 
+        }
+        else{
+            std::cout<<"Can’t go that way."<<std::endl;
+        }
+    }
+    if(direction == "w")
+    {
+        Room *ptr = rooms_.at(current_room_); 
+        if(ptr->direction_to_room_.find("west") != ptr->direction_to_room_.end())
+        {
+            current_room_ = ptr->direction_to_room_["west"]; 
+        }
+        else{
+            std::cout<<"Can’t go that way."<<std::endl;
+        }
+    }
+    
+}
 bool GameWorld::show_inventory() {}
 bool GameWorld::take(string) {}
 bool GameWorld::open(string) {}
