@@ -132,31 +132,19 @@ void Trigger::Fire(GameWorld& gameworld)
             if(dest_type == "room")
             {   
                 Room * room = gameworld.rooms_map_[dest_obj];
-                if(obj_to_add_type == "container")
-                {
-                    //Add container to room containers
-                    room -> containers_names_.push_back(obj_to_add);
-                }
-                else if (obj_to_add_type == "item")
-                {
-                    //Add item to the room
-                    room -> items_names_.push_back(obj_to_add);
-                }
-                else if (obj_to_add_type == "creature")
-                {
-                    //Add creature to the room
-                    room -> creatures_names_.push_back(obj_to_add);
-                }
+                //Add container to room containers
+                if(obj_to_add_type == "container"){ room -> containers_names_.push_back(obj_to_add); }
+                //Add item to the room
+                else if (obj_to_add_type == "item") { room -> items_names_.push_back(obj_to_add); }
+                //Add creature to the room
+                else if (obj_to_add_type == "creature") { room -> creatures_names_.push_back(obj_to_add); }
 
             }
             else if (dest_type == "container")
             {
                 Container * container = gameworld.containers_map_[dest_obj];
-                if (obj_to_add_type == "item")
-                {
-                    //Add item to stored items  in container
-                    container -> stored_items_.push_back(obj_to_add);
-                }
+                //Add item to stored items  in container
+                if (obj_to_add_type == "item") { container -> stored_items_.push_back(obj_to_add); }
             
             }
             
@@ -170,10 +158,10 @@ void Trigger::Fire(GameWorld& gameworld)
 
             string obj_to_update_type = gameworld.name_to_type_[obj_to_update];
 
-            if(obj_to_update_type == "room") { gameworld.rooms_map_[obj_to_update] -> status_ = new_status;}
-            else if(obj_to_update_type == "item") { gameworld.items_map_[obj_to_update] -> status_ = new_status;}
+            if(obj_to_update_type == "room")           { gameworld.rooms_map_[obj_to_update] -> status_ = new_status;}
+            else if(obj_to_update_type == "item")      { gameworld.items_map_[obj_to_update] -> status_ = new_status;}
             else if(obj_to_update_type == "container") { gameworld.containers_map_[obj_to_update] -> status_ = new_status;}
-            else if(obj_to_update_type == "creature") { gameworld.creatures_map_[obj_to_update] -> status_ = new_status;}
+            else if(obj_to_update_type == "creature")  { gameworld.creatures_map_[obj_to_update] -> status_ = new_status;}
             
         }// else if(command_tokens[0] == "Update")
 
