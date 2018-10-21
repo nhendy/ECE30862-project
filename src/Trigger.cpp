@@ -136,11 +136,10 @@ void Trigger::Fire(GameWorld& gameworld)
                     //Add item to the room
                     room -> items_names_.push_back(obj_to_add);
                 }
-                }   
                 else if (obj_to_add_type == "creature")
                 {
                     // //Add creature to the room
-                    // room -> creatures_names_.push_back(obj_to_add);
+                    room -> creatures_names_.push_back(obj_to_add);
                 }
 
             }
@@ -175,9 +174,9 @@ void Trigger::Fire(GameWorld& gameworld)
     }//  for (std::string action : actions_)
 
 
-    //Loop over prints
-    for (auto i = messages_.begin(); i != messages_.end(); i++) {
-    	cout << *i << endl;
+    for(string message : this -> messages_)
+    {
+        cout << message << endl;
     }
 
 
