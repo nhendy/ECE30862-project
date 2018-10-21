@@ -8,7 +8,7 @@
 #include "../inc/StatusCondition.hpp"
 
 
-Condition* ConditionFactory::createCondition(rapidxml::xml_node<> * condition_node) {
+Condition* ConditionFactory::CreateCondition(rapidxml::xml_node<> *condition_node) {
 
     Condition * retVal = nullptr;
 

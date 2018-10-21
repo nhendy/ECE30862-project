@@ -11,11 +11,12 @@
  *  Used forward declaration since file inclusion failed for some unknown reason TODO
  */
 class GameWorld;
+// #include "GameWorld.hpp"
 
 
 class Condition {
 public:
-    virtual  bool isConditionSatisfied(const GameWorld&) = 0;
+    virtual  bool IsConditionSatisfied(const GameWorld &) = 0;
 };
 
 

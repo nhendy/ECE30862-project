@@ -4,10 +4,8 @@
 
 #include "../inc/GameWorld.hpp"
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
-#include "boost/algorithm/string.hpp"
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <sstream>
 #include <dirent.h>
 
@@ -17,7 +15,8 @@ using namespace std;
 
 GameWorld::GameWorld() {}
 GameWorld::~GameWorld() {}
-bool GameWorld::InitGame() {
+bool GameWorld::InitGame()
+{
     rapidxml::xml_document<> doc;
     ifstream file("sample.txt.xml");
 
@@ -47,28 +46,32 @@ bool GameWorld::InitGame() {
                 Room *room = new Room(node);
                 string name = room->name_;
 
-                rooms_.insert(pair<string, Room *>(name, room));
+                rooms_map_.insert(pair<string, Room *>(name, room));
+                name_to_type_[name] = "room";
             }
             else if (node_name == "creature")
             {
                 Creature *creature = new Creature(node);
                 string name = creature->name_;
 
-                creatures_.insert(pair<string, Creature *>(name, creature));
+                creatures_map_.insert(pair<string, Creature *>(name, creature));
+                name_to_type_[name] = "creature";
             }
             else if (node_name == "container")
             {
                 Container *container = new Container(node);
                 string name = container->name_;
 
-                containers_.insert(pair<string, Container *>(name, container));
+                containers_map_.insert(pair<string, Container *>(name, container));
+                name_to_type_[name] = "container";
             }
             else if (node_name == "item")
             {
                 Item *item = new Item(node);
                 string name = item->name_;
 
-                items_.insert(pair<string, Item *>(name, item));
+                items_map_.insert(pair<string, Item *>(name, item));
+                name_to_type_[name] = "item";
             }
         }
 
@@ -83,75 +86,175 @@ void GameWorld::GameLoop()
 {
     string input_command;
 
-    while (true)
+    while (!game_over_)
     {
-        getline(cin, input_command);
+        input_command = ParseInput();
 
-        if (is_overridden(input_command))
+        if (pending_triggers_.empty())
         {
-            continue;
+            Execute(input_command);
         }
 
-        execute(input_command);
+        while (!pending_triggers_.empty())
+        {
+            Trigger *trigger = pending_triggers_.front();
+            pending_triggers_.pop();
+
+            trigger->Fire(*this);
+        }
     }
+
+    cout << "Game Over" << endl;
 }
 
 /************************************** Trigger checking **********************************/
-bool GameWorld::is_overridden(string input_command)
+void GameWorld::UpdateTriggerQueue(string input_command)
 {
     //TODO
+    //TODO Refactor
+    //Loop over triggers check commands AND conditions !! LOOP OVER MEANINGFUL TRIGGERS !!
+    //You can only trigger triggers of objects in the current room
 
-    return true;
+    Room *curr_room = this->rooms_map_[current_room_];
+
+    //loop over room triggers
+    for (Trigger *trigger : curr_room->triggers_)
+    {
+        //check if trigger is activated
+        if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+        {
+            //enqueue to pending triggers
+            this->pending_triggers_.push(trigger);
+        }
+    }
+
+    //loop over inventory triggers
+    for (auto &item_pair : inventory_map_)
+    {
+        for (Trigger *trigger : item_pair.second->triggers_)
+        {
+            //check if trigger is activated
+            if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+            {
+                //enqueue to pending triggers
+                this->pending_triggers_.push(trigger);
+            }
+        }
+    }
+
+    //loop over items in room
+    for (string item : curr_room->items_names_)
+    {
+        Item *item_ptr = this->items_map_[item];
+
+        //loop over triggers of items
+        for (Trigger *trigger : item_ptr->triggers_)
+        {
+            //check if trigger is activated
+            if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+            {
+                //enqueue to pending triggers
+                this->pending_triggers_.push(trigger);
+            }
+        }
+    }
+
+    //loop over containers in room
+    for (string container : curr_room->containers_names_)
+    {
+        Container *container_ptr = this->containers_map_[container];
+
+        //loop over triggers of containers
+        for (Trigger *trigger : container_ptr->triggers_)
+        {
+            //check if trigger is activated
+            if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+            {
+                //enqueue to pending triggers
+                this->pending_triggers_.push(trigger);
+            }
+        }
+    }
+
+    //loop over creatures in room
+    for (string creature : curr_room->creatures_names_)
+    {
+        Creature *creature_ptr = this->creatures_map_[creature];
+
+        //loop over triggers of creatures
+        for (Trigger *trigger : creature_ptr->triggers_)
+        {
+            //check if trigger is activated
+            if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+            {
+                //enqueue to pending triggers
+                this->pending_triggers_.push(trigger);
+            }
+        }
+    }
+}
+
+/************************************** Parse Input **********************************/
+string GameWorld::ParseInput()
+{
+    string input = "";
+
+    getline(cin, input);
+    this->UpdateTriggerQueue(input);
+
+    return input;
 }
 
 /************************************** Executing input commands **********************************/
-bool GameWorld::execute(string input_command)
+
+//TODO check if input_command is valid
+bool GameWorld::Execute(string input_command)
 {
     if (input_command == "n" || input_command == "s" || input_command == "e" || input_command == "w")
     {
-        return this->change_room(input_command);
-        ;
+        return this->ChangeRoom(input_command);
     }
     if (input_command == "i")
     {
-        return this->show_inventory();
+        return this->ShowInventory();
     }
     if (input_command.find("take") != string::npos)
     {
-        return this->take(input_command.substr(string("take").length() + 1));
+        return this->Take(input_command.substr(string("take").length() + 1));
     }
     if (input_command.find("open") != string::npos)
     {
-        return this->open(input_command.substr(string("open").length() + 1));
+        return this->Open(input_command.substr(string("open").length() + 1));
     }
     if (input_command.find("read") != string::npos)
     {
-        return this->read(input_command.substr(string("read").length() + 1));
+        return this->Read(input_command.substr(string("read").length() + 1));
     }
     if (input_command.find("drop") != string::npos)
     {
-        return this->drop(input_command.substr(string("drop").length() + 1));
+        return this->Drop(input_command.substr(string("drop").length() + 1));
     }
     if (input_command.find("put") != string::npos)
     {
-
-        return this->put(input_command.substr(string("put").length() + 1));
+        return this->Put(input_command.substr(string("put").length() + 1));
     }
     if (input_command.find("turn on") != string::npos)
     {
-
-        return this->turnon(input_command.substr(string("turn on").length() + 1));
+        return this->Turnon(input_command.substr(string("turn on").length() + 1));
     }
     if (input_command.find("attack") != string::npos)
     {
-
-        return this->attack(input_command.substr(string("attack").length() + 1));
+        return this->Attack(input_command.substr(string("attack").length() + 1));
     }
 
     return false;
 }
 
 /************************************** Commands **********************************/
+
+/**
+ * @Author: Damini
+ **/
 bool GameWorld::change_room(string direction) {
     if(direction == "n")
     {
@@ -197,13 +300,123 @@ bool GameWorld::change_room(string direction) {
             std::cout<<"Can’t go that way."<<std::endl;
         }
     }
-    
+      this->UpdateTriggerQueue(""); // Update not using commands
 }
-bool GameWorld::show_inventory() {}
-bool GameWorld::take(string) {}
-bool GameWorld::open(string) {}
-bool GameWorld::read(string) {}
-bool GameWorld::drop(string) {}
-bool GameWorld::turnon(string) {}
-bool GameWorld::attack(string) {}
-bool GameWorld::put(string) {}
+bool GameWorld::ShowInventory()
+{
+    cout << "Inventory: ";
+    int ct = 0; // Used to determine if the first item in inventory is being printed
+    for (auto &item_pair : inventory_map_)
+    {
+        if (ct == 0)
+        {
+            cout << item_pair.first;
+            ct++;
+        }
+        else
+        {
+            cout << ", " << item_pair.first;
+        }
+    }
+    if (ct == 0)
+    { // Count will not be updated if an item is not found in the inventory
+        cout << "empty" << endl;
+        return false;
+    }
+    cout << endl;
+    this->UpdateTriggerQueue(""); // Update not using commands
+    return true;
+}
+
+bool GameWorld::Take(string input)
+{
+
+    this->UpdateTriggerQueue(""); // Update not using commands
+}
+bool GameWorld::Open(string input)
+{
+    map<std::string, Container *>::iterator it;
+    if (input == "exit")
+    { // End game if you try to open "exit"
+        game_over_ = true;
+        return true;
+    }
+    it = containers_map_.find(input); // Iterator
+    if (it != containers_map_.end())
+    { 
+        // Check if container exists
+        if (it->second->status_ == "locked")
+        { 
+            // Check if container is locked
+            cout << it->first << " is locked." << endl;
+            return false;
+        }
+        else
+        {    
+            //TODO Review this            
+            // If container is not locked, loop through all items in the container and print them
+            int ct = 0; // Counts number of items in container that have been seen
+            for (auto itr = (it->second)->stored_items_.begin(); itr != (it->second)->stored_items_.end(); itr++)
+            {
+                ct++;
+                cout << *itr << endl;
+            }
+            if (ct == 0)
+            { 
+                // If no items found, print empty
+                cout << it->first << " is empty." << endl;
+            }
+        }
+    }
+    else
+    { 
+        // This is if the container does not exist
+        cout << "Error" << endl;
+        return false;
+    }
+    this->UpdateTriggerQueue(""); // Update not using commands
+    return true;
+}
+bool GameWorld::Read(string input)
+{
+    map<std::string, Item *>::iterator it;
+    it = inventory_map_.find(input); // Iterator
+    if (it == inventory_map_.end())
+    { // Item does not exist in user's current inventory
+        cout << "Error" << endl;
+        return false;
+    }
+    else
+    {
+        if ((it->second)->writing_.empty())
+        {
+            cout << "Nothing written." << endl;
+        }
+        else
+        {
+            cout << (it->second)->writing_ << endl;
+        }
+    }
+    this->UpdateTriggerQueue(""); // Update not using commands
+    return true;
+}
+bool GameWorld::Drop(string input)
+{
+
+    this->UpdateTriggerQueue(""); // Update not using commands
+}
+bool GameWorld::Turnon(string input)
+{
+
+    this->UpdateTriggerQueue(""); // Update not using commands
+}
+bool GameWorld::Attack(string input)
+{
+
+    this->UpdateTriggerQueue(""); // Update not using commands
+}
+bool GameWorld::Put(string input)
+{
+
+    this->UpdateTriggerQueue(""); // Update not using commands
+}

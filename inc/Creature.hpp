@@ -6,7 +6,6 @@
 #define _CREATURE_H_
 
 #include "GameObjectModel.hpp"
-#include "Trigger.hpp"
 #include <vector>
 
 class Creature : public GameObjectModel {
