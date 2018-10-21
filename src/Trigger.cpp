@@ -51,9 +51,15 @@ Trigger::Trigger(rapidxml::xml_node<> *trigger_node, string input_command):Trigg
  */
 void Trigger::Fire(GameWorld& gameworld)
 {
+    
+
+    //disable if it can be used only once
+    if(type_ == "single")
+    {
+        is_disabled_ = true;
+    }
     //Execute actions
     //Execute prints
-
     for (std::string action : actions_)
     {
     
@@ -125,7 +131,7 @@ void Trigger::Fire(GameWorld& gameworld)
             
             if(dest_type == "room")
             {   
-                Room * room = gameworld.rooms_map_[obj_to_add];
+                Room * room = gameworld.rooms_map_[dest_obj];
                 if(obj_to_add_type == "container")
                 {
                     //Add container to room containers
@@ -138,32 +144,39 @@ void Trigger::Fire(GameWorld& gameworld)
                 }
                 else if (obj_to_add_type == "creature")
                 {
-                    // //Add creature to the room
+                    //Add creature to the room
                     room -> creatures_names_.push_back(obj_to_add);
                 }
 
             }
             else if (dest_type == "container")
             {
+                Container * container = gameworld.containers_map_[dest_obj];
                 if (obj_to_add_type == "item")
                 {
-                    //TODO
-                    
+                    //Add item to stored items  in container
+                    container -> stored_items_.push_back(obj_to_add);
                 }
             
             }
             
         } // else if(command_tokens[0] == "Add")
 
-        //TODO Update
         //Execute Update
         else if(command_tokens[0] == "Update")
         {
+            string obj_to_update = command_tokens[1];
+            string new_status    = command_tokens[2];
 
+            string obj_to_update_type = gameworld.name_to_type_[obj_to_update];
 
+            if(obj_to_update_type == "room") { gameworld.rooms_map_[obj_to_update] -> status_ = new_status;}
+            else if(obj_to_update_type == "item") { gameworld.items_map_[obj_to_update] -> status_ = new_status;}
+            else if(obj_to_update_type == "container") { gameworld.containers_map_[obj_to_update] -> status_ = new_status;}
+            else if(obj_to_update_type == "creature") { gameworld.creatures_map_[obj_to_update] -> status_ = new_status;}
+            
         }// else if(command_tokens[0] == "Update")
 
-        //TODO Game Over
         //Execute Game Over
         else if(action == "Game Over")
         {
@@ -173,17 +186,13 @@ void Trigger::Fire(GameWorld& gameworld)
 
     }//  for (std::string action : actions_)
 
-
+    //Loop over prints
     for(string message : this -> messages_)
     {
         cout << message << endl;
     }
 
 
-    if(type_ == "single")
-    {
-        is_stale_ = true;
-    }
 }
 
 bool Trigger::IsActivated(string input_command, GameWorld &gameworld)
@@ -213,9 +222,9 @@ bool Trigger::IsActivated(string input_command, GameWorld &gameworld)
 }
 
 
-bool Trigger::is_stale()
+bool Trigger::is_disabled()
 {
-    return is_stale_;
+    return is_disabled_;
 }
 
 Trigger::~Trigger() {}
