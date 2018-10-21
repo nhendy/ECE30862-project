@@ -53,11 +53,7 @@ void Trigger::Fire(GameWorld& gameworld)
 {
     
 
-    //disable if it can be used only once
-    if(type_ == "single")
-    {
-        is_disabled_ = true;
-    }
+   
     //Execute actions
     //Execute prints
     for (std::string action : actions_)
@@ -68,7 +64,31 @@ void Trigger::Fire(GameWorld& gameworld)
                                          istream_iterator<string>());   // to disambiguate function call
 
         //TODO check validity of the action
-        //TODO check if objects exist
+        //Check number of tokens
+        if(command_tokens.size() != 2  || command_tokens.size() != 4)
+        {
+            #ifdef DEBUG
+            cout << "Wrong number of tokens" << endl;
+            #endif
+            return ;
+        }
+        //Check if object 1 exists
+        if(gameworld.name_to_type_.find(command_tokens[1]) == gameworld.name_to_type_.end()) 
+        {
+            #ifdef DEBUG
+            cout << "Object in commands[1] doesn't exits" << endl;
+            #endif
+            return ;
+        }
+        //Check if object 2 exists
+        if( command_tokens.size() == 4  &&  gameworld.name_to_type_.find(command_tokens[3]) == gameworld.name_to_type_.end()) 
+        {
+            #ifdef DEBUG
+            cout << "Object in commands[3] doesn't exits" << endl;
+            #endif
+            return ;
+        }
+
 
         //Execute Delete
         if(command_tokens[0] == "Delete")
@@ -154,7 +174,7 @@ void Trigger::Fire(GameWorld& gameworld)
         else if(command_tokens[0] == "Update")
         {
             string obj_to_update = command_tokens[1];
-            string new_status    = command_tokens[2];
+            string new_status    = command_tokens[3];
 
             string obj_to_update_type = gameworld.name_to_type_[obj_to_update];
 
@@ -169,8 +189,17 @@ void Trigger::Fire(GameWorld& gameworld)
         else if(action == "Game Over")
         {
             gameworld.game_over_ = true;
+            cout << "Victory!" << endl;
 
         }// else if(action == "Game Over")
+
+        //Non existent action
+        else
+        {
+            #ifdef DEBUG
+            cout << "Invalid action" <<endl;
+            #endif
+        }
 
     }//  for (std::string action : actions_)
 
@@ -179,7 +208,13 @@ void Trigger::Fire(GameWorld& gameworld)
     {
         cout << message << endl;
     }
+    
 
+    //disable if it can be used only once
+    if(type_ == "single")
+    {
+        is_disabled_ = true;
+    }
 
 }
 
