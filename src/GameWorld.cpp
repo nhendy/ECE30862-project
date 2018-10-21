@@ -285,10 +285,10 @@ bool GameWorld::Execute(string input_command)
 /**
  * @Author: Damini
  **/
-bool GameWorld::change_room(string direction) {
+bool GameWorld::ChangeRoom(string direction) {
     if(direction == "n")
     {
-        Room *ptr = rooms_.at(current_room_); 
+        Room *ptr = rooms_map_.at(current_room_); 
         if(ptr->direction_to_room_.find("north") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["north"]; 
@@ -299,7 +299,7 @@ bool GameWorld::change_room(string direction) {
     }
     if(direction == "s")
     {
-        Room *ptr = rooms_.at(current_room_); 
+        Room *ptr = rooms_map_.at(current_room_); 
         if(ptr->direction_to_room_.find("south") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["south"]; 
@@ -310,7 +310,7 @@ bool GameWorld::change_room(string direction) {
     }
     if(direction == "e")
     {
-        Room *ptr = rooms_.at(current_room_); 
+        Room *ptr = rooms_map_.at(current_room_); 
         if(ptr->direction_to_room_.find("east") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["east"]; 
@@ -321,7 +321,7 @@ bool GameWorld::change_room(string direction) {
     }
     if(direction == "w")
     {
-        Room *ptr = rooms_.at(current_room_); 
+        Room *ptr = rooms_map_.at(current_room_); 
         if(ptr->direction_to_room_.find("west") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["west"]; 
