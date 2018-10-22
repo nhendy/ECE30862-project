@@ -483,6 +483,7 @@ bool GameWorld::Put(string input)
 
 
 
+
     this->UpdateTriggerQueue(""); // Update not using commands
 }
 
