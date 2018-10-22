@@ -373,7 +373,10 @@ bool GameWorld::ShowInventory()
  **/
 bool GameWorld::Take(string input)
 {
-     
+     //TODO Note that there's not "item" variable, the argument is called input
+     //TODO Find the item in the current room by searching in rooms_map_[curr_room_] -> items_names_
+     //TODO If it exists add a pair of (name of the item, Pointer to the item) to the inventory_map_
+     //TODO To find the Pointer the item search for the item pointer in items_map_
      Room *room_ptr = rooms_map_.at(current_room_);
     //if item in room
     if(std::find(room_ptr->items_names_.begin(), room_ptr->items_names_.end(), item) != room_ptr->items_names_.end())
