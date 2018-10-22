@@ -37,6 +37,7 @@ GameWorld::~GameWorld()
     for(auto container_pair: containers_map_)
     {
         delete container_pair.second;
+        
     }
 
 }
