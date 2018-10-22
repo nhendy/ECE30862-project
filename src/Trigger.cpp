@@ -51,9 +51,6 @@ Trigger::Trigger(rapidxml::xml_node<> *trigger_node, string input_command):Trigg
  */
 void Trigger::Fire(GameWorld& gameworld)
 {
-    
-
-   
     //Execute actions
     //Execute prints
     for (std::string action : actions_)

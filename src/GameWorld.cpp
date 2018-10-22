@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <dirent.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -101,7 +102,7 @@ bool GameWorld::InitGame()
         }
 
         file.close();
-        
+
         //Go to entrance
         this -> current_room_ = "Entrance";
         cout << rooms_map_[current_room_] -> description_ << endl;
@@ -445,6 +446,7 @@ bool GameWorld::Open(string input)
     this->UpdateTriggerQueue(""); // Update not using commands
     return true;
 }
+
 bool GameWorld::Read(string input)
 {
 	/**
@@ -496,13 +498,35 @@ bool GameWorld::Turnon(string item)
 	/**
 		 * @Author: Urvaksh
 	**/
-
 	// THIS MIGHT NOT WORK!!!!
     this->UpdateTriggerQueue("turn on " + item); // Update not using commands
     return true;
 }
+
+
 bool GameWorld::Attack(string input)
 {
+    istringstream iss(input);
+    vector<string> command_tokens((istream_iterator<string>(iss)),  // KEEP EXTRA PARANTHESES! 
+                                        istream_iterator<string>());   // to disambiguate function call
+
+    string creatue_to_attack = command_tokens[0];
+    string weapon            = command_tokens[2];
+    // Creature * creature_ptr  = 
+    if(creatures_map_.find(creatue_to_attack) == creatures_map_.end())
+    {
+        #ifdef DEBUG
+        cout << "Creature not existent" << endl;
+        #endif
+        return false;
+    }
+    if(inventory_map_.find(weapon) == inventory_map_.end())
+    {
+        #ifdef DEBUG
+        cout << "Weapon not existent" << endl;
+        #endif
+    }
+
     
     this->UpdateTriggerQueue(""); // Update not using commands
 }
@@ -537,5 +561,11 @@ bool GameWorld::Put(string input)
     }
 
 
+
+
+
+
+
     this->UpdateTriggerQueue(""); // Update not using commands
 }
+
