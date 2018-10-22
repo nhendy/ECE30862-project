@@ -295,13 +295,13 @@ bool GameWorld::ChangeRoom(string direction) {
     {
  
         //check if the direction exists
-        if(ptr->direction_to_room_.find("north") != ptr->direction_to_room_.end())
+        if(room_ptr->direction_to_room_.find("north") != room_ptr->direction_to_room_.end())
         {
 
             //change current room if it exists
-            current_room_ = ptr->direction_to_room_["north"];
+            current_room_ = room_ptr->direction_to_room_["north"];
             // print the description of the room
-            std::cout<<" "<<ptr->description_<<std::endl; 
+            std::cout<<" "<<room_ptr->description_<<std::endl; 
         }
         else{
             //if not then print error 
@@ -312,10 +312,10 @@ bool GameWorld::ChangeRoom(string direction) {
     if(direction == "s")
     {
        
-        if(ptr->direction_to_room_.find("south") != ptr->direction_to_room_.end())
+        if(room_ptr->direction_to_room_.find("south") != room_ptr->direction_to_room_.end())
         {
-            current_room_ = ptr->direction_to_room_["south"]; 
-            std::cout<<" "<<ptr->description_<<std::endl; 
+            current_room_ = room_ptr->direction_to_room_["south"]; 
+            std::cout<<" "<<room_ptr->description_<<std::endl; 
         }
         else{
             cout<<"Can’t go that way."<<std::endl;
@@ -324,10 +324,10 @@ bool GameWorld::ChangeRoom(string direction) {
     if(direction == "e")
     {
 
-        if(ptr->direction_to_room_.find("east") != ptr->direction_to_room_.end())
+        if(room_ptr->direction_to_room_.find("east") != room_ptr->direction_to_room_.end())
         {
-            current_room_ = ptr->direction_to_room_["east"]; 
-            cout<<" "<<ptr->description_<<std::endl; 
+            current_room_ = room_ptr->direction_to_room_["east"]; 
+            cout<<" "<<room_ptr->description_<<std::endl; 
         }
         else{
             cout<<"Can’t go that way."<<std::endl;
@@ -338,8 +338,8 @@ bool GameWorld::ChangeRoom(string direction) {
 
         if(ptr->direction_to_room_.find("west") != ptr->direction_to_room_.end())
         {
-            current_room_ = ptr->direction_to_room_["west"]; 
-            cout<<" "<<ptr->description_<<std::endl; 
+            current_room_ = room_ptr->direction_to_room_["west"]; 
+            cout<<" "<<room_ptr->description_<<std::endl; 
         }
         else{
             cout<<"Can’t go that way."<<std::endl;
@@ -538,17 +538,23 @@ bool GameWorld::Attack(string input)
  **/
 bool GameWorld::Put(string input)
 {
-    std::istringstream iss(input);
-    std::vector<std::string> item_container(std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>());
-    item = item_container[0];
-    container = item_container[1];
+    istringstream iss(input);
+    vector<std::string> item_container((istream_iterator<std::string>(iss)),
+                                            istream_iterator<std::string>());
+    string item = item_container[0];
+    string container = item_container[1];
     if( inventory_map_.find(input) != inventory_map_.end()) 
     {
     Room *room_ptr = rooms_map_.at(current_room_);
     //if statement to check if container exists in current room
-    if(std::find(room_ptr->container.begin(), room_ptr->container.end(), container) != room_ptr->container.end())
+    if(find(room_ptr->containers_names_.begin(), room_ptr->containers_names_.end(), container) != room_ptr->containers_names_.end())
     {
-        room_ptr->container->stored_items_.push_back(item);
+
+        //TODO Check Room.hpp. Container names is a vector of strings
+        //TODO Find the destination container name
+        //TODO Find the pointer of the destination container in containers_map_
+        //TODO Append the name of the item to be added to the stored_items_ in the Container object
+        room_ptr->containers_names_->stored_items_.push_back(item);
         cout<<"Item "<< item<< " added to " << container "."<< endl;
     }
         else
