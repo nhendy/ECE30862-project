@@ -19,11 +19,11 @@ public:
     virtual ~Item();
 
     std::string writing_;
-    std::vector<string> messages_;
-    std::vector<string> actions_;
+    // std::vector<string> messages_;
+    // std::vector<string> actions_;
 
-private:
-    void buildTrunOn(rapidxml::xml_node<> *);
+// private:
+    // void buildTrunOn(rapidxml::xml_node<> *);
 
 };
 
