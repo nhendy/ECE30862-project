@@ -16,7 +16,6 @@ using namespace std;
 GameWorld::GameWorld() {}
 GameWorld::~GameWorld() 
 {
-
     //Don't deallocate inventory since it's just another copy
     //of items
     for(auto room_pair: rooms_map_)
@@ -101,8 +100,10 @@ bool GameWorld::InitGame()
         }
 
         file.close();
+        
         //Go to entrance
-        ChangeRoom("Entrance");
+        this -> current_room_ = "Entrance";
+        cout << rooms_map_[current_room_] -> description_ << endl;
 
         return true;
     }
@@ -526,5 +527,7 @@ bool GameWorld::Put(string input)
     else{
         cout<<item<<" is not in the players inventory."<<endl;
     }
+
+
     this->UpdateTriggerQueue(""); // Update not using commands
 }

@@ -1,4 +1,5 @@
 CXX ?= g++
+DEBUG = 0
 
 # path #
 SRC_PATH = src
@@ -26,6 +27,11 @@ COMPILE_FLAGS = -std=c++11 -Wall -Wextra -Wstring-compare -g
 INCLUDES = -I include/ -I /usr/local/include -I lib/rapidxml-1.13
 # Space-separated pkg-config libraries used by this project
 LIBS = 
+
+
+ifeq ($(DEBUG), 1) 
+COMPILE_FLAGS+=-DDEBUG
+endif
 
 .PHONY: default_target
 default_target: release

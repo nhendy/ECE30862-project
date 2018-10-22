@@ -14,7 +14,9 @@ Creature::Creature(rapidxml::xml_node<> * creature_node) {
         else if (node_name == "status") { this->status_ = node->value(); }
         else if (node_name == "description") { this->description_ = node->value(); }
         else if (node_name == "trigger") { this->triggers_.push_back(new Trigger(node)); }
-        else if (node_name == "attack") { this-> attack_ = new Trigger(node);}
+        else if (node_name == "attack") { this-> attack_ = new Trigger(node, "attack");} //Model attack as trigger
     }
 }
-Creature::~Creature() {}
+Creature::~Creature() {
+    
+}
