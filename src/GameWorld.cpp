@@ -348,28 +348,20 @@ bool GameWorld::ChangeRoom(string direction) {
 }
 bool GameWorld::ShowInventory()
 {
+	/**
+	 * @Author: Urvaksh
+	 **/
     cout << "Inventory: ";
+    if (inventory_map_.empty()) { // Check if inventory is empty
+    	cout << "empty" << endl;
+    	return false;
+    }
 
-    int ct = 0; // Used to determine if the first item in inventory is being printed
-    for (auto &item_pair : inventory_map_)
-    {
-        if (ct == 0)
-        {
-            cout << item_pair.first;
-            ct++;
-        }
-        else
-        {
-            cout << ", " << item_pair.first;
-        }
+    for (map<std::string, Item *>::iterator item_iter = inventory_map_.begin(); item_iter != (--inventory_map_.end()); item_iter++)
+    { // Looping from the first item in inventory until the second last element in the inventory
+    	cout << item_iter->first << ", ";
     }
-    if (ct == 0)
-    { 
-        // Count will not be updated if an item is not found in the inventory
-        cout << "empty" << endl;
-        return false;
-    }
-    cout << endl;
+    cout << (inventory_map_.rbegin())->first << endl; // Prints the last element in the inventory map
     this->UpdateTriggerQueue(""); // Update not using commands
     return true;
 }
@@ -403,36 +395,43 @@ bool GameWorld::Take(string input)
 }
 bool GameWorld::Open(string input)
 {
-    map<std::string, Container *>::iterator it;
+	/**
+	 * @Author: Urvaksh
+	 **/
+    map<std::string, Container *>::iterator container_ptr;
     if (input == "exit")
     { // End game if you try to open "exit"
-        game_over_ = true;
-        return true;
+        map<std::string, Room *>::iterator room_ptr;
+    	room_ptr = rooms_map_.find(current_room_); // Pointer to room you are currently in
+    	if (((room_ptr -> second) -> type_) == "exit") { // If you are in a room of type "exit"
+        	game_over_ = true;
+            return true;
+    	}
+    	else { // If you are not in a room of type "exit" then "open exit" is an invalid command
+    		cout << "Invalid command" << endl;
+    		return false;
+    	}
     }
-    it = containers_map_.find(input); // Iterator
-    if (it != containers_map_.end())
-    { 
+    container_ptr = containers_map_.find(input); // Iterator
+    if (container_ptr != containers_map_.end())
+    {
         // Check if container exists
-        if (it->second->status_ == "locked")
-        { 
+        if (container_ptr->second->status_ == "locked")
+        {
             // Check if container is locked
-            cout << it->first << " is locked." << endl;
+            cout << container_ptr->first << " is locked." << endl;
             return false;
         }
         else
         {    
             //TODO Review this            
             // If container is not locked, loop through all items in the container and print them
-            int ct = 0; // Counts number of items in container that have been seen
-            for (auto itr = (it->second)->stored_items_.begin(); itr != (it->second)->stored_items_.end(); itr++)
-            {
-                ct++;
-                cout << *itr << endl;
+            if ((container_ptr->second)->stored_items_.empty()) {
+            	cout << container_ptr->first << " is empty." << endl;
             }
-            if (ct == 0)
-            { 
-                // If no items found, print empty
-                cout << it->first << " is empty." << endl;
+            for (auto itr = (container_ptr->second)->stored_items_.begin(); itr != (container_ptr->second)->stored_items_.end(); itr++)
+            {
+                cout << *itr << endl;
             }
         }
     }
@@ -447,6 +446,9 @@ bool GameWorld::Open(string input)
 }
 bool GameWorld::Read(string input)
 {
+	/**
+		 * @Author: Urvaksh
+	**/
     map<std::string, Item *>::iterator it;
     it = inventory_map_.find(input); // Iterator
     if (it == inventory_map_.end())
@@ -488,10 +490,15 @@ bool GameWorld::Drop(string input)
     }
     this->UpdateTriggerQueue(""); // Update not using commands
 }
-
-bool GameWorld::Turnon(string input)
+bool GameWorld::Turnon(string item)
 {
-    this->UpdateTriggerQueue(""); // Update not using commands
+	/**
+		 * @Author: Urvaksh
+	**/
+
+	// THIS MIGHT NOT WORK!!!!
+    this->UpdateTriggerQueue("turn on " + item); // Update not using commands
+    return true;
 }
 bool GameWorld::Attack(string input)
 {
