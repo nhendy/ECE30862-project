@@ -457,27 +457,41 @@ bool GameWorld::Drop(string input)
         //remove from inventroy map
         inventory_map_.erase (input);
         //print dropped
-        cout<< input <<" dropped."<<std::endl;
-
-
-        
-        
+        cout<< input <<" dropped."<<std::endl;  
     }
-
     this->UpdateTriggerQueue(""); // Update not using commands
 }
+
 bool GameWorld::Turnon(string input)
 {
-
     this->UpdateTriggerQueue(""); // Update not using commands
 }
 bool GameWorld::Attack(string input)
 {
-
+    
     this->UpdateTriggerQueue(""); // Update not using commands
 }
 bool GameWorld::Put(string input)
 {
-
+    std::istringstream iss(input);
+    std::vector<std::string> item_container(std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>());
+    item = item_container[0];
+    container = item_container[1];
+    if( inventory_map_.find(input) != inventory_map_.end()) 
+    {
+    Room *room_ptr = rooms_map_.at(current_room_);
+    if(std::find(room_ptr->container.begin(), room_ptr->container.end(), item) != room_ptr->container.end())
+    {
+        room_ptr->container->stored_items_.push_back(item);
+        cout<<"Item "<< item<< " added to " << container "."<< endl;
+    }
+        else
+        {
+            cout << "Cannot put item" << container << " is not in current room." << endl;
+        }
+    }
+    else{
+        cout<<item<<" is not in the players inventory."<<endl;
+    }
     this->UpdateTriggerQueue(""); // Update not using commands
 }
