@@ -287,48 +287,60 @@ bool GameWorld::Execute(string input_command)
  * @Author: Damini
  **/
 bool GameWorld::ChangeRoom(string direction) {
+    // pointer to curretn room
+    Room *room_ptr = rooms_map_.at(current_room_);
     if(direction == "n")
     {
-        Room *ptr = rooms_map_.at(current_room_); 
+ 
+        //check if the direction exists
         if(ptr->direction_to_room_.find("north") != ptr->direction_to_room_.end())
         {
-            current_room_ = ptr->direction_to_room_["north"]; 
+
+            //change current room if it exists
+            current_room_ = ptr->direction_to_room_["north"];
+            // print the description of the room
+            std::cout<<" "<<ptr->description_<<std::endl; 
         }
         else{
+            //if not then print error 
             std::cout<<"Can’t go that way."<<std::endl;
         }
     }
+    //repeat for all directions
     if(direction == "s")
     {
-        Room *ptr = rooms_map_.at(current_room_); 
+       
         if(ptr->direction_to_room_.find("south") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["south"]; 
+            std::cout<<" "<<ptr->description_<<std::endl; 
         }
         else{
-            std::cout<<"Can’t go that way."<<std::endl;
+            cout<<"Can’t go that way."<<std::endl;
         }
     }
     if(direction == "e")
     {
-        Room *ptr = rooms_map_.at(current_room_); 
+
         if(ptr->direction_to_room_.find("east") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["east"]; 
+            cout<<" "<<ptr->description_<<std::endl; 
         }
         else{
-            std::cout<<"Can’t go that way."<<std::endl;
+            cout<<"Can’t go that way."<<std::endl;
         }
     }
     if(direction == "w")
     {
-        Room *ptr = rooms_map_.at(current_room_); 
+
         if(ptr->direction_to_room_.find("west") != ptr->direction_to_room_.end())
         {
             current_room_ = ptr->direction_to_room_["west"]; 
+            cout<<" "<<ptr->description_<<std::endl; 
         }
         else{
-            std::cout<<"Can’t go that way."<<std::endl;
+            cout<<"Can’t go that way."<<std::endl;
         }
     }
 
@@ -354,9 +366,31 @@ bool GameWorld::ShowInventory()
     return true;
 }
 
+/**
+ * @Author: Damini
+ **/
 bool GameWorld::Take(string input)
 {
-
+     
+     Room *room_ptr = rooms_map_.at(current_room_);
+    //if item in room
+    if(std::find(room_ptr->items_names_.begin(), room_ptr->items_names_.end(), item) != room_ptr->items_names_.end())
+    {
+        inventory_map_[item] = items_map_[item]
+        cout<< "Item " << item << " added to inventory" << endl;
+    }
+    //room in room container items
+    elif (std::find(room_ptr->container->stored_items_.begin(), room_ptr->container->stored_items_.end(), item) != room_ptr->container->stored_items_.end())
+    {
+        inventory_map_[item] = tems_map_[item]
+        cout<< "Item " << item << " added to inventory" << endl;
+    }
+    else
+    {
+        #ifdef DEBUG
+        cout<< "Item does not exist in room or container." << endl;
+        #endif
+    }
     this->UpdateTriggerQueue(""); // Update not using commands
 }
 bool GameWorld::Open(string input)
@@ -436,9 +470,24 @@ bool GameWorld::Read(string input)
     this->UpdateTriggerQueue(""); // Update not using commands
     return true;
 }
+
+/**
+ * @Author: Damini
+ **/
 bool GameWorld::Drop(string input)
 {
-
+    Room *room_ptr = rooms_map_.at(current_room_);
+    //if input in inventory 
+    if( inventory_map_.find(input) != inventory_map_.end()) 
+    {
+        //then change from inventory to room 
+        //add to room items
+        room_prt->items_names_.push_back(input);
+        //remove from inventroy map
+        inventory_map_.erase (input);
+        //print dropped
+        cout<< input <<" dropped."<<std::endl;  
+    }
     this->UpdateTriggerQueue(""); // Update not using commands
 }
 bool GameWorld::Turnon(string item)
@@ -453,11 +502,39 @@ bool GameWorld::Turnon(string item)
 }
 bool GameWorld::Attack(string input)
 {
-
+    
     this->UpdateTriggerQueue(""); // Update not using commands
 }
+
+/**
+ * @Author: Damini
+ **/
 bool GameWorld::Put(string input)
 {
+    std::istringstream iss(input);
+    std::vector<std::string> item_container(std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>());
+    item = item_container[0];
+    container = item_container[1];
+    if( inventory_map_.find(input) != inventory_map_.end()) 
+    {
+    Room *room_ptr = rooms_map_.at(current_room_);
+    //if statement to check if container exists in current room
+    if(std::find(room_ptr->container.begin(), room_ptr->container.end(), container) != room_ptr->container.end())
+    {
+        room_ptr->container->stored_items_.push_back(item);
+        cout<<"Item "<< item<< " added to " << container "."<< endl;
+    }
+        else
+        {
+            #ifdef DEBUG
+            cout << "Cannot put item" << container << " is not in current room." << endl;
+            #endif
+        }
+    }
+    else{
+        cout<<item<<" is not in the players inventory."<<endl;
+    }
+
 
     this->UpdateTriggerQueue(""); // Update not using commands
 }
