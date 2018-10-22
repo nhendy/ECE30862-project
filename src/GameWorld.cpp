@@ -373,9 +373,31 @@ bool GameWorld::ShowInventory()
     return true;
 }
 
+/**
+ * @Author: Damini
+ **/
 bool GameWorld::Take(string input)
 {
-
+     
+     Room *room_ptr = rooms_map_.at(current_room_);
+    //if item in room
+    if(std::find(room_ptr->items_names_.begin(), room_ptr->items_names_.end(), item) != room_ptr->items_names_.end())
+    {
+        inventory_map_[item] = items_map_[item]
+        cout<< "Item " << item << " added to inventory" << endl;
+    }
+    //room in room container items
+    elif (std::find(room_ptr->container->stored_items_.begin(), room_ptr->container->stored_items_.end(), item) != room_ptr->container->stored_items_.end())
+    {
+        inventory_map_[item] = tems_map_[item]
+        cout<< "Item " << item << " added to inventory" << endl;
+    }
+    else
+    {
+        #ifdef DEBUG
+        cout<< "Item does not exist in room or container." << endl;
+        #endif
+    }
     this->UpdateTriggerQueue(""); // Update not using commands
 }
 bool GameWorld::Open(string input)
@@ -445,6 +467,10 @@ bool GameWorld::Read(string input)
     this->UpdateTriggerQueue(""); // Update not using commands
     return true;
 }
+
+/**
+ * @Author: Damini
+ **/
 bool GameWorld::Drop(string input)
 {
     Room *room_ptr = rooms_map_.at(current_room_);
@@ -471,6 +497,10 @@ bool GameWorld::Attack(string input)
     
     this->UpdateTriggerQueue(""); // Update not using commands
 }
+
+/**
+ * @Author: Damini
+ **/
 bool GameWorld::Put(string input)
 {
     std::istringstream iss(input);
@@ -480,14 +510,17 @@ bool GameWorld::Put(string input)
     if( inventory_map_.find(input) != inventory_map_.end()) 
     {
     Room *room_ptr = rooms_map_.at(current_room_);
-    if(std::find(room_ptr->container.begin(), room_ptr->container.end(), item) != room_ptr->container.end())
+    //if statement to check if container exists in current room
+    if(std::find(room_ptr->container.begin(), room_ptr->container.end(), container) != room_ptr->container.end())
     {
         room_ptr->container->stored_items_.push_back(item);
         cout<<"Item "<< item<< " added to " << container "."<< endl;
     }
         else
         {
+            #ifdef DEBUG
             cout << "Cannot put item" << container << " is not in current room." << endl;
+            #endif
         }
     }
     else{
