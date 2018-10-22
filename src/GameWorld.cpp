@@ -498,9 +498,11 @@ bool GameWorld::Turnon(string item)
 	/**
 		 * @Author: Urvaksh
 	**/
+
 	// THIS MIGHT NOT WORK!!!!
     this->UpdateTriggerQueue("turn on " + item); // Update not using commands
     return true;
+
 }
 
 
