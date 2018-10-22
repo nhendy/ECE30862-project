@@ -441,12 +441,15 @@ bool GameWorld::Drop(string input)
 
     this->UpdateTriggerQueue(""); // Update not using commands
 }
-bool GameWorld::Turnon(string input)
+bool GameWorld::Turnon(string item)
 {
 	/**
 		 * @Author: Urvaksh
 	**/
-    this->UpdateTriggerQueue(""); // Update not using commands
+
+	// THIS MIGHT NOT WORK!!!!
+    this->UpdateTriggerQueue("turn on " + item); // Update not using commands
+    return true;
 }
 bool GameWorld::Attack(string input)
 {
