@@ -7,7 +7,7 @@
 
 Container::Container(rapidxml::xml_node<> * container_node) {
 
-    for(rapidxml::xml_node<> * node = container_node; node; node = node -> next_sibling())
+    for(rapidxml::xml_node<> * node = container_node -> first_node(); node; node = node -> next_sibling())
     {
         std::string node_name = node -> name();
 

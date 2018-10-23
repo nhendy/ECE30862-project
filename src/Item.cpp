@@ -8,7 +8,7 @@
 Item::~Item() {}
 Item::Item(rapidxml::xml_node<> * item_node) {
 
-    for (rapidxml::xml_node<> * node = item_node; node; node = node -> next_sibling()) {
+    for (rapidxml::xml_node<> * node = item_node -> first_node(); node; node = node -> next_sibling()) {
         std::string node_name = node->name();
 
         if (node_name == "name") { this->name_ = node->value(); }

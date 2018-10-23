@@ -9,7 +9,7 @@
 
 Room::Room(rapidxml::xml_node<> *  room_node) {
 
-    for(rapidxml::xml_node <> * node = room_node; node; node = node -> next_sibling())
+    for(rapidxml::xml_node <> * node = room_node -> first_node(); node; node = node -> next_sibling())
     {
         std::string node_name = node -> name();
 

@@ -12,7 +12,7 @@
 Trigger::Trigger(rapidxml::xml_node<> *trigger_node)
 {
 
-    for (rapidxml::xml_node<> *node = trigger_node; node; node = node->next_sibling())
+    for (rapidxml::xml_node<> *node = trigger_node -> first_node(); node; node = node->next_sibling())
     {
         std::string node_name = node->name();
 

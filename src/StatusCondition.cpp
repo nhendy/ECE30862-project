@@ -8,7 +8,7 @@
 StatusCondition::~StatusCondition() {}
 StatusCondition::StatusCondition(rapidxml::xml_node<> *condition_node)
 {
-    for (rapidxml::xml_node<> *node = condition_node; node; node = node->next_sibling())
+    for (rapidxml::xml_node<> *node = condition_node -> first_node(); node; node = node->next_sibling())
     {
         string node_name = node->name();
         if (node_name == "status")
