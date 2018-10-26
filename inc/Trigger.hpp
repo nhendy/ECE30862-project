@@ -28,6 +28,7 @@ class Trigger
     vector<Condition *> conditions_;
     vector<string> actions_;
     vector<string> messages_;
+    friend ostream & operator<< (ostream&, const Trigger&);
   private:
     bool is_disabled_ = false;
 };

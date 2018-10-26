@@ -1,7 +1,7 @@
 //
 // Created on 10/14/18.
 //
-
+#include <iostream>
 #include "../inc/Container.hpp"
 #include "../inc/Item.hpp"
 
@@ -21,3 +21,28 @@ Container::Container(rapidxml::xml_node<> * container_node) {
 
 }
 Container::~Container() {}
+
+
+ostream & operator<< (ostream& os, const Container& container)
+{
+    os << "Container: " << container.name_ << "\n";
+    os << "status: " << container.status_ << "\n";    
+    os << "description: " << container.description_ << "\n";  
+    os << "Triggers: " ;
+    for(Trigger * trigger: container.triggers_)
+    {
+        os << *trigger << "\n";
+    }
+    os << "Items: " ;
+    for(auto item: container.stored_items_)
+    {
+        os << item << "\n";
+    }  
+    os << "Accepted: " ;
+    for(auto accepted: container.accepted_)
+    {
+        os << accepted << "\n";
+    }  
+    os << endl;
+    return os;
+}

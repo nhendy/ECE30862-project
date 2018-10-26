@@ -17,7 +17,7 @@ public:
     HasCondition(rapidxml::xml_node <> *);
     virtual ~HasCondition();
     virtual  bool IsConditionSatisfied(const GameWorld &);   ////POINTER!!!!!
-
+    friend ostream & operator<< (ostream&, const HasCondition&);
 private:
     string object_name_;
     bool has_;

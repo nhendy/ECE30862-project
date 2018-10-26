@@ -17,7 +17,7 @@ public:
 
     Room(rapidxml::xml_node <> * room_node);
     virtual ~Room();
-
+    friend ostream & operator<< (ostream&, const Room&);
     string type_ = "regular";
     map<string, string> direction_to_room_; //borders
     vector<string> containers_names_;

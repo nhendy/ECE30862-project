@@ -16,6 +16,7 @@ public:
     virtual ~Container();
     vector<string> accepted_;
     vector<string> stored_items_;
+    friend ostream & operator<< (ostream&, const Container&);
 
 };
 

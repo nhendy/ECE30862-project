@@ -17,6 +17,7 @@ public:
     StatusCondition(rapidxml::xml_node <> *);
     virtual ~StatusCondition();
     virtual bool IsConditionSatisfied(const GameWorld &);
+    friend ostream & operator<< (ostream&, const StatusCondition&);
 
 private:
     string object_name_;

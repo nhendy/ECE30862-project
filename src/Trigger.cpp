@@ -203,6 +203,9 @@ void Trigger::Fire(GameWorld& gameworld)
     //Loop over prints
     for(string message : this -> messages_)
     {
+        #ifdef DEBUG
+        cout << "LOOPING OVER PRINTS IN FIRE" <<endl;
+        #endif
         cout << message << endl;
     }
     
@@ -255,3 +258,15 @@ Trigger::~Trigger()
     }
 }
 
+ostream & operator<< (ostream& os, const Trigger& trigger)
+{
+    os << "Trigger command: " << trigger.command_ << "\n";
+    os << "Type: " << trigger.type_ << "\n";  
+    os << "Messages: ";
+    for(auto word: trigger.messages_)
+    {
+        os << word << endl;
+    }  
+    os << endl;
+    return os;
+}

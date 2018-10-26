@@ -5,6 +5,7 @@
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
 #include "../inc/Room.hpp"
 #include <string>
+#include <iostream>
 
 
 Room::Room(rapidxml::xml_node<> *  room_node) {
@@ -40,4 +41,28 @@ Room::Room(rapidxml::xml_node<> *  room_node) {
 
 Room::~Room() {
 
+}
+
+ostream & operator<< (ostream& os, const Room& room)
+{
+    os << "Room: " << room.name_ << "\n";
+    // os << "status: " << room.status_ << "\n";    
+    // os << "description: " << room.description_ << "\n";  
+    os << "Triggers: " ;
+    for(Trigger * trigger: room.triggers_)
+    {
+        os << *trigger << "\n";
+    }
+    os << "Items: " ;
+    for(auto item: room.items_names_)
+    {
+        os << item << "\n";
+    }  
+    os << "Containers: " ;
+    for(auto container: room.containers_names_)
+    {
+        os << container << "\n";
+    }  
+    os << endl;
+    return os;
 }

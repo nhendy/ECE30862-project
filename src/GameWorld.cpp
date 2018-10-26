@@ -49,8 +49,9 @@ bool GameWorld::InitGame()
     stringstream buffer;
     buffer << file.rdbuf();
     string content(buffer.str());
+    #ifdef DEBUG
     cout << content << endl;
-
+    #endif
     doc.parse<0>(&content[0]);
     rapidxml::xml_node<> *root_node = doc.first_node("map");
     if (root_node == nullptr)
@@ -64,9 +65,9 @@ bool GameWorld::InitGame()
         for (rapidxml::xml_node<> *node = root_node->first_node(); node; node = node->next_sibling())
         {
             string node_name = node->name();
-
+            #ifdef DEBUG
             cout << node_name << endl;
-
+            #endif
             if (node_name == "room")
             {
                 Room *room = new Room(node);
@@ -134,6 +135,8 @@ void GameWorld::GameLoop()
             pending_triggers_.pop();
 
             trigger->Fire(*this);
+
+            
         }
     }
 
@@ -147,8 +150,12 @@ void GameWorld::UpdateTriggerQueue(string input_command)
     //TODO Refactor
     //Loop over triggers check commands AND conditions !! LOOP OVER MEANINGFUL TRIGGERS !!
     //You can only trigger triggers of objects in the current room
-
+    
     Room *curr_room = this->rooms_map_[current_room_];
+
+    #ifdef DEBUG
+    cout << "Updating trigger queue, curr room is " << *curr_room << endl;
+    #endif
 
     //loop over room triggers
     for (Trigger *trigger : curr_room->triggers_)
@@ -156,6 +163,9 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         //check if trigger is activated
         if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
         {
+            #ifdef DEBUG
+            cout << "Trigger in rooms is activated" << endl;
+            #endif
             //enqueue to pending triggers
             this->pending_triggers_.push(trigger);
         }
@@ -169,6 +179,10 @@ void GameWorld::UpdateTriggerQueue(string input_command)
             //check if trigger is activated
             if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
             {
+                #ifdef DEBUG
+                cout << "Trigger in inventory is activated" << endl;
+                #endif
+       
                 //enqueue to pending triggers
                 this->pending_triggers_.push(trigger);
             }
@@ -186,6 +200,9 @@ void GameWorld::UpdateTriggerQueue(string input_command)
             //check if trigger is activated
             if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
             {
+                #ifdef DEBUG
+                cout << "Trigger in current room items is activated" << endl;
+                #endif
                 //enqueue to pending triggers
                 this->pending_triggers_.push(trigger);
             }
@@ -203,6 +220,9 @@ void GameWorld::UpdateTriggerQueue(string input_command)
             //check if trigger is activated
             if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
             {
+                #ifdef DEBUG
+                cout << "Trigger in containers in current room is activated" << endl;
+                #endif
                 //enqueue to pending triggers
                 this->pending_triggers_.push(trigger);
             }
@@ -220,6 +240,9 @@ void GameWorld::UpdateTriggerQueue(string input_command)
             //check if trigger is activated
             if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
             {
+                #ifdef DEBUG
+                cout << "Trigger in creatures is activated" << endl;
+                #endif
                 //enqueue to pending triggers
                 this->pending_triggers_.push(trigger);
             }
@@ -233,6 +256,9 @@ string GameWorld::ParseInput()
     string input = "";
 
     getline(cin, input);
+    #ifdef DEBUG
+    cout << "Input is " << input << endl;
+    #endif
     this->UpdateTriggerQueue(input);
 
     return input;
@@ -243,10 +269,10 @@ string GameWorld::ParseInput()
 //TODO check if input_command is valid
 bool GameWorld::Execute(string input_command)
 {
-    // if (input_command == "n" || input_command == "s" || input_command == "e" || input_command == "w")
-    // {
-    //     return this->ChangeRoom(input_command);
-    // }
+    if (input_command == "n" || input_command == "s" || input_command == "e" || input_command == "w")
+    {
+        return this->ChangeRoom(input_command);
+    }
     if (input_command == "i")
     {
         return this->ShowInventory();
@@ -288,66 +314,67 @@ bool GameWorld::Execute(string input_command)
 /**
  * @Author: Damini
  **/
-// bool GameWorld::ChangeRoom(string direction) {
-//     // pointer to curretn room
-//     Room *room_ptr = rooms_map_.at(current_room_);
-//     if(direction == "n")
-//     {
+bool GameWorld::ChangeRoom(string direction) {
+    // pointer to curretn room
+    Room *room_ptr = rooms_map_.at(current_room_);
+    if(direction == "n")
+    {
  
-//         //check if the direction exists
-//         if(room_ptr->direction_to_room_.find("north") != room_ptr->direction_to_room_.end())
-//         {
+        //check if the direction exists
+        if(room_ptr->direction_to_room_.find("north") != room_ptr->direction_to_room_.end())
+        {
 
-//             //change current room if it exists
-//             current_room_ = room_ptr->direction_to_room_["north"];
-//             // print the description of the room
-//             std::cout<<" "<<room_ptr->description_<<std::endl; 
-//         }
-//         else{
-//             //if not then print error 
-//             std::cout<<"Can’t go that way."<<std::endl;
-//         }
-//     }
-//     //repeat for all directions
-//     if(direction == "s")
-//     {
+            //change current room if it exists
+            current_room_ = room_ptr->direction_to_room_["north"];
+            // print the description of the room
+            std::cout<<" "<<room_ptr->description_<<std::endl;
+
+        }
+        else{
+            //if not then print error 
+            std::cout<<"Can’t go that way."<<std::endl;
+        }
+    }
+    //repeat for all directions
+    if(direction == "s")
+    {
        
-//         if(room_ptr->direction_to_room_.find("south") != room_ptr->direction_to_room_.end())
-//         {
-//             current_room_ = room_ptr->direction_to_room_["south"]; 
-//             std::cout<<" "<<room_ptr->description_<<std::endl; 
-//         }
-//         else{
-//             cout<<"Can’t go that way."<<std::endl;
-//         }
-//     }
-//     if(direction == "e")
-//     {
+        if(room_ptr->direction_to_room_.find("south") != room_ptr->direction_to_room_.end())
+        {
+            current_room_ = room_ptr->direction_to_room_["south"]; 
+            std::cout<<" "<<room_ptr->description_<<std::endl; 
+        }
+        else{
+            cout<<"Can’t go that way."<<std::endl;
+        }
+    }
+    if(direction == "e")
+    {
 
-//         if(room_ptr->direction_to_room_.find("east") != room_ptr->direction_to_room_.end())
-//         {
-//             current_room_ = room_ptr->direction_to_room_["east"]; 
-//             cout<<" "<<room_ptr->description_<<std::endl; 
-//         }
-//         else{
-//             cout<<"Can’t go that way."<<std::endl;
-//         }
-//     }
-//     if(direction == "w")
-//     {
+        if(room_ptr->direction_to_room_.find("east") != room_ptr->direction_to_room_.end())
+        {
+            current_room_ = room_ptr->direction_to_room_["east"]; 
+            cout<<" "<<room_ptr->description_<<std::endl; 
+        }
+        else{
+            cout<<"Can’t go that way."<<std::endl;
+        }
+    }
+    if(direction == "w")
+    {
 
-//         if(ptr->direction_to_room_.find("west") != ptr->direction_to_room_.end())
-//         {
-//             current_room_ = room_ptr->direction_to_room_["west"]; 
-//             cout<<" "<<room_ptr->description_<<std::endl; 
-//         }
-//         else{
-//             cout<<"Can’t go that way."<<std::endl;
-//         }
-//     }
+        if(room_ptr->direction_to_room_.find("west") != room_ptr->direction_to_room_.end())
+        {
+            current_room_ = room_ptr->direction_to_room_["west"]; 
+            cout<<" "<<room_ptr->description_<<std::endl; 
+        }
+        else{
+            cout<<"Can’t go that way."<<std::endl;
+        }
+    }
 
-//       this->UpdateTriggerQueue(""); // Update not using commands
-// }
+      this->UpdateTriggerQueue(""); // Update not using commands
+}
 bool GameWorld::ShowInventory()
 {
 	/**
@@ -398,57 +425,57 @@ bool GameWorld::ShowInventory()
 //     }
 //     this->UpdateTriggerQueue(""); // Update not using commands
 // }
-// bool GameWorld::Open(string input)
-// {
-// 	/**
-// 	 * @Author: Urvaksh
-// 	 **/
-//     map<std::string, Container *>::iterator container_ptr;
-//     if (input == "exit")
-//     { // End game if you try to open "exit"
-//         map<std::string, Room *>::iterator room_ptr;
-//     	room_ptr = rooms_map_.find(current_room_); // Pointer to room you are currently in
-//     	if (((room_ptr -> second) -> type_) == "exit") { // If you are in a room of type "exit"
-//         	game_over_ = true;
-//             return true;
-//     	}
-//     	else { // If you are not in a room of type "exit" then "open exit" is an invalid command
-//     		cout << "Invalid command" << endl;
-//     		return false;
-//     	}
-//     }
-//     container_ptr = containers_map_.find(input); // Iterator
-//     if (container_ptr != containers_map_.end())
-//     {
-//         // Check if container exists
-//         if (container_ptr->second->status_ == "locked")
-//         {
-//             // Check if container is locked
-//             cout << container_ptr->first << " is locked." << endl;
-//             return false;
-//         }
-//         else
-//         {    
-//             //TODO Review this            
-//             // If container is not locked, loop through all items in the container and print them
-//             if ((container_ptr->second)->stored_items_.empty()) {
-//             	cout << container_ptr->first << " is empty." << endl;
-//             }
-//             for (auto itr = (container_ptr->second)->stored_items_.begin(); itr != (container_ptr->second)->stored_items_.end(); itr++)
-//             {
-//                 cout << *itr << endl;
-//             }
-//         }
-//     }
-//     else
-//     { 
-//         // This is if the container does not exist
-//         cout << "Error" << endl;
-//         return false;
-//     }
-//     this->UpdateTriggerQueue(""); // Update not using commands
-//     return true;
-// }
+bool GameWorld::Open(string input)
+{
+	/**
+	 * @Author: Urvaksh
+	 **/
+    map<std::string, Container *>::iterator container_ptr;
+    if (input == "exit")
+    { // End game if you try to open "exit"
+        map<std::string, Room *>::iterator room_ptr;
+    	room_ptr = rooms_map_.find(current_room_); // Pointer to room you are currently in
+    	if (((room_ptr -> second) -> type_) == "exit") { // If you are in a room of type "exit"
+        	game_over_ = true;
+            return true;
+    	}
+    	else { // If you are not in a room of type "exit" then "open exit" is an invalid command
+    		cout << "Invalid command" << endl;
+    		return false;
+    	}
+    }
+    container_ptr = containers_map_.find(input); // Iterator
+    if (container_ptr != containers_map_.end())
+    {
+        // Check if container exists
+        if (container_ptr->second->status_ == "locked")
+        {
+            // Check if container is locked
+            cout << container_ptr->first << " is locked." << endl;
+            return false;
+        }
+        else
+        {    
+            //TODO Review this            
+            // If container is not locked, loop through all items in the container and print them
+            if ((container_ptr->second)->stored_items_.empty()) {
+            	cout << container_ptr->first << " is empty." << endl;
+            }
+            for (auto itr = (container_ptr->second)->stored_items_.begin(); itr != (container_ptr->second)->stored_items_.end(); itr++)
+            {
+                cout << *itr << endl;
+            }
+        }
+    }
+    else
+    { 
+        // This is if the container does not exist
+        cout << "Error" << endl;
+        return false;
+    }
+    this->UpdateTriggerQueue(""); // Update not using commands
+    return true;
+}
 
 // bool GameWorld::Read(string input)
 // {

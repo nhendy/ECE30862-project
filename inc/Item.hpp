@@ -17,7 +17,7 @@ class Item : public GameObjectModel{
 public:
     Item(rapidxml::xml_node<> *);
     virtual ~Item();
-
+    friend ostream & operator<< (ostream&, const Item&);
     std::string writing_;
     // std::vector<string> messages_;
     // std::vector<string> actions_;

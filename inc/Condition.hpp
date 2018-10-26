@@ -17,6 +17,7 @@ class GameWorld;
 class Condition {
 public:
     virtual  bool IsConditionSatisfied(const GameWorld &) = 0;
+    virtual ~Condition(){};
 };
 
 

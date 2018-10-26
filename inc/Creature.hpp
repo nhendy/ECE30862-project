@@ -15,6 +15,7 @@ public:
     Creature(rapidxml::xml_node<> *);
     virtual ~Creature();
     vector<string> vulnerabilities_;
+    friend ostream & operator<< (ostream&, const Creature&);
 
 };
 

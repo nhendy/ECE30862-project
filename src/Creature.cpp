@@ -3,6 +3,7 @@
 //
 
 #include "../inc/Creature.hpp"
+#include <iostream>
 
 Creature::Creature(rapidxml::xml_node<> * creature_node) {
 
@@ -18,3 +19,16 @@ Creature::Creature(rapidxml::xml_node<> * creature_node) {
     }
 }
 Creature::~Creature() { }
+ostream & operator<< (ostream& os, const Creature& creature)
+{
+    os << "Creature: " << creature.name_ << "\n";
+    os << "status: " << creature.status_ << "\n";    
+    os << "description: " << creature.description_ << "\n";  
+    os << "Triggers: " ;
+    for(Trigger * trigger: creature.triggers_)
+    {
+        os << *trigger << "\n";
+    }
+    os << endl;
+    return os;
+}

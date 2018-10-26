@@ -3,7 +3,7 @@
 //
 
 #include "../inc/Item.hpp"
-
+#include <iostream>
 
 Item::~Item() {}
 Item::Item(rapidxml::xml_node<> * item_node) {
@@ -21,6 +21,23 @@ Item::Item(rapidxml::xml_node<> * item_node) {
     }
 
 
+}
+
+ostream & operator<< (ostream& os, const Item& item)
+{
+    os << "Item: " << item.name_ << "\n";
+    os << "status: " << item.status_ << "\n";    
+    os << "description: " << item.description_ << "\n";  
+    os << "Triggers: " ;
+    for(Trigger * trigger: item.triggers_)
+    {
+        os << *trigger << "\n";
+    }
+    os << "Writing: " << item.writing_ ;
+   
+   
+    os << endl;
+    return os;
 }
 
 // void Item::buildTrunOn(rapidxml::xml_node<> * turnon_node) {
