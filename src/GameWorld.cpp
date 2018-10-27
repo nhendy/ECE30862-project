@@ -408,6 +408,7 @@ bool GameWorld::ShowInventory()
 /**
  * @Author: Damini
  **/
+
 bool GameWorld::Take(string item)
 {
 
@@ -448,6 +449,7 @@ bool GameWorld::Take(string item)
 
     this->UpdateTriggerQueue(""); // Update not using commands
 }
+
 bool GameWorld::Open(string input)
 {
     /**
@@ -549,6 +551,7 @@ bool GameWorld::Open(string input)
 //     }
 //     this->UpdateTriggerQueue(""); // Update not using commands
 // }
+
 // bool GameWorld::Turnon(string item)
 // {
 // 	/**
@@ -600,37 +603,45 @@ bool GameWorld::Open(string input)
 // /**
 //  * @Author: Damini
 //  **/
-// bool GameWorld::Put(string input)
-// {
-//     istringstream iss(input);
-//     vector<std::string> item_container((istream_iterator<std::string>(iss)),
-//                                             istream_iterator<std::string>());
-//     string item = item_container[0];
-//     string container = item_container[1];
-//     if( inventory_map_.find(input) != inventory_map_.end())
-//     {
-//     Room *room_ptr = rooms_map_.at(current_room_);
-//     //if statement to check if container exists in current room
-//     if(find(room_ptr->containers_names_.begin(), room_ptr->containers_names_.end(), container) != room_ptr->containers_names_.end())
-//     {
 
-//         //TODO Check Room.hpp. Container names is a vector of strings
-//         //TODO Find the destination container name
-//         //TODO Find the pointer of the destination container in containers_map_
-//         //TODO Append the name of the item to be added to the stored_items_ in the Container object
-//         room_ptr->containers_names_->stored_items_.push_back(item);
-//         cout<<"Item "<< item<< " added to " << container "."<< endl;
-//     }
-//         else
-//         {
-//             #ifdef DEBUG
-//             cout << "Cannot put item" << container << " is not in current room." << endl;
-//             #endif
-//         }
-//     }
-//     else{
-//         cout<<item<<" is not in the players inventory."<<endl;
-//     }
+bool GameWorld::Put(string input)
+{
+    istringstream iss(input);
+    vector<std::string> item_container((istream_iterator<std::string>(iss)), istream_iterator<std::string>());
+    string item = item_container[0];
+    string container = item_container[1];
+    if(inventory_map_.find(item) != inventory_map_.end()) // If item in player's inventory
+    {
+    	Room *room_ptr = rooms_map_.at(current_room_);
+    	//if statement to check if container exists in current room
+    	if (find(room_ptr->containers_names_.begin(), room_ptr->containers_names_.end(), container) != room_ptr->containers_names_.end())
+    	{
+    		map<std::string, Container *>::iterator destination_container_ptr; // Pointer to the destination container obj.
+    		destination_container_ptr = containers_map_.find(container);
+    		if (find(destination_container_ptr->second->stored_items_.begin(), destination_container_ptr->second->stored_items_.end(), item) == destination_container_ptr->second->stored_items_.end())
+    		{ // If item is not in the destination container
+    			destination_container_ptr->second->stored_items_.push_back(item); // Add item to the stored items vector of the dest. container
+        		cout << "Item" << item << " added to " << container << "." << endl;
+        		inventory_map_.erase(item); // Remove item from user's inventory
+    		}
+    		else { // If item is already in the destination container (it would never reach this statement. Idk why I added it)
+				#ifdef DEBUG
+    			cout << "Item is already in " << container << endl;
+				#endif
+    		}
+		}
+    	else
+    	{
+    		#ifdef DEBUG
+    		cout << "Cannot put item" << container << " is not in current room." << endl;
+    		#endif
+		}
+     }
+     else {
+         cout << item << " is not in the players inventory." << endl;
+         return false;
+     }
+     this->UpdateTriggerQueue(""); // Update not using commands
+     return true;
+ }
 
-//     this->UpdateTriggerQueue(""); // Update not using commands
-// }
