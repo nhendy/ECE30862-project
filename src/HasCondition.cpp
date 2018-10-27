@@ -52,7 +52,7 @@ bool HasCondition::IsConditionSatisfied(const GameWorld &gameworld)
         }
     }
     //find in room
-    else if (gameworld.rooms_map_.find(owner_) == gameworld.rooms_map_.end())
+    else if (gameworld.rooms_map_.find(owner_) != gameworld.rooms_map_.end())
     {
         Room *room = gameworld.rooms_map_.at(owner_);
 
