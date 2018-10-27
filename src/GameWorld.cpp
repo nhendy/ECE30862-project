@@ -455,43 +455,44 @@ bool GameWorld::Open(string input)
     /**
 	 * @Author: Urvaksh
 	 **/
-    map<std::string, Container *>::iterator container_ptr;
     if (input == "exit")
     { // End game if you try to open "exit"
-        map<std::string, Room *>::iterator room_ptr;
-        room_ptr = rooms_map_.find(current_room_); // Pointer to room you are currently in
-        if (((room_ptr->second)->type_) == "exit")
+        Room * room_ptr = rooms_map_.at(current_room_); // Pointer to room you are currently in
+
+
+        if (room_ptr ->type_ == "exit")
         { // If you are in a room of type "exit"
             game_over_ = true;
             return true;
         }
         else
         { // If you are not in a room of type "exit" then "open exit" is an invalid command
-            cout << "Invalid command" << endl;
+            cout << "Current room is not an Exit" << endl;
             return false;
         }
     }
-    container_ptr = containers_map_.find(input); // Iterator
-    if (container_ptr != containers_map_.end())
+
+    if (containers_map_.find(input) != containers_map_.end())
     {
+        Container * container_ptr = containers_map_[input];
         // Check if container exists
-        if (container_ptr->second->status_ == "locked")
+        if (container_ptr -> status_ == "locked")
         {
             // Check if container is locked
-            cout << container_ptr->first << " is locked." << endl;
+            cout << container_ptr -> name_ << " is locked." << endl;
             return false;
         }
         else
         {
             //TODO Review this
             // If container is not locked, loop through a items in the container and print them
-            if ((container_ptr->second)->stored_items_.empty())
+            if (container_ptr -> stored_items_.empty())
             {
-                cout << container_ptr->first << " is empty." << endl;
+                cout << container_ptr->name_ << " is empty." << endl;
             }
-            for (auto itr = (container_ptr->second)->stored_items_.begin(); itr != (container_ptr->second)->stored_items_.end(); itr++)
+            for(auto item_name : container_ptr -> stored_items_)
             {
-                cout << *itr << endl;
+                cout << item_name << endl;
             }
         }
     }
@@ -505,32 +506,32 @@ bool GameWorld::Open(string input)
     return true;
 }
 
-// bool GameWorld::Read(string input)
-// {
-// 	/**
-// 		 * @Author: Urvaksh
-// 	**/
-//     map<std::string, Item *>::iterator it;
-//     it = inventory_map_.find(input); // Iterator
-//     if (it == inventory_map_.end())
-//     { // Item does not exist in user's current inventory
-//         cout << "Error" << endl;
-//         return false;
-//     }
-//     else
-//     {
-//         if ((it->second)->writing_.empty())
-//         {
-//             cout << "Nothing written." << endl;
-//         }
-//         else
-//         {
-//             cout << (it->second)->writing_ << endl;
-//         }
-//     }
-//     this->UpdateTriggerQueue(""); // Update not using commands
-//     return true;
-// }
+bool GameWorld::Read(string input)
+{
+	/**
+		 * @Author: Urvaksh
+	**/
+    map<std::string, Item *>::iterator it;
+    it = inventory_map_.find(input); // Iterator
+    if (it == inventory_map_.end())
+    { // Item does not exist in user's current inventory
+        cout << "Error" << endl;
+        return false;
+    }
+    else
+    {
+        if ((it->second)->writing_.empty())
+        {
+            cout << "Nothing written." << endl;
+        }
+        else
+        {
+            cout << (it->second)->writing_ << endl;
+        }
+    }
+    this->UpdateTriggerQueue(""); // Update not using commands
+    return true;
+}
 
 // /**
 //  * @Author: Damini
@@ -608,6 +609,7 @@ bool GameWorld::Put(string input)
 {
     istringstream iss(input);
     vector<std::string> item_container((istream_iterator<std::string>(iss)), istream_iterator<std::string>());
+
     string item = item_container[0];
     string container = item_container[1];
     if(inventory_map_.find(item) != inventory_map_.end()) // If item in player's inventory
@@ -616,11 +618,11 @@ bool GameWorld::Put(string input)
     	//if statement to check if container exists in current room
     	if (find(room_ptr->containers_names_.begin(), room_ptr->containers_names_.end(), container) != room_ptr->containers_names_.end())
     	{
-    		map<std::string, Container *>::iterator destination_container_ptr; // Pointer to the destination container obj.
-    		destination_container_ptr = containers_map_.find(container);
-    		if (find(destination_container_ptr->second->stored_items_.begin(), destination_container_ptr->second->stored_items_.end(), item) == destination_container_ptr->second->stored_items_.end())
+
+    		Container * destination_container_ptr = containers_map_[container];
+    		if (find(destination_container_ptr -> stored_items_.begin(), destination_container_ptr ->stored_items_.end(), item) == destination_container_ptr ->stored_items_.end())
     		{ // If item is not in the destination container
-    			destination_container_ptr->second->stored_items_.push_back(item); // Add item to the stored items vector of the dest. container
+    			destination_container_ptr -> stored_items_.push_back(item); // Add item to the stored items vector of the dest. container
         		cout << "Item" << item << " added to " << container << "." << endl;
         		inventory_map_.erase(item); // Remove item from user's inventory
     		}
@@ -633,7 +635,7 @@ bool GameWorld::Put(string input)
     	else
     	{
     		#ifdef DEBUG
-    		cout << "Cannot put item" << container << " is not in current room." << endl;
+    		cout << "Cannot put item, " << container << " is not in current room." << endl;
     		#endif
 		}
      }
@@ -641,6 +643,8 @@ bool GameWorld::Put(string input)
          cout << item << " is not in the players inventory." << endl;
          return false;
      }
+
+
      this->UpdateTriggerQueue(""); // Update not using commands
      return true;
  }
