@@ -427,7 +427,7 @@ bool GameWorld::Take(string item)
         }
 #endif
 
-        cout << "Item " << item << " added to inventory" << endl;
+        cout << "Item " << item << " added to inventory." << endl;
 
         return true;
     }
