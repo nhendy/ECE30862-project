@@ -33,7 +33,7 @@ class GameWorld
     std::map<std::string, std::string> name_to_type_; //Map names to types
 
     void GameLoop();
-    bool InitGame();
+    bool InitGame(string);
 
   private:
     
