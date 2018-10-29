@@ -62,9 +62,9 @@ void Trigger::Fire(GameWorld& gameworld)
 
         //TODO check validity of the action
         //Check number of tokens
-        if(command_tokens.size() != 2  || command_tokens.size() != 4)
+        if(command_tokens.size() != 2  && command_tokens.size() != 4)
         {
-            #ifdef DEBUG
+            #ifdef DEBUG_I
             cout << "Wrong number of tokens" << endl;
             #endif
             return ;
@@ -72,15 +72,15 @@ void Trigger::Fire(GameWorld& gameworld)
         //Check if object 1 exists
         if(gameworld.name_to_type_.find(command_tokens[1]) == gameworld.name_to_type_.end()) 
         {
-            #ifdef DEBUG
+            #ifdef DEBUG_I
             cout << "Object in commands[1] doesn't exits" << endl;
             #endif
             return ;
         }
         //Check if object 2 exists
-        if( command_tokens.size() == 4  &&  gameworld.name_to_type_.find(command_tokens[3]) == gameworld.name_to_type_.end()) 
+        if( command_tokens.size() == 4 && command_tokens[0] != "Update" &&  gameworld.name_to_type_.find(command_tokens[3]) == gameworld.name_to_type_.end()) 
         {
-            #ifdef DEBUG
+            #ifdef DEBUG_I
             cout << "Object in commands[3] doesn't exits" << endl;
             #endif
             return ;
@@ -215,6 +215,7 @@ void Trigger::Fire(GameWorld& gameworld)
     {
         is_disabled_ = true;
     }
+
 
 }
 
