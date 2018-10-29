@@ -33,14 +33,14 @@ for test_cmd, test_expected, test_xml in zip(cmd_files, expected_files, xml_file
         subprocess.call([run_command], shell = True, timeout= 5)
 
         print("\n\n\nTesting output of {} on {}".format(test_cmd, test_xml))
-        return_code = subprocess.call([test_cmd], shell=True, timeout=5)
+        return_code = subprocess.call([test_command], shell=True, timeout=5)
 
         if return_code == 0:
             print('diff FAILED for output {} of {}'.format(result_path, test_xml))
             exit(0)
 
 
-    except TimeoutError:
+    except subprocess.TimeoutExpired:
         print("Executing command file {} timed out, it took more than 5 secs. Fix that first!".format(test_cmd))
         exit(0)
 
