@@ -479,9 +479,7 @@ bool GameWorld::Take(string item)
             }
         }
     }
-#ifdef DEBUG_1 //Item not present
     cout << "Error" << endl;
-#endif
     this->UpdateTriggerQueue(""); // Update not using commands
     return false;
 }
