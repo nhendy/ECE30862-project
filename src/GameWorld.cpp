@@ -326,6 +326,13 @@ bool GameWorld::Execute(string input_command)
     {
         return this->Attack(input_command.substr(string("attack").length() + 1));
     }
+    #ifdef GAMEOVER
+    else if (input_command.find("quit") != string::npos)
+    {
+        game_over_ = true;
+        return  true;
+    } 
+    #endif
     else
     {
         cout << "Error" << endl;
