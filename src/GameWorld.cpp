@@ -444,6 +444,7 @@ bool GameWorld::Take(string item)
 {
 
     Room *room_ptr = rooms_map_.at(current_room_);
+    bool took = false;
     //if item in room
     if (find(room_ptr->items_names_.begin(), room_ptr->items_names_.end(), item) != room_ptr->items_names_.end())
     {
@@ -459,29 +460,42 @@ bool GameWorld::Take(string item)
 #endif
 
         cout << "Item " << item << " added to inventory." << endl;
-
-        return true;
+        took = true;
     }
 
     //room in room container items
-    for (string container_name : room_ptr->containers_names_)
+    if(!took)
     {
-        Container *container = containers_map_[container_name];
-
-        if (container->status_ == "unlocked" && container -> is_open)
+        for (string container_name : room_ptr->containers_names_)
         {
-            if (find(container->stored_items_.begin(), container->stored_items_.end(), item) != container->stored_items_.end())
+            Container *container = containers_map_[container_name];
+
+            if (container->status_ == "unlocked" && container -> is_open)
             {
-                inventory_map_[item] = items_map_[item];
-                container->stored_items_.erase(find(container->stored_items_.begin(), container->stored_items_.end(), item));
-                cout << "Item " << item << " added to inventory." << endl;
-                return true;
+                if (find(container->stored_items_.begin(), container->stored_items_.end(), item) != container->stored_items_.end())
+                {
+                    inventory_map_[item] = items_map_[item];
+                    container->stored_items_.erase(find(container->stored_items_.begin(), container->stored_items_.end(), item));
+                    cout << "Item " << item << " added to inventory." << endl;
+                    
+                    took = true;
+                }
             }
         }
+
     }
-    cout << "Error" << endl;
-    this->UpdateTriggerQueue(""); // Update not using commands
-    return false;
+    
+    if(took)
+    {
+        this->UpdateTriggerQueue(""); // Update not using commands
+    }
+    else
+    {
+        cout << "Error" << endl;
+    }
+    
+    
+    return took;
 }
 /**
  * @Author: Urvaksh
