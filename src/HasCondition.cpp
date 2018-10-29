@@ -79,7 +79,7 @@ bool HasCondition::IsConditionSatisfied(const GameWorld &gameworld)
         else {return has_;}
     }
 
-    //find in containers
+    //find in containers   ===================ASSUMING THE CONDITION WILL ALWAYS CHECK FOR A CONTAINER IN THE ROOM!!!!!
     else if (gameworld.containers_map_.find(owner_) != gameworld.containers_map_.end())
     {
         Container *container = gameworld.containers_map_.at(owner_);

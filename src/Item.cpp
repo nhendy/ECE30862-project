@@ -15,7 +15,11 @@ Item::Item(rapidxml::xml_node<> * item_node) {
         else if (node_name == "status") { this->status_ = node->value(); }
         else if (node_name == "description") { this->description_ = node->value(); }
         else if (node_name == "trigger") { this->triggers_.push_back(new Trigger(node)); }
-        else if (node_name == "turnon") { this->triggers_.push_back(new Trigger(node, "turn on " + this -> name_));}
+        else if (node_name == "turnon") { 
+            Trigger * trigger =  new Trigger(node, "turn on " + this -> name_);
+            trigger -> messages_.insert(trigger -> messages_.begin(), "You activate the " + this -> name_ + ".");
+            this->triggers_.push_back(trigger);
+        }
         else if (node_name == "writing") { this-> writing_ = node -> value();}
 
     }

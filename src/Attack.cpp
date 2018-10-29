@@ -93,7 +93,7 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
 
     //remove weapon from the inventory
 
-    gameworld.inventory_map_.erase(weapon);  //==============??????
+    gameworld.inventory_map_.erase(weapon);  //============== REMOVE THE WEAPON??????
 
     //If all pass return True;
     return true;
