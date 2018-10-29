@@ -147,6 +147,8 @@ void GameWorld::UpdateTriggerQueue(string input_command)
     //Loop over triggers check commands AND conditions !! LOOP OVER MEANINGFUL TRIGGERS !!
     //You can only trigger triggers of objects in the current room
 
+    bool executed_trigger = false;
+
     Room *curr_room = this->rooms_map_[current_room_];
 
 #ifdef DEBUG
@@ -163,6 +165,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
             cout << "Trigger in rooms is activated" << endl;
 #endif
             //enqueue to pending triggers
+            executed_trigger = false;
             this->pending_triggers_.push(trigger);
         }
     }
@@ -180,6 +183,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
 #endif
 
                 //enqueue to pending triggers
+                executed_trigger = false;
                 this->pending_triggers_.push(trigger);
             }
         }
@@ -200,6 +204,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
                 cout << "Trigger in current room items is activated" << endl;
 #endif
                 //enqueue to pending triggers
+                executed_trigger = false;
                 this->pending_triggers_.push(trigger);
             }
         }
@@ -220,6 +225,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
                 cout << "Trigger in containers in current room is activated" << endl;
 #endif
                 //enqueue to pending triggers
+                executed_trigger = false;
                 this->pending_triggers_.push(trigger);
             }
         }
@@ -240,10 +246,24 @@ void GameWorld::UpdateTriggerQueue(string input_command)
                 cout << "Trigger in creatures is activated" << endl;
 #endif
                 //enqueue to pending triggers
+                executed_trigger = false;
                 this->pending_triggers_.push(trigger);
             }
         }
     }
+
+
+
+    if (input_command.find("attack") != string::npos && !executed_trigger) 
+    {
+        cout << "Error" << endl;
+    }
+
+    if (input_command.find("turn on") != string::npos && !executed_trigger) 
+    {
+        cout << "Error" << endl;
+    }
+
 }
 
 /************************************** Parse Input **********************************/

@@ -30,6 +30,7 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
     //Chech if command matches;
     if ("attack " + creature_name != command_)
     {
+        
         return false;
     }
 
@@ -42,6 +43,7 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
         #ifdef DEBUG_C
         cout << creature_name << " not in the room" << endl;
         #endif
+        cout << "Error" << endl;
         return false;
     }
 
