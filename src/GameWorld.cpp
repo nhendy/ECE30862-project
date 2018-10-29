@@ -524,7 +524,7 @@ bool GameWorld::Open(string input)
         }
     }
 
-    if (find(room_ptr->containers_names_.begin(), room_ptr->containers_names_.end(), container) != room_ptr->containers_names_.end())
+    if (find(room_ptr->containers_names_.begin(), room_ptr->containers_names_.end(), input) != room_ptr->containers_names_.end())
     {
         Container *container_ptr = containers_map_[input];
         // Check if container exists
