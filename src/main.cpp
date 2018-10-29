@@ -28,7 +28,7 @@ int main(int argc, char * argv[])
 
 
     GameWorld gw;
-    if (gw.InitGame())
+    if (gw.InitGame(xml_file))
     {
         gw.GameLoop();
     }

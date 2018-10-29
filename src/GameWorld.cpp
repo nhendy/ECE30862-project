@@ -39,17 +39,17 @@ GameWorld::~GameWorld()
         delete container_pair.second;
     }
 }
-bool GameWorld::InitGame()
+bool GameWorld::InitGame(string file_name)
 {
     rapidxml::xml_document<> doc;
-    ifstream file("sample.txt.xml");
+    ifstream file(file_name);
 
     stringstream buffer;
     buffer << file.rdbuf();
     string content(buffer.str());
 #ifdef DEBUG
     cout << content << endl;
-#endif
+#endif 
     doc.parse<0>(&content[0]);
     rapidxml::xml_node<> *root_node = doc.first_node("map");
     if (root_node == nullptr)
