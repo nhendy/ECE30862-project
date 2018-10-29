@@ -522,7 +522,7 @@ bool GameWorld::Open(string input)
             // If container is not locked, loop through a items in the container and print them
             if (container_ptr->stored_items_.empty())
             {
-                cout << container_ptr->name_ << " is empty." << endl;
+                cout << container_ptr->name_ << " is empty.";
             }
             else
             {
