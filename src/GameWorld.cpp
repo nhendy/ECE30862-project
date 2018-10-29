@@ -509,11 +509,9 @@ bool GameWorld::Take(string item)
  **/
 bool GameWorld::Open(string input)
 {
-    
+    Room *room_ptr = rooms_map_.at(current_room_); // Pointer to room you are currently in
     if (input == "exit")
     {                                                  // End game if you try to open "exit"
-        Room *room_ptr = rooms_map_.at(current_room_); // Pointer to room you are currently in
-
         if (room_ptr->type_ == "exit")
         { // If you are in a room of type "exit"
             game_over_ = true;
@@ -526,7 +524,7 @@ bool GameWorld::Open(string input)
         }
     }
 
-    if (containers_map_.find(input) != containers_map_.end())
+    if (find(room_ptr->containers_names_.begin(), room_ptr->containers_names_.end(), container) != room_ptr->containers_names_.end())
     {
         Container *container_ptr = containers_map_[input];
         // Check if container exists
@@ -561,7 +559,7 @@ bool GameWorld::Open(string input)
     }
     else
     {
-        // This is if the container does not exist
+        // This is if the container does not exist in the current room
         cout << "Error" << endl;
         return false;
     }
