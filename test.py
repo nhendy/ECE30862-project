@@ -2,13 +2,15 @@ import glob
 import subprocess
 import os
 
-cmd_files    = sorted(glob.glob('*.txt'))
-xml_files      = sorted(glob.glob('*.xml'))
-expected_files   = sorted(glob.glob('*.out'))
+
 
 test_folder    = './tests/'
 result_folder  = './result/'
 diff_folder    = './diffs/'
+
+cmd_files       = sorted(glob.glob(test_folder + '*.txt'))
+xml_files       = sorted(glob.glob(test_folder + '*.xml'))
+expected_files  = sorted(glob.glob(test_folder + '*.out'))
 
 print("\n\n\n\n================= Execution Starts =================")
 
