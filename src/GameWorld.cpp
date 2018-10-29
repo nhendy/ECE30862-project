@@ -254,15 +254,15 @@ void GameWorld::UpdateTriggerQueue(string input_command)
 
 
 
-    if (input_command.find("attack") != string::npos && !executed_trigger) 
-    {
-        cout << "Error" << endl;
-    }
+    // if (input_command.find("attack") != string::npos && !executed_trigger) 
+    // {
+    //     cout << "Error" << endl;
+    // }
 
-    if (input_command.find("turn on") != string::npos && !executed_trigger) 
-    {
-        cout << "Error" << endl;
-    }
+    // if (input_command.find("turn on") != string::npos && !executed_trigger) 
+    // {
+    //     cout << "Error" << endl;
+    // }
 
 }
 
@@ -322,10 +322,10 @@ bool GameWorld::Execute(string input_command)
     {
         return this->Turnon(input_command.substr(string("turn on").length() + 1));
     }
-    // else if (input_command.find("attack") != string::npos)
-    // {
-    //     return this->Attack(input_command.substr(string("attack").length() + 1));
-    // }
+    else if (input_command.find("attack") != string::npos)
+    {
+        return this->Attack(input_command.substr(string("attack").length() + 1));
+    }
     else
     {
         cout << "Error" << endl;
@@ -468,12 +468,13 @@ bool GameWorld::Take(string item)
     {
         Container *container = containers_map_[container_name];
 
-        if (container->status_ == "unlocked")
+        if (container->status_ == "unlocked" && container -> is_open)
         {
             if (find(container->stored_items_.begin(), container->stored_items_.end(), item) != container->stored_items_.end())
             {
                 inventory_map_[item] = items_map_[item];
                 container->stored_items_.erase(find(container->stored_items_.begin(), container->stored_items_.end(), item));
+                cout << "Item " << item << " added to inventory." << endl;
                 return true;
             }
         }
@@ -525,7 +526,7 @@ bool GameWorld::Open(string input)
             }
             else
             {
-                cout << input << " contains" << endl;
+                cout << input << " contains " ;
             }
 
             //Fix print
@@ -533,6 +534,10 @@ bool GameWorld::Open(string input)
             {
                 cout << item_name << " ";
             }
+
+            cout << endl;
+
+            container_ptr -> is_open = true;
         }
     }
     else
@@ -605,45 +610,48 @@ bool GameWorld::Turnon(string item)
 #ifdef DEBUG
     cout << item << " can not be turned on" << endl;
 #endif
+    cout << "Error" << endl;
 
     // this->UpdateTriggerQueue(""); // Update not using commands
-    return true;
+    return false;
 }
 
 bool GameWorld::Attack(string input)
 {
-    istringstream iss(input);
-    vector<string> command_tokens((istream_iterator<string>(iss)), // KEEP EXTRA PARANTHESES!
-                                  istream_iterator<string>());     // to disambiguate function call
+//     istringstream iss(input);
+//     vector<string> command_tokens((istream_iterator<string>(iss)), // KEEP EXTRA PARANTHESES!
+//                                   istream_iterator<string>());     // to disambiguate function call
 
-    string creatue_to_attack = command_tokens[0];
-    string weapon = command_tokens[2];
+//     string creatue_to_attack = command_tokens[0];
+//     string weapon = command_tokens[2];
 
-    if (creatures_map_.find(creatue_to_attack) == creatures_map_.end())
-    {
-#ifdef DEBUG_A
-        cout << "Creature not existent" << endl;
-#endif
-        return false;
-    }
-    if (inventory_map_.find(weapon) == inventory_map_.end())
-    {
-#ifdef DEBUG_A
-        cout << "Weapon not existent" << endl;
-#endif
-        return false;
-    }
-    Creature *creature_ptr = creatures_map_[creatue_to_attack];
-    if (find(creature_ptr->vulnerabilities_.begin(), creature_ptr->vulnerabilities_.end(), weapon) == creature_ptr->vulnerabilities_.end())
-    {
-#ifdef DEBUG_A
-        cout << "Creature is not vulnerable" << endl;
-#endif
-        cout << "Can't attack with " << weapon << endl;
-        return true;
-    }
+//     if (creatures_map_.find(creatue_to_attack) == creatures_map_.end())
+//     {
+// #ifdef DEBUG_A
+//         cout << "Creature not existent" << endl;
+// #endif
+//         return false;
+//     }
+//     if (inventory_map_.find(weapon) == inventory_map_.end())
+//     {
+// #ifdef DEBUG_A
+//         cout << "Weapon not existent" << endl;
+// #endif
+//         return false;
+//     }
+//     Creature *creature_ptr = creatures_map_[creatue_to_attack];
+//     if (find(creature_ptr->vulnerabilities_.begin(), creature_ptr->vulnerabilities_.end(), weapon) == creature_ptr->vulnerabilities_.end())
+//     {
+// #ifdef DEBUG_A
+//         cout << "Creature is not vulnerable" << endl;
+// #endif
+//         cout << "Can't attack with " << weapon << endl;
+//         return true;
+//     }
 
-    this->UpdateTriggerQueue("attack " + creatue_to_attack); // Update not using commands
+    cout << "Error" << endl;
+    return false;
+    // this->UpdateTriggerQueue("attack " + creatue_to_attack); // Update not using commands
 }
 
 // /**
@@ -656,7 +664,7 @@ bool GameWorld::Put(string input)
     vector<std::string> item_container((istream_iterator<std::string>(iss)), istream_iterator<std::string>());
 
     string item = item_container[0];
-    string container = item_container[1];
+    string container = item_container[2];   //This is the container
     if (inventory_map_.find(item) != inventory_map_.end()) // If item in player's inventory
     {
         Room *room_ptr = rooms_map_.at(current_room_);
@@ -664,15 +672,16 @@ bool GameWorld::Put(string input)
         if (find(room_ptr->containers_names_.begin(), room_ptr->containers_names_.end(), container) != room_ptr->containers_names_.end())
         {
 
-            Container *destination_container_ptr = containers_map_[container];
+            Container *container_ptr = containers_map_[container];
             //Check if container accepts it
-            if (find(destination_container_ptr->accepted_.begin(), destination_container_ptr->accepted_.end(), item) != destination_container_ptr->accepted_.end())
+            if (container_ptr -> accepted_.empty() || find(container_ptr->accepted_.begin(), container_ptr->accepted_.end(), item) != container_ptr->accepted_.end())
                 {
+
                     // If item is not in the destination container
-                    if (find(destination_container_ptr->stored_items_.begin(), destination_container_ptr->stored_items_.end(), item) == destination_container_ptr->stored_items_.end())
+                    if (find(container_ptr->stored_items_.begin(), container_ptr->stored_items_.end(), item) == container_ptr->stored_items_.end())
                     {                                                             
-                        destination_container_ptr->stored_items_.push_back(item); // Add item to the stored items vector of the dest. container
-                        cout << "Item" << item << " added to " << container << "." << endl;
+                        container_ptr->stored_items_.push_back(item); // Add item to the stored items vector of the dest. container
+                        cout << "Item " << item << " added to " << container << "." << endl;
                         inventory_map_.erase(item); // Remove item from user's inventory
                     }
                     else

@@ -50,6 +50,7 @@ bool HasCondition::IsConditionSatisfied(const GameWorld &gameworld)
             #endif
             return !has_;
         }
+        else {return has_;}
     }
     //find in room
     else if (gameworld.rooms_map_.find(owner_) != gameworld.rooms_map_.end())
@@ -61,18 +62,21 @@ bool HasCondition::IsConditionSatisfied(const GameWorld &gameworld)
         {
             return !has_;
         }
+        else {return has_;}
 
         //find in containers
         if (find(room->containers_names_.begin(), room->containers_names_.end(), object_name_) == room->containers_names_.end())
         {
             return !has_;
         }
+        else {return has_;}
 
         //find in creatures
         if (find(room->creatures_names_.begin(), room->creatures_names_.end(), object_name_) == room->creatures_names_.end())
         {
             return !has_;
         }
+        else {return has_;}
     }
 
     //find in containers
@@ -85,6 +89,7 @@ bool HasCondition::IsConditionSatisfied(const GameWorld &gameworld)
         {
             return !has_;
         }
+        else {return has_;}
     }
 
     return false;
