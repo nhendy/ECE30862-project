@@ -28,6 +28,12 @@ for test_cmd, test_expected, test_xml in zip(cmd_files, expected_files, xml_file
 
 
 
+    if not os.path.exists(result_path):
+        os.makedirs(result_path)
+
+    if not os.path.exists(diff_path):
+        os.makedirs(diff_path)
+
     try:
         print("Running " + run_command)
         subprocess.call([run_command], shell = True, timeout= 5)
