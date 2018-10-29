@@ -526,7 +526,7 @@ bool GameWorld::Open(string input)
         }
     }
 
-    if (containers_map_.find(input) != containers_map_.end())
+    if (find(room_ptr->containers_names_.begin(), room_ptr->containers_names_.end(), container) != room_ptr->containers_names_.end())
     {
         Container *container_ptr = containers_map_[input];
         // Check if container exists
@@ -561,7 +561,7 @@ bool GameWorld::Open(string input)
     }
     else
     {
-        // This is if the container does not exist
+        // This is if the container does not exist in the current room
         cout << "Error" << endl;
         return false;
     }
