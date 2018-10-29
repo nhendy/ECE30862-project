@@ -509,11 +509,9 @@ bool GameWorld::Take(string item)
  **/
 bool GameWorld::Open(string input)
 {
-    
+    Room *room_ptr = rooms_map_.at(current_room_); // Pointer to room you are currently in
     if (input == "exit")
     {                                                  // End game if you try to open "exit"
-        Room *room_ptr = rooms_map_.at(current_room_); // Pointer to room you are currently in
-
         if (room_ptr->type_ == "exit")
         { // If you are in a room of type "exit"
             game_over_ = true;
