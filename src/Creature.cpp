@@ -3,6 +3,7 @@
 //
 
 #include "../inc/Creature.hpp"
+#include "../inc/Attack.hpp"
 #include <iostream>
 
 Creature::Creature(rapidxml::xml_node<> * creature_node) {
@@ -14,8 +15,10 @@ Creature::Creature(rapidxml::xml_node<> * creature_node) {
         if (node_name == "name") { this->name_ = node->value(); }
         else if (node_name == "status") { this->status_ = node->value(); }
         else if (node_name == "description") { this->description_ = node->value(); }
+        else if (node_name == "vulnerability") { this->vulnerabilities_.push_back(node->value()); }
         else if (node_name == "trigger") { this->triggers_.push_back(new Trigger(node)); }
-        else if (node_name == "attack") { this-> triggers_.push_back(new Trigger(node, "attack " + this -> name_));} //Model attack as trigger
+        else if (node_name == "attack") { this-> triggers_.push_back(new Attack(node, "attack " + this -> name_));} //Model attack as trigger
+
     }
 }
 Creature::~Creature() { }
