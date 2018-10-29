@@ -12,6 +12,15 @@ cmd_files       = sorted(glob.glob(test_folder + '*.txt'))
 xml_files       = sorted(glob.glob(test_folder + '*.xml'))
 expected_files  = sorted(glob.glob(test_folder + '*.out'))
 
+
+if not os.path.exists(diff_folder):
+    os.mkdir(diff_folder)
+
+
+if not os.path.exists(result_folder):
+    os.mkdir(result_folder)
+
+
 print("\n\n\n\n================= Execution Starts =================")
 
 for test_cmd, test_expected, test_xml in zip(cmd_files, expected_files, xml_files):
@@ -27,12 +36,6 @@ for test_cmd, test_expected, test_xml in zip(cmd_files, expected_files, xml_file
     test_command   = "diff {} {}  > {}".format(result_path, expected_path, diff_path)
 
 
-
-    if not os.path.exists(result_path):
-        os.makedirs(result_path)
-
-    if not os.path.exists(diff_path):
-        os.makedirs(diff_path)
 
     try:
         print("Running " + run_command)
