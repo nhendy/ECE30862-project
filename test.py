@@ -47,7 +47,7 @@ for test_num, (test_cmd, test_expected, test_xml) in enumerate(zip(cmd_files, ex
         return_code = subprocess.call([test_command], shell=True, timeout=5)
 
         if return_code == 1:
-            print("\n\n{:=^{width}}".format(' Test '+ str(test_num) + ' FAILED!!', width = shutil.get_terminal_size().columns))
+            print("\n\n{:=^{width}}".format(' Test '+ str(test_num) + ' FAILED!! ', width = shutil.get_terminal_size().columns))
             print('diff FAILED for output {} of {}'.format(result_path, test_xml))
             # exit(0)
 
