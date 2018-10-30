@@ -23,6 +23,7 @@ class GameWorld
     GameWorld();
     virtual ~GameWorld();
     bool game_over_ = false;
+    bool is_victory_ = false;
     std::string current_room_;
 
     std::map<std::string, Room *> rooms_map_;
@@ -34,14 +35,14 @@ class GameWorld
 
     void GameLoop();
     bool InitGame(string);
+    std::string ParseInput(string);
+    bool Execute(std::string);
+    void UpdateTriggerQueue(std::string);
 
   private:
     
     std::queue<Trigger *> pending_triggers_;
 
-    std::string ParseInput();
-    bool Execute(std::string);
-    void UpdateTriggerQueue(std::string);
     bool ChangeRoom(std::string);
     bool ShowInventory();
     bool Take(std::string);

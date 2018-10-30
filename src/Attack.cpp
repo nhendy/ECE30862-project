@@ -50,30 +50,20 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
     // //If so check vulnerabilities 
 
     Creature * creature = gameworld.creatures_map_[creature_name];
-    // bool FOUND = false;
-
-    // for(string vulnerability: creature -> vulnerabilities_)
-    // {
-    //     if(gameworld.inventory_map_.find(vulnerability) != gameworld.inventory_map_.end())
-    //     {
-    //         FOUND = true;
-    //         break;
-    //     }
-    // }
-
-    // if(!creature -> vulnerabilities_.empty() && !FOUND)
-    // {
-    //     #ifdef DEBUG_C
-    //     cout << "Vulnerability not there" << endl;
-    //     #endif
-    //     return false;
-    // }
+    
 
     if(find(creature -> vulnerabilities_.begin(), creature -> vulnerabilities_.end(), weapon) == creature -> vulnerabilities_.end())
     {
         #ifdef DEBUG_C
         cout << "Vulnerability not there" << endl;
         #endif
+        return false;
+    }
+
+
+    //check if player has the weapon in inventory
+    if(gameworld.inventory_map_.find(weapon) == gameworld.inventory_map_.end())
+    {
         return false;
     }
 
@@ -89,11 +79,11 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
     }
 
 
-    cout << "You assault the " << creature_name << " with " << weapon << endl;
+    cout << "You assault the " << creature_name << " with the " << weapon << "." << endl;
 
     //remove weapon from the inventory
 
-    gameworld.inventory_map_.erase(weapon);  //============== REMOVE THE WEAPON??????
+    // gameworld.inventory_map_.erase(weapon);  //============== REMOVE THE WEAPON??????
 
     //If all pass return True;
     return true;

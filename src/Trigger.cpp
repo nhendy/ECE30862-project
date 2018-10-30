@@ -49,10 +49,23 @@ Trigger::Trigger(rapidxml::xml_node<> *trigger_node, string input_command):Trigg
 /**
  * ref: https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
  */
-void Trigger::Fire(GameWorld& gameworld)
+bool Trigger::Fire(GameWorld& gameworld)
 {
     //Execute actions
     //Execute prints
+
+    bool retVal = true;
+
+    //Loop over prints
+    for(string message : this -> messages_)
+    {
+        #ifdef DEBUG
+        cout << "LOOPING OVER PRINTS IN FIRE" <<endl;
+        #endif
+        cout << message << endl;
+    }
+
+
     for (std::string action : actions_)
     {
     
@@ -62,29 +75,29 @@ void Trigger::Fire(GameWorld& gameworld)
 
         //TODO check validity of the action
         //Check number of tokens
-        if(command_tokens.size() != 2  && command_tokens.size() != 4)
+        if(command_tokens.size() > 4  || command_tokens.size() < 1)
         {
             #ifdef DEBUG_I
             cout << "Wrong number of tokens" << endl;
             #endif
-            return ;
+            return false;
         }
         //Check if object 1 exists
-        if(gameworld.name_to_type_.find(command_tokens[1]) == gameworld.name_to_type_.end()) 
-        {
-            #ifdef DEBUG_I
-            cout << "Object in commands[1] doesn't exits" << endl;
-            #endif
-            return ;
-        }
-        //Check if object 2 exists
-        if( command_tokens.size() == 4 && command_tokens[0] != "Update" &&  gameworld.name_to_type_.find(command_tokens[3]) == gameworld.name_to_type_.end()) 
-        {
-            #ifdef DEBUG_I
-            cout << "Object in commands[3] doesn't exits" << endl;
-            #endif
-            return ;
-        }
+        // if(gameworld.name_to_type_.find(command_tokens[1]) == gameworld.name_to_type_.end()) 
+        // {
+        //     #ifdef DEBUG_I
+        //     cout << "Object in commands[1] doesn't exits" << endl;
+        //     #endif
+        //     return false;
+        // }
+        // //Check if object 2 exists
+        // if( command_tokens.size() == 4 && command_tokens[0] != "Update" &&  gameworld.name_to_type_.find(command_tokens[3]) == gameworld.name_to_type_.end()) 
+        // {
+        //     #ifdef DEBUG_I
+        //     cout << "Object in commands[3] doesn't exits" << endl;
+        //     #endif
+        //     return false;
+        // }
 
 
         //Execute Delete
@@ -186,9 +199,11 @@ void Trigger::Fire(GameWorld& gameworld)
         else if(action == "Game Over")
         {
             gameworld.game_over_ = true;
-            cout << "Victory!" << endl;
+            gameworld.is_victory_ = true;
+            retVal = false;
 
         }// else if(action == "Game Over")
+        
 
         //Non existent action
         else
@@ -196,18 +211,15 @@ void Trigger::Fire(GameWorld& gameworld)
             #ifdef DEBUG
             cout << "Invalid action" <<endl;
             #endif
+            gameworld.ParseInput(action);
+            gameworld.Execute(action);
+
+            retVal = false;
         }
 
     }//  for (std::string action : actions_)
 
-    //Loop over prints
-    for(string message : this -> messages_)
-    {
-        #ifdef DEBUG
-        cout << "LOOPING OVER PRINTS IN FIRE" <<endl;
-        #endif
-        cout << message << endl;
-    }
+    
     
 
     //disable if it can be used only once
@@ -216,6 +228,7 @@ void Trigger::Fire(GameWorld& gameworld)
         is_disabled_ = true;
     }
 
+    return retVal;
 
 }
 

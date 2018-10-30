@@ -49,7 +49,7 @@ bool GameWorld::InitGame(string file_name)
     string content(buffer.str());
 #ifdef DEBUG
     cout << content << endl;
-#endif 
+#endif
     doc.parse<0>(&content[0]);
     rapidxml::xml_node<> *root_node = doc.first_node("map");
     if (root_node == nullptr)
@@ -58,7 +58,6 @@ bool GameWorld::InitGame(string file_name)
     }
     else
     {
-        cout << root_node->name() << endl;
 
         for (rapidxml::xml_node<> *node = root_node->first_node(); node; node = node->next_sibling())
         {
@@ -119,7 +118,7 @@ void GameWorld::GameLoop()
 
     while (!game_over_)
     {
-        input_command = ParseInput();
+        input_command = ParseInput("");
 
         if (pending_triggers_.empty())
         {
@@ -131,12 +130,21 @@ void GameWorld::GameLoop()
             Trigger *trigger = pending_triggers_.front();
             pending_triggers_.pop();
 
-            trigger->Fire(*this);
-            UpdateTriggerQueue("");
+            if (trigger->Fire(*this))
+            {
+                UpdateTriggerQueue("");
+            }
         }
     }
 
-    cout << "Game Over" << endl;
+    if (is_victory_)
+    {
+        cout << "Victory!" << endl;
+    }
+    else
+    {
+        cout << "Game Over" << endl;
+    }
 }
 
 /************************************** Trigger checking **********************************/
@@ -159,7 +167,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
     for (Trigger *trigger : curr_room->triggers_)
     {
         //check if trigger is activated
-        if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+        if (!trigger->is_disabled() && trigger->IsActivated(input_command, *this))
         {
 #ifdef DEBUG
             cout << "Trigger in rooms is activated" << endl;
@@ -176,7 +184,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : item_pair.second->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+            if (!trigger->is_disabled() && trigger->IsActivated(input_command, *this))
             {
 #ifdef DEBUG
                 cout << "Trigger in inventory is activated" << endl;
@@ -198,7 +206,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : item_ptr->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+            if (!trigger->is_disabled() && trigger->IsActivated(input_command, *this))
             {
 #ifdef DEBUG
                 cout << "Trigger in current room items is activated" << endl;
@@ -219,7 +227,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : container_ptr->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+            if (!trigger->is_disabled() && trigger->IsActivated(input_command, *this))
             {
 #ifdef DEBUG
                 cout << "Trigger in containers in current room is activated" << endl;
@@ -240,7 +248,7 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         for (Trigger *trigger : creature_ptr->triggers_)
         {
             //check if trigger is activated
-            if (trigger->IsActivated(input_command, *this) && !trigger->is_disabled())
+            if (!trigger->is_disabled() && trigger->IsActivated(input_command, *this))
             {
 #ifdef DEBUG
                 cout << "Trigger in creatures is activated" << endl;
@@ -252,26 +260,25 @@ void GameWorld::UpdateTriggerQueue(string input_command)
         }
     }
 
-
-
-    // if (input_command.find("attack") != string::npos && !executed_trigger) 
+    // if (input_command.find("attack") != string::npos && !executed_trigger)
     // {
     //     cout << "Error" << endl;
     // }
 
-    // if (input_command.find("turn on") != string::npos && !executed_trigger) 
+    // if (input_command.find("turn on") != string::npos && !executed_trigger)
     // {
     //     cout << "Error" << endl;
     // }
-
 }
 
 /************************************** Parse Input **********************************/
-string GameWorld::ParseInput()
+string GameWorld::ParseInput(string input)
 {
-    string input = "";
+    if (input.empty())
+    {
+        getline(cin, input);
+    }
 
-    getline(cin, input);
 #ifdef DEBUG_I
     cout << "Input is " << input << "in Parse" << endl;
 #endif
@@ -286,56 +293,63 @@ string GameWorld::ParseInput()
 bool GameWorld::Execute(string input_command)
 {
 
+    bool retVal = false;
 #ifdef DEBUG_I
     cout << "Input is " << input_command << endl;
 #endif
     if (input_command == "n" || input_command == "s" || input_command == "e" || input_command == "w")
     {
-        return this->ChangeRoom(input_command);
+        retVal = this->ChangeRoom(input_command);
     }
     else if (input_command == "i")
     {
-        return this->ShowInventory();
+        retVal = this->ShowInventory();
     }
     else if (input_command.find("take") != string::npos)
     {
-        return this->Take(input_command.substr(string("take").length() + 1));
+        retVal = this->Take(input_command.substr(string("take").length() + 1));
     }
 
     else if (input_command.find("open") != string::npos)
     {
-        return this->Open(input_command.substr(string("open").length() + 1));
+        retVal = this->Open(input_command.substr(string("open").length() + 1));
     }
     else if (input_command.find("read") != string::npos)
     {
-        return this->Read(input_command.substr(string("read").length() + 1));
+        retVal = this->Read(input_command.substr(string("read").length() + 1));
     }
     else if (input_command.find("drop") != string::npos)
     {
-        return this->Drop(input_command.substr(string("drop").length() + 1));
+        retVal = this->Drop(input_command.substr(string("drop").length() + 1));
     }
     else if (input_command.find("put") != string::npos)
     {
-        return this->Put(input_command.substr(string("put").length() + 1));
+        retVal = this->Put(input_command.substr(string("put").length() + 1));
     }
     else if (input_command.find("turn on") != string::npos)
     {
-        return this->Turnon(input_command.substr(string("turn on").length() + 1));
+        retVal = this->Turnon(input_command.substr(string("turn on").length() + 1));
     }
     else if (input_command.find("attack") != string::npos)
     {
-        return this->Attack(input_command.substr(string("attack").length() + 1));
+        retVal = this->Attack(input_command.substr(string("attack").length() + 1));
     }
-    #ifdef GAMEOVER
+#ifdef GAMEOVER
     else if (input_command.find("quit") != string::npos)
     {
         game_over_ = true;
-        return  true;
-    } 
-    #endif
+        return true;
+    }
+#endif
     else
     {
         cout << "Error" << endl;
+    }
+
+    if (retVal)
+    {
+        this->UpdateTriggerQueue(""); // Update not using commands
+        return true;
     }
 
     return false;
@@ -348,7 +362,7 @@ bool GameWorld::Execute(string input_command)
  **/
 bool GameWorld::ChangeRoom(string direction)
 {
-
+    bool retVal = true;
 #ifdef DEBUG_1
     cout << "Trying to change room now @ " << current_room_ << endl;
 
@@ -369,12 +383,13 @@ bool GameWorld::ChangeRoom(string direction)
             //change current room if it exists
             current_room_ = room_ptr->direction_to_room_["north"];
             // print the description of the room
-            cout << " " << rooms_map_.at(current_room_)->description_ << endl;
+            cout << rooms_map_.at(current_room_)->description_ << endl;
         }
         else
         {
             //if not then print error
             cout << "Can’t go that way." << std::endl;
+            retVal = false;
         }
     }
     //repeat for all directions
@@ -384,11 +399,12 @@ bool GameWorld::ChangeRoom(string direction)
         if (room_ptr->direction_to_room_.find("south") != room_ptr->direction_to_room_.end())
         {
             current_room_ = room_ptr->direction_to_room_["south"];
-            cout << " " << rooms_map_.at(current_room_)->description_ << endl;
+            cout << rooms_map_.at(current_room_)->description_ << endl;
         }
         else
         {
             cout << "Can’t go that way." << std::endl;
+            retVal = false;
         }
     }
     if (direction == "e")
@@ -397,11 +413,12 @@ bool GameWorld::ChangeRoom(string direction)
         if (room_ptr->direction_to_room_.find("east") != room_ptr->direction_to_room_.end())
         {
             current_room_ = room_ptr->direction_to_room_["east"];
-            cout << " " << rooms_map_.at(current_room_)->description_ << endl;
+            cout << rooms_map_.at(current_room_)->description_ << endl;
         }
         else
         {
             cout << "Can’t go that way." << std::endl;
+            retVal = false;
         }
     }
     if (direction == "w")
@@ -410,15 +427,15 @@ bool GameWorld::ChangeRoom(string direction)
         if (room_ptr->direction_to_room_.find("west") != room_ptr->direction_to_room_.end())
         {
             current_room_ = room_ptr->direction_to_room_["west"];
-            cout << " " << rooms_map_.at(current_room_)->description_ << endl;
+            cout << rooms_map_.at(current_room_)->description_ << endl;
         }
         else
         {
             cout << "Can’t go that way." << endl;
+            retVal = false;
         }
     }
-
-    this->UpdateTriggerQueue(""); // Update not using commands
+    return retVal;
 }
 
 /**
@@ -426,7 +443,7 @@ bool GameWorld::ChangeRoom(string direction)
  **/
 bool GameWorld::ShowInventory()
 {
-    
+
     cout << "Inventory: ";
     if (inventory_map_.empty())
     { // Check if inventory is empty
@@ -438,8 +455,8 @@ bool GameWorld::ShowInventory()
     { // Looping from the first item in inventory until the second last element in the inventory
         cout << item_iter->first << ", ";
     }
+
     cout << (inventory_map_.rbegin())->first << endl; // Prints the last element in the inventory map
-    this->UpdateTriggerQueue("");                     // Update not using commands
     return true;
 }
 
@@ -471,37 +488,31 @@ bool GameWorld::Take(string item)
     }
 
     //room in room container items
-    if(!took)
+    if (!took)
     {
         for (string container_name : room_ptr->containers_names_)
         {
             Container *container = containers_map_[container_name];
 
-            if (container->status_ == "unlocked" && container -> is_open)
+            if (container->status_ == "unlocked" && container->is_open)
             {
                 if (find(container->stored_items_.begin(), container->stored_items_.end(), item) != container->stored_items_.end())
                 {
                     inventory_map_[item] = items_map_[item];
                     container->stored_items_.erase(find(container->stored_items_.begin(), container->stored_items_.end(), item));
                     cout << "Item " << item << " added to inventory." << endl;
-                    
+
                     took = true;
                 }
             }
         }
+    }
 
-    }
-    
-    if(took)
-    {
-        this->UpdateTriggerQueue(""); // Update not using commands
-    }
-    else
+    if (!took)
     {
         cout << "Error" << endl;
     }
-    
-    
+
     return took;
 }
 /**
@@ -511,7 +522,7 @@ bool GameWorld::Open(string input)
 {
     Room *room_ptr = rooms_map_.at(current_room_); // Pointer to room you are currently in
     if (input == "exit")
-    {                                                  // End game if you try to open "exit"
+    { // End game if you try to open "exit"
         if (room_ptr->type_ == "exit")
         { // If you are in a room of type "exit"
             game_over_ = true;
@@ -540,21 +551,30 @@ bool GameWorld::Open(string input)
             if (container_ptr->stored_items_.empty())
             {
                 cout << container_ptr->name_ << " is empty.";
+                return false;
             }
             else
             {
-                cout << input << " contains " ;
+                cout << input << " contains ";
             }
 
             //Fix print
-            for (auto item_name : container_ptr->stored_items_)
+            for (int i = 0; i < container_ptr -> stored_items_.size() ; i ++)
             {
-                cout << item_name << " ";
+                string item_name = container_ptr -> stored_items_[i];
+                if(i == container_ptr -> stored_items_.size() - 1)
+                {
+                    cout << item_name << "." << endl;
+                }
+                else
+                {
+                    cout << item_name << ", ";
+                }
+                
             }
 
-            cout << endl;
 
-            container_ptr -> is_open = true;
+            container_ptr->is_open = true;
         }
     }
     else
@@ -563,7 +583,6 @@ bool GameWorld::Open(string input)
         cout << "Error" << endl;
         return false;
     }
-    this->UpdateTriggerQueue(""); // Update not using commands
     return true;
 }
 /**
@@ -571,7 +590,7 @@ bool GameWorld::Open(string input)
 **/
 bool GameWorld::Read(string input)
 {
-   
+
     map<std::string, Item *>::iterator it;
     it = inventory_map_.find(input); // Iterator
     if (it == inventory_map_.end())
@@ -584,13 +603,13 @@ bool GameWorld::Read(string input)
         if ((it->second)->writing_.empty())
         {
             cout << "Nothing written." << endl;
+            return false;
         }
         else
         {
             cout << (it->second)->writing_ << endl;
         }
     }
-    this->UpdateTriggerQueue(""); // Update not using commands
     return true;
 }
 
@@ -610,8 +629,9 @@ bool GameWorld::Drop(string input)
         inventory_map_.erase(input);
         //print dropped
         cout << input << " dropped." << std::endl;
+        return true;
     }
-    this->UpdateTriggerQueue(""); // Update not using commands
+    return false;
 }
 
 /**
@@ -620,7 +640,7 @@ bool GameWorld::Drop(string input)
 
 bool GameWorld::Turnon(string item)
 {
-   
+
     // THIS MIGHT NOT WORK!!!!
     //This function will be called if it doesn't tigger any object
 
@@ -629,46 +649,14 @@ bool GameWorld::Turnon(string item)
 #endif
     cout << "Error" << endl;
 
-    // this->UpdateTriggerQueue(""); // Update not using commands
     return false;
 }
 
 bool GameWorld::Attack(string input)
 {
-//     istringstream iss(input);
-//     vector<string> command_tokens((istream_iterator<string>(iss)), // KEEP EXTRA PARANTHESES!
-//                                   istream_iterator<string>());     // to disambiguate function call
-
-//     string creatue_to_attack = command_tokens[0];
-//     string weapon = command_tokens[2];
-
-//     if (creatures_map_.find(creatue_to_attack) == creatures_map_.end())
-//     {
-// #ifdef DEBUG_A
-//         cout << "Creature not existent" << endl;
-// #endif
-//         return false;
-//     }
-//     if (inventory_map_.find(weapon) == inventory_map_.end())
-//     {
-// #ifdef DEBUG_A
-//         cout << "Weapon not existent" << endl;
-// #endif
-//         return false;
-//     }
-//     Creature *creature_ptr = creatures_map_[creatue_to_attack];
-//     if (find(creature_ptr->vulnerabilities_.begin(), creature_ptr->vulnerabilities_.end(), weapon) == creature_ptr->vulnerabilities_.end())
-//     {
-// #ifdef DEBUG_A
-//         cout << "Creature is not vulnerable" << endl;
-// #endif
-//         cout << "Can't attack with " << weapon << endl;
-//         return true;
-//     }
 
     cout << "Error" << endl;
     return false;
-    // this->UpdateTriggerQueue("attack " + creatue_to_attack); // Update not using commands
 }
 
 // /**
@@ -681,7 +669,7 @@ bool GameWorld::Put(string input)
     vector<std::string> item_container((istream_iterator<std::string>(iss)), istream_iterator<std::string>());
 
     string item = item_container[0];
-    string container = item_container[2];   //This is the container
+    string container = item_container[2];                  //This is the container
     if (inventory_map_.find(item) != inventory_map_.end()) // If item in player's inventory
     {
         Room *room_ptr = rooms_map_.at(current_room_);
@@ -691,35 +679,38 @@ bool GameWorld::Put(string input)
 
             Container *container_ptr = containers_map_[container];
             //Check if container accepts it
-            if (container_ptr -> accepted_.empty() || find(container_ptr->accepted_.begin(), container_ptr->accepted_.end(), item) != container_ptr->accepted_.end())
-                {
+            if (container_ptr->accepted_.empty() || find(container_ptr->accepted_.begin(), container_ptr->accepted_.end(), item) != container_ptr->accepted_.end())
+            {
 
-                    // If item is not in the destination container
-                    if (find(container_ptr->stored_items_.begin(), container_ptr->stored_items_.end(), item) == container_ptr->stored_items_.end())
-                    {                                                             
-                        container_ptr->stored_items_.push_back(item); // Add item to the stored items vector of the dest. container
-                        cout << "Item " << item << " added to " << container << "." << endl;
-                        inventory_map_.erase(item); // Remove item from user's inventory
-                    }
-                    else
-                    { // If item is already in the destination container (it would never reach this statement. Idk why I added it)
-                        #ifdef DEBUG
-                        cout << "Item is already in " << container << endl;
-                        #endif
-                    }
+                // If item is not in the destination container
+                if (find(container_ptr->stored_items_.begin(), container_ptr->stored_items_.end(), item) == container_ptr->stored_items_.end())
+                {
+                    container_ptr->stored_items_.push_back(item); // Add item to the stored items vector of the dest. container
+                    cout << "Item " << item << " added to " << container << "." << endl;
+                    inventory_map_.erase(item); // Remove item from user's inventory
                 }
+                else
+                { // If item is already in the destination container (it would never reach this statement. Idk why I added it)
+#ifdef DEBUG
+                    cout << "Item is already in " << container << endl;
+#endif
+                    return false;
+                }
+            }
             else
             {
-                #ifdef DEBUG
+#ifdef DEBUG
                 cout << container << " does not accept" << item << endl;
-                #endif
+#endif
+                return false;
             }
         }
         else
         {
-            #ifdef DEBUG
+#ifdef DEBUG
             cout << "Cannot put item, " << container << " is not in current room." << endl;
-            #endif
+#endif
+            return false;
         }
     }
     else
@@ -728,6 +719,5 @@ bool GameWorld::Put(string input)
         return false;
     }
 
-    this->UpdateTriggerQueue(""); // Update not using commands
     return true;
 }
