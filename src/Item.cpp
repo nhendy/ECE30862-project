@@ -4,6 +4,7 @@
 
 #include "../inc/Item.hpp"
 #include <iostream>
+#include "../inc/HasCondition.hpp"
 
 Item::~Item() {}
 Item::Item(rapidxml::xml_node<> * item_node) {
@@ -18,6 +19,7 @@ Item::Item(rapidxml::xml_node<> * item_node) {
         else if (node_name == "turnon") { 
             Trigger * trigger =  new Trigger(node, "turn on " + this -> name_);
             trigger -> messages_.insert(trigger -> messages_.begin(), "You activate the " + this -> name_ + ".");
+            trigger -> conditions_.push_back(new HasCondition("inventory", true, this -> name_));
             this->triggers_.push_back(trigger);
         }
         else if (node_name == "writing") { this-> writing_ = node -> value();}

@@ -8,6 +8,8 @@
 #include <iostream>
 
 HasCondition::~HasCondition() {}
+HasCondition::HasCondition(string owner, bool has, string obj): owner_(owner), has_(has), object_name_(obj) {}
+
 HasCondition::HasCondition(rapidxml::xml_node<> *condition_node)
 {
     for (rapidxml::xml_node<> *node = condition_node->first_node(); node; node = node->next_sibling())

@@ -388,7 +388,7 @@ bool GameWorld::ChangeRoom(string direction)
         else
         {
             //if not then print error
-            cout << "Can’t go that way." << std::endl;
+            cout << "Can't go that way." << std::endl;
             retVal = false;
         }
     }
@@ -403,7 +403,7 @@ bool GameWorld::ChangeRoom(string direction)
         }
         else
         {
-            cout << "Can’t go that way." << std::endl;
+            cout << "Can't go that way." << std::endl;
             retVal = false;
         }
     }
@@ -417,7 +417,7 @@ bool GameWorld::ChangeRoom(string direction)
         }
         else
         {
-            cout << "Can’t go that way." << std::endl;
+            cout << "Can't go that way." << std::endl;
             retVal = false;
         }
     }
@@ -431,7 +431,7 @@ bool GameWorld::ChangeRoom(string direction)
         }
         else
         {
-            cout << "Can’t go that way." << endl;
+            cout << "Can't go that way." << endl;
             retVal = false;
         }
     }
@@ -530,7 +530,7 @@ bool GameWorld::Open(string input)
         }
         else
         { // If you are not in a room of type "exit" then "open exit" is an invalid command
-            cout << "Current room is not an Exit" << endl;
+            cout << "Error" << endl;
             return false;
         }
     }
@@ -715,7 +715,7 @@ bool GameWorld::Put(string input)
     }
     else
     {
-        cout << item << " is not in the players inventory." << endl;
+        cout << "Error" << endl;
         return false;
     }
 
