@@ -21,7 +21,7 @@ if not os.path.exists(result_folder):
     os.mkdir(result_folder)
 
 
-print("\n\n\n\n{:=^160}".format(' Execution starts '))
+print("\n\n\n\n{:=^147}".format(' Execution starts '))
 
 for test_num, (test_cmd, test_expected, test_xml) in enumerate(zip(cmd_files, expected_files, xml_files)):
     _, file_noext = os.path.split(test_cmd)
@@ -38,17 +38,17 @@ for test_num, (test_cmd, test_expected, test_xml) in enumerate(zip(cmd_files, ex
 
 
     try:
-        print("\n\n\n{:=^160}".format(' Test '+ str(test_num) + ' '))
+        print("\n\n\n{:=^147}".format(' Test '+ str(test_num) + ' '))
         print("Running " + run_command)
         subprocess.call([run_command], shell = True, timeout= 5)
 
         print("Testing output of {} on {}".format(test_cmd, test_xml))
         return_code = subprocess.call([test_command], shell=True, timeout=5)
 
-        if return_code == 0:
-            print("{:=^160}".format(' Test '+ str(test_num) + ' FAILED!!'))
+        if return_code == 1:
+            print("\n\n{:=^147}".format(' Test '+ str(test_num) + ' FAILED!!'))
             print('diff FAILED for output {} of {}'.format(result_path, test_xml))
-            exit(0)
+            # exit(0)
 
 
     except subprocess.TimeoutExpired:
