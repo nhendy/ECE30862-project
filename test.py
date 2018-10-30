@@ -1,6 +1,7 @@
 import glob
 import subprocess
 import os
+import shutil
 
 
 
@@ -21,7 +22,7 @@ if not os.path.exists(result_folder):
     os.mkdir(result_folder)
 
 
-print("\n\n\n\n{:=^147}".format(' Execution starts '))
+print("\n\n\n\n{:=^{width}}".format(' Execution starts ', width = shutil.get_terminal_size().columns))
 
 for test_num, (test_cmd, test_expected, test_xml) in enumerate(zip(cmd_files, expected_files, xml_files)):
     _, file_noext = os.path.split(test_cmd)
@@ -32,13 +33,13 @@ for test_num, (test_cmd, test_expected, test_xml) in enumerate(zip(cmd_files, ex
     expected_path = test_expected
     diff_path     = diff_folder + file_noext + '.diff'
 
-    run_command = "./runner {} < {} > {}".format(xml_path, cmd_path, result_path)
+    run_command    = "./runner {} < {} > {}".format(xml_path, cmd_path, result_path)
     test_command   = "diff {} {}  > {}".format(result_path, expected_path, diff_path)
 
 
 
     try:
-        print("\n\n\n{:=^147}".format(' Test '+ str(test_num) + ' '))
+        print("\n\n\n{:=^{width}}".format( ' Test '+ str(test_num) + ' ', width = shutil.get_terminal_size().columns))
         print("Running " + run_command)
         subprocess.call([run_command], shell = True, timeout= 5)
 
@@ -46,7 +47,7 @@ for test_num, (test_cmd, test_expected, test_xml) in enumerate(zip(cmd_files, ex
         return_code = subprocess.call([test_command], shell=True, timeout=5)
 
         if return_code == 1:
-            print("\n\n{:=^147}".format(' Test '+ str(test_num) + ' FAILED!!'))
+            print("\n\n{:=^{width}}".format(' Test '+ str(test_num) + ' FAILED!!', width = shutil.get_terminal_size().columns))
             print('diff FAILED for output {} of {}'.format(result_path, test_xml))
             # exit(0)
 
