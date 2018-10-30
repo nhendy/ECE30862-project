@@ -7,10 +7,20 @@
 #include <algorithm>
 
 
-Attack::Attack(rapidxml::xml_node<> *trigger_node) : Trigger(trigger_node){}
-Attack::Attack(rapidxml::xml_node<> *trigger_node, string input): Trigger(trigger_node, input){}
-Attack::~Attack(){}
+Attack::Attack(string creature) : Trigger(creature)
+{
+    this -> type_ = "permanent";
+    this -> command_ = "attack " + creature;
 
+}
+
+
+Attack::Attack(rapidxml::xml_node<> * node, string command): Trigger(node, command){
+    this -> type_ = "permanent";
+} //Overloaded constructor
+
+
+Attack::~Attack(){}
 
 bool Attack::IsActivated(string input_command, GameWorld &gameworld)
 {
@@ -18,8 +28,6 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
     istringstream iss(input_command);
     vector<std::string> command_tokens((istream_iterator<std::string>(iss)), istream_iterator<std::string>());
 
-    //Need to speify weapon too
-    if(command_tokens.size() != 4)    {return false;}
     
 
     string creature_name = command_tokens[1];
@@ -43,11 +51,11 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
         #ifdef DEBUG_C
         cout << creature_name << " not in the room" << endl;
         #endif
-        // cout << "Error" << endl;
+        cout << "Error" << endl;
         return false;
     }
 
-    // //If so check vulnerabilities 
+    //If so check vulnerabilities 
 
     Creature * creature = gameworld.creatures_map_[creature_name];
     
@@ -57,6 +65,7 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
         #ifdef DEBUG_C
         cout << "Vulnerability not there" << endl;
         #endif
+        cout << "Error" << endl;
         return false;
     }
 
@@ -64,6 +73,8 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
     //check if player has the weapon in inventory
     if(gameworld.inventory_map_.find(weapon) == gameworld.inventory_map_.end())
     {
+        cout << "Error" <<endl;
+        
         return false;
     }
 
@@ -81,9 +92,6 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
 
     cout << "You assault the " << creature_name << " with the " << weapon << "." << endl;
 
-    //remove weapon from the inventory
-
-    // gameworld.inventory_map_.erase(weapon);  //============== REMOVE THE WEAPON??????
 
     //If all pass return True;
     return true;

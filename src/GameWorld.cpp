@@ -3,12 +3,16 @@
 //
 
 #include "../inc/GameWorld.hpp"
+#include "../inc/Attack.hpp"
 #include "../lib/rapidxml-1.13/rapidxml.hpp"
+#include "../inc/utils.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <dirent.h>
 #include <algorithm>
+#include <regex>
+#include "../inc/utils.hpp"
 
 using namespace std;
 
@@ -118,22 +122,37 @@ void GameWorld::GameLoop()
 
     while (!game_over_)
     {
-        input_command = ParseInput("");
+        //Get Input
+        input_command = ParseInput();
+        
 
+        //Validate input
+        if(!IsValidUserInput(input_command))
+        {
+            cout << "Error" << endl;
+            continue;
+        }
+
+        //Update triggers
+        this->UpdateTriggerQueue(input_command);
+
+        //If not overriden by a trigger
         if (pending_triggers_.empty())
         {
             Execute(input_command);
+
+            //Update triggers due to command execution
+            this->UpdateTriggerQueue(); 
         }
 
+        //Execute all triggers
         while (!pending_triggers_.empty())
         {
             Trigger *trigger = pending_triggers_.front();
             pending_triggers_.pop();
 
-            if (trigger->Fire(*this))
-            {
-                UpdateTriggerQueue("");
-            }
+            trigger -> Fire(*this);
+            UpdateTriggerQueue();
         }
     }
 
@@ -150,12 +169,9 @@ void GameWorld::GameLoop()
 /************************************** Trigger checking **********************************/
 void GameWorld::UpdateTriggerQueue(string input_command)
 {
-    //TODO
-    //TODO Refactor
     //Loop over triggers check commands AND conditions !! LOOP OVER MEANINGFUL TRIGGERS !!
     //You can only trigger triggers of objects in the current room
 
-    bool executed_trigger = false;
 
     Room *curr_room = this->rooms_map_[current_room_];
 
@@ -173,7 +189,6 @@ void GameWorld::UpdateTriggerQueue(string input_command)
             cout << "Trigger in rooms is activated" << endl;
 #endif
             //enqueue to pending triggers
-            executed_trigger = false;
             this->pending_triggers_.push(trigger);
         }
     }
@@ -191,7 +206,6 @@ void GameWorld::UpdateTriggerQueue(string input_command)
 #endif
 
                 //enqueue to pending triggers
-                executed_trigger = false;
                 this->pending_triggers_.push(trigger);
             }
         }
@@ -212,7 +226,6 @@ void GameWorld::UpdateTriggerQueue(string input_command)
                 cout << "Trigger in current room items is activated" << endl;
 #endif
                 //enqueue to pending triggers
-                executed_trigger = false;
                 this->pending_triggers_.push(trigger);
             }
         }
@@ -233,7 +246,6 @@ void GameWorld::UpdateTriggerQueue(string input_command)
                 cout << "Trigger in containers in current room is activated" << endl;
 #endif
                 //enqueue to pending triggers
-                executed_trigger = false;
                 this->pending_triggers_.push(trigger);
             }
         }
@@ -254,42 +266,30 @@ void GameWorld::UpdateTriggerQueue(string input_command)
                 cout << "Trigger in creatures is activated" << endl;
 #endif
                 //enqueue to pending triggers
-                executed_trigger = false;
                 this->pending_triggers_.push(trigger);
             }
         }
     }
 
-    // if (input_command.find("attack") != string::npos && !executed_trigger)
-    // {
-    //     cout << "Error" << endl;
-    // }
-
-    // if (input_command.find("turn on") != string::npos && !executed_trigger)
-    // {
-    //     cout << "Error" << endl;
-    // }
 }
 
 /************************************** Parse Input **********************************/
-string GameWorld::ParseInput(string input)
+string GameWorld::ParseInput()
 {
-    if (input.empty())
-    {
-        getline(cin, input);
-    }
+    string input;
+    getline(cin, input);
 
 #ifdef DEBUG_I
     cout << "Input is " << input << "in Parse" << endl;
 #endif
-    this->UpdateTriggerQueue(input);
 
     return input;
 }
 
 /************************************** Executing input commands **********************************/
 
-//TODO check if input_command is valid
+
+
 bool GameWorld::Execute(string input_command)
 {
 
@@ -309,7 +309,6 @@ bool GameWorld::Execute(string input_command)
     {
         retVal = this->Take(input_command.substr(string("take").length() + 1));
     }
-
     else if (input_command.find("open") != string::npos)
     {
         retVal = this->Open(input_command.substr(string("open").length() + 1));
@@ -332,7 +331,7 @@ bool GameWorld::Execute(string input_command)
     }
     else if (input_command.find("attack") != string::npos)
     {
-        retVal = this->Attack(input_command.substr(string("attack").length() + 1));
+        retVal = this->ExecuteAttack(input_command.substr(string("attack").length() + 1));
     }
 #ifdef GAMEOVER
     else if (input_command.find("quit") != string::npos)
@@ -341,16 +340,7 @@ bool GameWorld::Execute(string input_command)
         return true;
     }
 #endif
-    else
-    {
-        cout << "Error" << endl;
-    }
-
-    if (retVal)
-    {
-        this->UpdateTriggerQueue(""); // Update not using commands
-        return true;
-    }
+    
 
     return false;
 }
@@ -652,11 +642,52 @@ bool GameWorld::Turnon(string item)
     return false;
 }
 
-bool GameWorld::Attack(string input)
+
+/**
+ * Nour
+ * 
+ * input: <creature> with <weapon>
+ **/
+bool GameWorld::ExecuteAttack(string input)
 {
 
-    cout << "Error" << endl;
-    return false;
+    istringstream iss(input);
+    vector<string> command_tokens((istream_iterator<string>(iss)), istream_iterator<string>());
+
+    
+
+    string creature = command_tokens[0];
+    string weapon   = command_tokens[2];
+
+    if(creatures_map_.find(creature) == creatures_map_.end())
+    {
+        cout << "Error" << endl;
+        return false;
+    }
+
+    if(inventory_map_.find(weapon) == inventory_map_.end())
+    {
+        cout << "Error" << endl;
+        return false;
+    }
+
+
+    Creature * creature_ptr = creatures_map_[creature];
+
+
+
+    for(Attack * attack : creature_ptr -> attacks_)
+    {
+        if(!attack -> is_disabled() && attack -> IsActivated("attack " + input, *this))
+        {
+                attack -> Fire(*this);
+                this -> UpdateTriggerQueue();
+        }
+    }
+
+
+
+    return true;
 }
 
 // /**

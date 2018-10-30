@@ -5,9 +5,15 @@
 #include "../inc/Trigger.hpp"
 #include "../inc/ConditionFactory.hpp"
 #include "../inc/GameWorld.hpp"
+#include "../inc/utils.hpp"
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+
+Trigger::Trigger(string command)
+{
+    this -> command_ = command;
+}
 
 Trigger::Trigger(rapidxml::xml_node<> *trigger_node)
 {
@@ -54,14 +60,11 @@ bool Trigger::Fire(GameWorld& gameworld)
     //Execute actions
     //Execute prints
 
-    bool retVal = true;
+    // bool retVal = true;
 
     //Loop over prints
     for(string message : this -> messages_)
     {
-        #ifdef DEBUG
-        cout << "LOOPING OVER PRINTS IN FIRE" <<endl;
-        #endif
         cout << message << endl;
     }
 
@@ -99,136 +102,137 @@ bool Trigger::Fire(GameWorld& gameworld)
         //     return false;
         // }
 
-
-        //Execute Delete
-        if(command_tokens[0] == "Delete")
+        //disable if it can be used only once   =========== //TODO ASSUME ACTIONS ARE VALID
+        if(type_ == "single")
         {
-            string obj_to_delete = command_tokens[1];
-            string obj_to_delete_type = gameworld.name_to_type_[obj_to_delete];
+            is_disabled_ = true;
+        }
 
-            //curr room object
-            Room * curr_room = gameworld.rooms_map_[gameworld.current_room_];
-
-            if(obj_to_delete_type == "room")
+        if(IsValidCommand(action))
+        {
+            //Execute Delete
+            if(command_tokens[0] == "Delete")
             {
-                //Loop over directions_to_room till the room is the target room to delete
-                for(map<string, string>::iterator it = curr_room -> direction_to_room_.find(obj_to_delete); it != curr_room -> direction_to_room_.end(); it++ )
+                string obj_to_delete = command_tokens[1];
+                string obj_to_delete_type = gameworld.name_to_type_[obj_to_delete];
+
+                //curr room object
+                Room * curr_room = gameworld.rooms_map_[gameworld.current_room_];
+
+                if(obj_to_delete_type == "room")
                 {
-                    if(it -> second == obj_to_delete)
+                    //Loop over directions_to_room till the room is the target room to delete
+                    for(map<string, string>::iterator it = curr_room -> direction_to_room_.find(obj_to_delete); it != curr_room -> direction_to_room_.end(); it++ )
                     {
-                        curr_room -> direction_to_room_.erase(it);
-                        break;
+                        if(it -> second == obj_to_delete)
+                        {
+                            curr_room -> direction_to_room_.erase(it);
+                            break;
+                        }
                     }
                 }
-            }
-            else if (obj_to_delete_type == "item")
-            {
-                //find in items vector and delete
-                vector<string>::iterator it = find(curr_room -> items_names_.begin(), curr_room -> items_names_.end(), obj_to_delete);
-                if(it != curr_room -> items_names_.end())
+                else if (obj_to_delete_type == "item")
                 {
-                    curr_room -> items_names_.erase(it);   
+                    //find in items vector and delete
+                    vector<string>::iterator it = find(curr_room -> items_names_.begin(), curr_room -> items_names_.end(), obj_to_delete);
+                    if(it != curr_room -> items_names_.end())
+                    {
+                        curr_room -> items_names_.erase(it);   
+                    }
                 }
-            }
-            else if (obj_to_delete_type == "creatue")
-            {
-                //find in creatrues vector and delete
-                vector<string>::iterator it = find(curr_room -> creatures_names_.begin(), curr_room -> creatures_names_.end(), obj_to_delete);
-                if(it != curr_room -> creatures_names_.end())
+                else if (obj_to_delete_type == "creatue")
                 {
-                    curr_room -> creatures_names_.erase(it);   
+                    //find in creatrues vector and delete
+                    vector<string>::iterator it = find(curr_room -> creatures_names_.begin(), curr_room -> creatures_names_.end(), obj_to_delete);
+                    if(it != curr_room -> creatures_names_.end())
+                    {
+                        curr_room -> creatures_names_.erase(it);   
+                    }
                 }
-            }
-            else if (obj_to_delete_type == "container")
-            {
-                //find in containers vector and delete
-                vector<string>::iterator it = find(curr_room -> containers_names_.begin(), curr_room -> containers_names_.end(), obj_to_delete);
-                if(it != curr_room -> containers_names_.end())
+                else if (obj_to_delete_type == "container")
                 {
-                    curr_room -> containers_names_.erase(it);   
+                    //find in containers vector and delete
+                    vector<string>::iterator it = find(curr_room -> containers_names_.begin(), curr_room -> containers_names_.end(), obj_to_delete);
+                    if(it != curr_room -> containers_names_.end())
+                    {
+                        curr_room -> containers_names_.erase(it);   
+                    }
                 }
-            }
 
-        } // if(command_tokens[0] == "Delete")
+            } // if(command_tokens[0] == "Delete")
 
-        //Execute Add
-        else if(command_tokens[0] == "Add")
-        {
-            string obj_to_add = command_tokens[1];
-            string dest_obj   = command_tokens[3];
-            string dest_type   = gameworld.name_to_type_[dest_obj];
-            string obj_to_add_type = gameworld.name_to_type_[obj_to_add];
-            
-            if(dest_type == "room")
-            {   
-                Room * room = gameworld.rooms_map_[dest_obj];
-                //Add container to room containers
-                if(obj_to_add_type == "container"){ room -> containers_names_.push_back(obj_to_add); }
-                //Add item to the room
-                else if (obj_to_add_type == "item") { room -> items_names_.push_back(obj_to_add); }
-                //Add creature to the room
-                else if (obj_to_add_type == "creature") { room -> creatures_names_.push_back(obj_to_add); }
-
-            }
-            else if (dest_type == "container")
+            //Execute Add
+            else if(command_tokens[0] == "Add")
             {
-                Container * container = gameworld.containers_map_[dest_obj];
-                //Add item to stored items  in container
-                if (obj_to_add_type == "item") { container -> stored_items_.push_back(obj_to_add); }
+                string obj_to_add = command_tokens[1];
+                string dest_obj   = command_tokens[3];
+                string dest_type   = gameworld.name_to_type_[dest_obj];
+                string obj_to_add_type = gameworld.name_to_type_[obj_to_add];
+                
+                if(dest_type == "room")
+                {   
+                    Room * room = gameworld.rooms_map_[dest_obj];
+                    //Add container to room containers
+                    if(obj_to_add_type == "container"){ room -> containers_names_.push_back(obj_to_add); }
+                    //Add item to the room
+                    else if (obj_to_add_type == "item") { room -> items_names_.push_back(obj_to_add); }
+                    //Add creature to the room
+                    else if (obj_to_add_type == "creature") { room -> creatures_names_.push_back(obj_to_add); }
+
+                }
+                else if (dest_type == "container")
+                {
+                    Container * container = gameworld.containers_map_[dest_obj];
+                    //Add item to stored items  in container
+                    if (obj_to_add_type == "item") { container -> stored_items_.push_back(obj_to_add); }
+                
+                }
+                
+            } // else if(command_tokens[0] == "Add")
+
+            //Execute Update
+            else if(command_tokens[0] == "Update")
+            {
+                string obj_to_update = command_tokens[1];
+                string new_status    = command_tokens[3];
+
+                string obj_to_update_type = gameworld.name_to_type_[obj_to_update];
+
+                if(obj_to_update_type == "room")           { gameworld.rooms_map_[obj_to_update] -> status_ = new_status;}
+                else if(obj_to_update_type == "item")      { gameworld.items_map_[obj_to_update] -> status_ = new_status;}
+                else if(obj_to_update_type == "container") { gameworld.containers_map_[obj_to_update] -> status_ = new_status;}
+                else if(obj_to_update_type == "creature")  { gameworld.creatures_map_[obj_to_update] -> status_ = new_status;}
+                
+            }// else if(command_tokens[0] == "Update")
+
+            //Execute Game Over
+            else if(action == "Game Over")
+            {
+                gameworld.game_over_ = true;
+                gameworld.is_victory_ = true;
+
+            }// else if(action == "Game Over")
             
-            }
-            
-        } // else if(command_tokens[0] == "Add")
 
-        //Execute Update
-        else if(command_tokens[0] == "Update")
-        {
-            string obj_to_update = command_tokens[1];
-            string new_status    = command_tokens[3];
-
-            string obj_to_update_type = gameworld.name_to_type_[obj_to_update];
-
-            if(obj_to_update_type == "room")           { gameworld.rooms_map_[obj_to_update] -> status_ = new_status;}
-            else if(obj_to_update_type == "item")      { gameworld.items_map_[obj_to_update] -> status_ = new_status;}
-            else if(obj_to_update_type == "container") { gameworld.containers_map_[obj_to_update] -> status_ = new_status;}
-            else if(obj_to_update_type == "creature")  { gameworld.creatures_map_[obj_to_update] -> status_ = new_status;}
-            
-        }// else if(command_tokens[0] == "Update")
-
-        //Execute Game Over
-        else if(action == "Game Over")
-        {
-            gameworld.game_over_ = true;
-            gameworld.is_victory_ = true;
-            retVal = false;
-
-        }// else if(action == "Game Over")
+        }
         
-
         //Non existent action
-        else
+        else if(IsValidUserInput(action))
         {
             #ifdef DEBUG
             cout << "Invalid action" <<endl;
             #endif
-            gameworld.ParseInput(action);
+            
             gameworld.Execute(action);
-
-            retVal = false;
+            
+        }
+        else
+        {
+            cout << "Error" << endl;
         }
 
     }//  for (std::string action : actions_)
 
-    
-    
-
-    //disable if it can be used only once
-    if(type_ == "single")
-    {
-        is_disabled_ = true;
-    }
-
-    return retVal;
 
 }
 

@@ -17,7 +17,7 @@ class Attack: public Trigger
 {
 
   public:
-    Attack(rapidxml::xml_node<> *);
+    Attack(string);
     Attack(rapidxml::xml_node<> *, string); //Overloaded constructor
     virtual ~Attack();
     virtual bool IsActivated(string, GameWorld &);

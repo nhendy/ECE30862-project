@@ -14,6 +14,7 @@
 #include "Item.hpp"
 #include "Room.hpp"
 #include "Container.hpp"
+#include "Attack.hpp"
 
 
 class GameWorld
@@ -35,13 +36,13 @@ class GameWorld
 
     void GameLoop();
     bool InitGame(string);
-    std::string ParseInput(string);
+    std::string ParseInput();
     bool Execute(std::string);
-    void UpdateTriggerQueue(std::string);
+    void UpdateTriggerQueue(std::string input = "");
+    std::queue<Trigger *> pending_triggers_;
 
   private:
     
-    std::queue<Trigger *> pending_triggers_;
 
     bool ChangeRoom(std::string);
     bool ShowInventory();
@@ -50,7 +51,7 @@ class GameWorld
     bool Read(std::string);
     bool Drop(std::string);
     bool Turnon(std::string);
-    bool Attack(std::string);
+    bool ExecuteAttack(std::string);
     bool Put(std::string);
 };
 #endif //_GAMEWORLD_H_

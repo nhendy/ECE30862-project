@@ -6,6 +6,7 @@
 #define _CREATURE_H_
 
 #include "GameObjectModel.hpp"
+#include "Attack.hpp"
 #include <vector>
 
 class Creature : public GameObjectModel {
@@ -15,6 +16,7 @@ public:
     Creature(rapidxml::xml_node<> *);
     virtual ~Creature();
     vector<string> vulnerabilities_;
+    vector<Attack *> attacks_;
     friend ostream & operator<< (ostream&, const Creature&);
 
 };
