@@ -133,30 +133,48 @@ bool Trigger::Fire(GameWorld& gameworld)
                 }
                 else if (obj_to_delete_type == "item")
                 {
-                    //find in items vector and delete
-                    vector<string>::iterator it = find(curr_room -> items_names_.begin(), curr_room -> items_names_.end(), obj_to_delete);
-                    if(it != curr_room -> items_names_.end())
+                    for(auto room_pair : gameworld.rooms_map_)
                     {
-                        curr_room -> items_names_.erase(it);   
+                        Room * room = room_pair.second;
+
+                        //find in items vector and delete
+                        vector<string>::iterator it = find(room -> items_names_.begin(), room -> items_names_.end(), obj_to_delete);
+                        if(it != room -> items_names_.end())
+                        {
+                            room -> items_names_.erase(it);   
+                        }
+
                     }
+                    
                 }
-                else if (obj_to_delete_type == "creatue")
+                else if (obj_to_delete_type == "creature")
                 {
-                    //find in creatrues vector and delete
-                    vector<string>::iterator it = find(curr_room -> creatures_names_.begin(), curr_room -> creatures_names_.end(), obj_to_delete);
-                    if(it != curr_room -> creatures_names_.end())
+                    for(auto room_pair : gameworld.rooms_map_)
                     {
-                        curr_room -> creatures_names_.erase(it);   
+                        Room * room = room_pair.second;
+
+                        //find in creatrues vector and delete
+                        vector<string>::iterator it = find(room -> creatures_names_.begin(), room -> creatures_names_.end(), obj_to_delete);
+                        if(it != room -> creatures_names_.end())
+                        {
+                            room -> creatures_names_.erase(it);   
+                        }   
                     }
+                    
                 }
                 else if (obj_to_delete_type == "container")
                 {
-                    //find in containers vector and delete
-                    vector<string>::iterator it = find(curr_room -> containers_names_.begin(), curr_room -> containers_names_.end(), obj_to_delete);
-                    if(it != curr_room -> containers_names_.end())
+                    for(auto room_pair : gameworld.rooms_map_)
                     {
-                        curr_room -> containers_names_.erase(it);   
+                        Room * room = room_pair.second;
+                        //find in containers vector and delete
+                        vector<string>::iterator it = find(room -> containers_names_.begin(), room -> containers_names_.end(), obj_to_delete);
+                        if(it != room -> containers_names_.end())
+                        {
+                            room -> containers_names_.erase(it);   
+                        }
                     }
+                   
                 }
 
             } // if(command_tokens[0] == "Delete")
