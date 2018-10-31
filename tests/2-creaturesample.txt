@@ -23,4 +23,3 @@ attack giant with axe
 take axe
 attack dragon with axe
 attack giant with axe
-quit
