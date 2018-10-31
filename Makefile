@@ -30,7 +30,7 @@ LIBS =
 
 
 ifeq ($(DEBUG), 1) 
-COMPILE_FLAGS+=-DDEBUG
+COMPILE_FLAGS+=-DGAMEOVER
 endif
 
 .PHONY: default_target
