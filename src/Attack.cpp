@@ -38,7 +38,7 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
     //Chech if command matches;
     if ("attack " + creature_name != command_)
     {
-
+        cout << "Error" << endl;
         return false;
     }
 
@@ -85,6 +85,7 @@ bool Attack::IsActivated(string input_command, GameWorld &gameworld)
         if (!cond->IsConditionSatisfied(gameworld))
         {
             //If any fails return False;
+            cout << "Error" << endl;
             return false;
         }
     }

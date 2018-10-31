@@ -63,6 +63,11 @@ bool Trigger::Fire(GameWorld& gameworld)
     // bool retVal = true;
 
     //Loop over prints
+    //disable if it can be used only once   =========== //TODO ASSUME ACTIONS ARE VALID
+    if(type_ == "single")
+    {
+        is_disabled_ = true;
+    }
     for(string message : this -> messages_)
     {
         cout << message << endl;
@@ -102,11 +107,7 @@ bool Trigger::Fire(GameWorld& gameworld)
         //     return false;
         // }
 
-        //disable if it can be used only once   =========== //TODO ASSUME ACTIONS ARE VALID
-        if(type_ == "single")
-        {
-            is_disabled_ = true;
-        }
+        
 
         if(IsValidCommand(action))
         {

@@ -540,7 +540,7 @@ bool GameWorld::Open(string input)
             // If container is not locked, loop through a items in the container and print them
             if (container_ptr->stored_items_.empty())
             {
-                cout << container_ptr->name_ << " is empty.";
+                cout << container_ptr->name_ << " is empty." << endl;
                 return false;
             }
             else
@@ -678,11 +678,15 @@ bool GameWorld::ExecuteAttack(string input)
 
     for(Attack * attack : creature_ptr -> attacks_)
     {
-        if(!attack -> is_disabled() && attack -> IsActivated("attack " + input, *this))
+        if(attack -> IsActivated("attack " + input, *this) && !attack -> is_disabled())
         {
                 attack -> Fire(*this);
                 this -> UpdateTriggerQueue();
         }
+        // else
+        // {
+        //     cout << "Error" << endl;
+        // }
     }
 
 
