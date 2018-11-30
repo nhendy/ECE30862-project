@@ -14,7 +14,7 @@ python3 test.py
 
 
 
-## References
-* [XML Parser example](https://gist.github.com/JSchaenzle/2726944)
+<> ## References
+<> * [XML Parser example](https://gist.github.com/JSchaenzle/2726944)
 
-## Notes
+<> ## Notes
