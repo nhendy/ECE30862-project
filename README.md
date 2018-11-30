@@ -1,4 +1,4 @@
-# ECE30862-project
+# Zork
 ## Requirements
 To compile and run
 ```
