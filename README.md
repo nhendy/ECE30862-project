@@ -12,9 +12,8 @@ To test after compiling run
 python3 test.py
 ```
 
-
-
-<> ## References
-<> * [XML Parser example](https://gist.github.com/JSchaenzle/2726944)
-
-<> ## Notes
+<!--
+ ## References
+ * [XML Parser example](https://gist.github.com/JSchaenzle/2726944)
+ ## Notes
+-->
